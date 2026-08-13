@@ -1,0 +1,30 @@
+node_modules/
+functions/node_modules/
+functions/lib/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Basura de trabajo (no va al repo)
+*.zip
+demo plan/
+texto_completo_v2.txt
+textos_pantalla*.md
+guiones_audio*.md
+DOCUMENTACION_AUDIOGUIA_BASILICA.md
+PROMPT_*.md
+PLAN_BILINGUE.md
+build_data.py
+fix*.py
+write_env.py
+procesar.py
+test_tts.js
+update_texts.cjs
+inspect-git.cjs
+metadata.json
+README_UPLOADS.txt
+plano2.jpg

@@ -31,6 +31,7 @@ import { BASILICA_TOUR_DATA, ALL_TOUR_STOPS, TourStop } from './data';
 import basilicaImg from './assets/images/basilica_lujan_1782603179083.jpg';
 import AudioPlayerControl from './components/AudioPlayerControl';
 import PlanoInteractivo from './components/PlanoInteractivo';
+import AdminPanel from './components/AdminPanel';
 
 // --- CUSTOM SVG BASILICA SILHOUETTE LOGO ---
 function BasilicaLogo({ className }: { className?: string }) {
@@ -729,6 +730,12 @@ export default function App() {
       stopAudio();
     }
   };
+
+  // ---------- MODO ADMIN (/#admin) ----------
+  const isAdminView = typeof window !== 'undefined' && window.location.hash.includes('admin');
+  if (isAdminView) {
+    return <AdminPanel />;
+  }
 
   if (!currentPass) {
     return (

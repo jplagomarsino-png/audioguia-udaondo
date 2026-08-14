@@ -417,15 +417,6 @@ export default function App() {
     return imageOverrides[stop.id] || stop.image;
   };
 
-  // ============================================================
-  // SCROLL LOCK: bloqueado en single view, libre solo en inicio
-  // ============================================================
-  useEffect(() => {
-    const isSingleView = !!activeStop && (activeTab !== 'recorrido' || viewMode === 'lista');
-    document.body.style.overflow = isSingleView ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [activeStop, activeTab, viewMode]);
-
   const handleResetLedger = () => {
     localStorage.removeItem('audioguia_sales_ledger');
     setSalesLedger({});
@@ -669,6 +660,15 @@ export default function App() {
       return `Parada ${displayIdx}/${activeStops.length} • ${activeStop.section}`;
     }
   }, [activeStop, activeTab, activeStopIndex, fullStopsList.length, activeStops]);
+
+  // ============================================================
+  // SCROLL LOCK: bloqueado en single view, libre solo en inicio
+  // ============================================================
+  useEffect(() => {
+    const isSingleView = !!activeStop && (activeTab !== 'recorrido' || viewMode === 'lista');
+    document.body.style.overflow = isSingleView ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [activeStop, activeTab, viewMode]);
 
   const isSingleView = useMemo(() => {
     return activeTab !== 'inicio' && (activeTab !== 'recorrido' || viewMode === 'lista') && !!activeStop;

@@ -126,13 +126,18 @@ export default function PlanoInteractivo({
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Escala inicial: 160% del ancho del viewport (más cerca, vista parcial)
+  // Escala inicial: bien cerca (lo mayor entre 2.2× el ancho y 1.4× el alto del viewport)
   const getInitialScale = useCallback(() => {
-    if (typeof window === 'undefined') return 0.3;
+    if (typeof window === 'undefined') return 0.5;
     const vw = window.innerWidth;
-    const fitScale = vw / 1600; // escala para que la imagen ocupe el ancho exacto
-    return Math.max(0.15, Math.min(fitScale * 1.6, 1.6));
+    const vh = window.innerHeight;
+    const fitW = vw / 1600;
+    const fitH = vh / 1536;
+    return Math.max(0.2, Math.min(Math.max(fitW * 2.2, fitH * 1.4), 2.2));
   }, []);
+
+  // Escala actual del transform (para contrarrestar el zoom en los chips)
+  const [viewScale, setViewScale] = useState<number>(() => (typeof window !== 'undefined' ? getInitialScale() : 0.5));
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
 
@@ -249,6 +254,9 @@ export default function PlanoInteractivo({
           doubleClick={{ mode: 'zoomIn' }}
           wheel={{ disabled: true }}
           panning={{ disabled: false }}
+          onTransformed={(ref) => {
+            if (ref && ref.state) setViewScale(ref.state.scale);
+          }}
         >
           {({ zoomIn, zoomOut }) => {
             // Interceptar wheel para zoom suave manual
@@ -290,7 +298,7 @@ export default function PlanoInteractivo({
                         e.stopPropagation();
                         handleChipTap(zone);
                       }}
-                      className="absolute px-1.5 py-0.5 sm:px-3 sm:py-1.5 rounded-2xl text-center cursor-pointer select-none text-[8px] sm:text-[12.5px]"
+                      className="absolute px-1.5 py-0.5 sm:px-3 sm:py-1.5 rounded-2xl text-center cursor-pointer select-none"
                       style={{
                         left: `${zone.labelX}%`,
                         top: `${zone.labelY}%`,
@@ -305,6 +313,7 @@ export default function PlanoInteractivo({
                         fontFamily: "'Palatino Linotype', Georgia, serif",
                         fontStyle: 'italic',
                         fontWeight: 700,
+                        fontSize: Math.max(6, Math.min(12.5 / (viewScale || 1), 10)),
                         lineHeight: 1.2,
                         boxShadow: isActive
                           ? '0 4px 16px rgba(199,154,60,0.55)'

@@ -1107,7 +1107,7 @@ export default function App() {
 
       {/* FIXED WHITE PREMIUM HEADER */}
       {!showPlano && (
-      <header className={`fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 landscape:h-8 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm transition-transform duration-300 ${hideChrome ? '-translate-y-full' : 'translate-y-0'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 landscape:h-3 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm transition-transform duration-300 ${hideChrome ? '-translate-y-full' : 'translate-y-0'}`}>
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
@@ -1115,9 +1115,9 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="absolute left-3 top-1 z-50 flex items-center justify-center cursor-pointer"
+          className="absolute left-3 -top-0.5 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-9 sm:w-12 h-12 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-9 sm:w-12 h-12 sm:h-15 landscape:w-6 landscape:h-8 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1126,7 +1126,7 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
+          className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer landscape:hidden"
         >
           <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
@@ -1201,11 +1201,11 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
                 
-                {/* Legibility Gradient - INVERTIDO Y SUAVE */}
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/30" />
+                {/* Legibility Overlay - NEGRO 20% SIN DEGRADADO */}
+                <div className="absolute inset-0 bg-black/20" />
                 
-                {/* Content Overlay - CENTRADO CON MARGEN ARRIBA */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-center items-center text-center p-5 sm:p-6 pb-16 sm:pb-40 pt-4 sm:pt-10 max-w-xl mx-auto w-full z-10">
+                {/* Content Overlay - PEGADO ARRIBA, CONTRA EL HEADER */}
+                <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-4 sm:p-6 pt-2 sm:pt-6 max-w-xl mx-auto w-full z-10">
                   <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
                     Parada 1/{fullStopsList.length} • arquitectura
                   </div>
@@ -1222,7 +1222,7 @@ export default function App() {
               </div>
 
               {/* FLOATING CARD - igual que single view */}
-              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-1 sm:gap-5">
+              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-14 sm:pt-12 gap-1 sm:gap-5">
                 <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
@@ -1275,9 +1275,9 @@ export default function App() {
 
 
               {/* THEMATIC EXPLORATION SECTION - DYNAMIC CARDS */}
-              <div className="max-w-xl mx-auto w-full px-4 py-8 space-y-6">
+              <div className="max-w-xl mx-auto w-full px-4 py-4 space-y-4">
                 <div>
-                  <h3 className="font-display font-black text-2xl text-[#0092e0] tracking-[-0.04em] leading-none mb-1 uppercase">
+                  <h3 className="font-display font-black text-xs text-[#0092e0] tracking-[-0.04em] leading-none mb-1 uppercase">
                     Exploración temática
                   </h3>
                   <p className="text-xs text-slate-500 font-sans">
@@ -1285,7 +1285,7 @@ export default function App() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-8">
+                <div className="grid grid-cols-1 gap-4">
                   {[
                     { id: 'arquitectura', label: 'Arquitectura', desc: 'Exterior, fachada, columnas, torres y estructura del templo.', img: 'https://images.unsplash.com/photo-1548625361-155de6c7f54a?auto=format&fit=crop&w=800&q=80', subtitle: 'Todo el exterior' },
                     { id: 'interior', label: 'Interior', desc: 'Nave central, crucero, altar mayor, camarín de la Virgen, capillas y altares.', img: '/navecentral.jpg', subtitle: 'Nave y altares' },
@@ -1334,8 +1334,8 @@ export default function App() {
                           </span>
                         </div>
 
-                        <div className="p-4 pt-12 bg-white">
-                          <p className="font-bold text-slate-600 text-xs font-sans leading-relaxed text-left ml-4 pr-4">
+                        <div className="p-2 pt-12 bg-white">
+                          <p className="font-bold text-slate-600 text-xs font-sans leading-relaxed text-center px-1">
                             {sec.desc}
                           </p>
                         </div>
@@ -1351,19 +1351,16 @@ export default function App() {
                   onClick={handleOpenPlano}
                   className="bg-[#0092e0] hover:bg-[#0081c7] rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="p-5 flex items-center gap-4">
+                  <div className="p-5 flex flex-col items-center text-center gap-2">
                     <div className="w-14 h-14 rounded-xl bg-white/15 text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-white/30">
                       <Map className="w-7 h-7" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-display font-black text-base text-white tracking-[-0.03em] uppercase leading-tight">
-                        Plano de la Basílica
-                      </h4>
-                      <p className="text-xs text-white/90 font-sans font-semibold mt-1 leading-relaxed">
-                        Accede al plano general de frente y planta, y ubica cada contenido.
-                      </p>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-white shrink-0 group-hover:translate-x-1 transition-transform" />
+                    <h4 className="font-display font-black text-base text-white tracking-[-0.03em] uppercase leading-tight">
+                      Plano de la Basílica
+                    </h4>
+                    <p className="text-xs text-white/90 font-sans font-semibold leading-relaxed">
+                      Accede al plano general de frente y planta, y ubica cada contenido.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1550,10 +1547,10 @@ export default function App() {
                           className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
                           referrerPolicy="no-referrer"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/30" />
+                        <div className="absolute inset-0 bg-black/20" />
                         
-                        {/* Content Overlay - CENTRADO CON MARGEN ARRIBA */}
-                        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-center items-center text-center p-5 sm:p-6 pb-16 sm:pb-40 pt-4 sm:pt-10 max-w-xl mx-auto w-full z-10">
+                        {/* Content Overlay - PEGADO ARRIBA, CONTRA EL HEADER */}
+                        <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-4 sm:p-6 pt-2 sm:pt-6 max-w-xl mx-auto w-full z-10">
                           
                           {/* BADGE TRANSLÚCIDO PARADA X/Y */}
                           <div className="bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full text-white text-[7px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-1.5">
@@ -1579,7 +1576,7 @@ export default function App() {
                       </div>
 
                       {/* FLOATING CARD - pestaña sobre la imagen: reproductor + botones */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-1 sm:gap-5">
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-14 sm:pt-12 gap-1 sm:gap-5">
                         
                         {/* 1. REPRODUCTOR INCRUSTADO SOBRE EL BORDE SUPERIOR */}
                         <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
@@ -1699,7 +1696,7 @@ export default function App() {
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 
                           {/* 1. Anterior Stop (Left) */}
-                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0">
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-4 sm:px-6">
                             {prevStop ? (
                               <button
                                 onClick={() => {
@@ -1731,7 +1728,7 @@ export default function App() {
                           </div>
 
                           {/* 3. Siguiente Stop (Right) */}
-                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0">
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-4 sm:px-6">
                             {nextStop ? (
                               <button
                                 onClick={() => {
@@ -1774,7 +1771,7 @@ export default function App() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-20 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] max-w-sm md:left-auto md:right-4 md:translate-x-0 md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 z-50 flex items-center justify-between gap-3"
+            className="fixed bottom-20 left-1/2 -translate-x-1/2 w-auto min-w-64 max-w-[92vw] md:left-auto md:right-4 md:translate-x-0 md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 z-[60] flex items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2 min-w-0">
               <div className="p-2 bg-[#D4AF37] rounded-xl">
@@ -1816,7 +1813,7 @@ export default function App() {
 
       {/* FOOTER NAVIGATION - ALWAYS FIXED AND VISIBLE WITH EXACTLY 6 BEAUTIFUL COMPACT KEYS */}
       {!showPlano && (
-      <footer className={`fixed bottom-0 left-0 right-0 h-16 landscape:h-12 bg-white border-t border-slate-200 flex justify-around items-center z-50 px-1 shadow-lg transition-transform duration-300 ${hideChrome ? 'translate-y-full' : 'translate-y-0'}`}>
+      <footer className={`fixed bottom-0 left-0 right-0 h-16 landscape:h-10 bg-white border-t border-slate-200 flex justify-around items-center z-50 px-1 shadow-lg transition-transform duration-300 ${hideChrome ? 'translate-y-full' : 'translate-y-0'}`}>
         {/* INICIO */}
         <button
           onClick={() => {

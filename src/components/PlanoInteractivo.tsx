@@ -126,12 +126,12 @@ export default function PlanoInteractivo({
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Escala inicial: 130% del ancho del viewport (vista parcial, con zoom)
+  // Escala inicial: 160% del ancho del viewport (más cerca, vista parcial)
   const getInitialScale = useCallback(() => {
     if (typeof window === 'undefined') return 0.3;
     const vw = window.innerWidth;
     const fitScale = vw / 1600; // escala para que la imagen ocupe el ancho exacto
-    return Math.max(0.15, Math.min(fitScale * 1.3, 1.3));
+    return Math.max(0.15, Math.min(fitScale * 1.6, 1.6));
   }, []);
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
@@ -290,12 +290,12 @@ export default function PlanoInteractivo({
                         e.stopPropagation();
                         handleChipTap(zone);
                       }}
-                      className="absolute px-3 py-1.5 rounded-2xl text-center cursor-pointer select-none"
+                      className="absolute px-1.5 py-0.5 sm:px-3 sm:py-1.5 rounded-2xl text-center cursor-pointer select-none text-[8px] sm:text-[12.5px]"
                       style={{
                         left: `${zone.labelX}%`,
                         top: `${zone.labelY}%`,
                         transform: 'translate(-50%, -50%)',
-                        maxWidth: 150,
+                        maxWidth: 110,
                         zIndex: 5,
                         background: isActive
                           ? 'linear-gradient(180deg, #e8c15c, #c79a3c)'
@@ -305,7 +305,6 @@ export default function PlanoInteractivo({
                         fontFamily: "'Palatino Linotype', Georgia, serif",
                         fontStyle: 'italic',
                         fontWeight: 700,
-                        fontSize: 12.5,
                         lineHeight: 1.2,
                         boxShadow: isActive
                           ? '0 4px 16px rgba(199,154,60,0.55)'

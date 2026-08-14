@@ -662,13 +662,28 @@ export default function App() {
   }, [activeStop, activeTab, activeStopIndex, fullStopsList.length, activeStops]);
 
   // ============================================================
-  // SCROLL LOCK: bloqueado en single view, libre solo en inicio
+  // SCROLL LOCK: bloqueado en single view, libre en inicio/recorrido
   // ============================================================
   useEffect(() => {
-    const isSingleView = !!activeStop && (activeTab !== 'recorrido' || viewMode === 'lista');
+    const isSingleView = !!activeStop && activeTab !== 'inicio' && (activeTab !== 'recorrido' || viewMode === 'lista');
     document.body.style.overflow = isSingleView ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [activeStop, activeTab, viewMode]);
+
+  // ============================================================
+  // AUTO-HIDE HEADER/FOOTER al scrollear hacia abajo (espacio en landscape)
+  // ============================================================
+  const [hideChrome, setHideChrome] = useState(false);
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setHideChrome(y > lastY && y > 80);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const isSingleView = useMemo(() => {
     return activeTab !== 'inicio' && (activeTab !== 'recorrido' || viewMode === 'lista') && !!activeStop;
@@ -1092,7 +1107,7 @@ export default function App() {
 
       {/* FIXED WHITE PREMIUM HEADER */}
       {!showPlano && (
-      <header className="fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className={`fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 landscape:h-8 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm transition-transform duration-300 ${hideChrome ? '-translate-y-full' : 'translate-y-0'}`}>
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
@@ -1100,9 +1115,9 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="absolute left-3 top-1.5 z-50 flex items-center justify-center cursor-pointer"
+          className="absolute left-3 top-1 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-6 sm:w-12 h-8 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-9 sm:w-12 h-12 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1111,15 +1126,15 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-10 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
+          className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
         >
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de Luján
           </span>
         </div>
@@ -1186,11 +1201,11 @@ export default function App() {
                   referrerPolicy="no-referrer"
                 />
                 
-                {/* Legibility Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                {/* Legibility Gradient - INVERTIDO Y SUAVE */}
+                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/30" />
                 
-                {/* Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-20 sm:pb-40 max-w-xl mx-auto w-full z-10">
+                {/* Content Overlay - CENTRADO CON MARGEN ARRIBA */}
+                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-center items-center text-center p-5 sm:p-6 pb-16 sm:pb-40 pt-4 sm:pt-10 max-w-xl mx-auto w-full z-10">
                   <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
                     Parada 1/{fullStopsList.length} • arquitectura
                   </div>
@@ -1247,14 +1262,14 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Botón flecha hacia abajo - al final de todo */}
-              <div className="flex items-center justify-center pb-2">
+              {/* Botón flecha hacia abajo - al final, BLANCO con ícono celeste */}
+              <div className="flex items-center justify-center pt-3 pb-2">
                 <button
                   onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-                  className="w-10 h-10 rounded-full bg-[#0092e0] text-white flex items-center justify-center shadow-md active:scale-90 transition-all cursor-pointer"
+                  className="w-11 h-11 rounded-full bg-white text-[#0092e0] border-2 border-sky-100 flex items-center justify-center shadow-md active:scale-90 transition-all cursor-pointer"
                   title="Seguir explorando"
                 >
-                  <ChevronDown className="w-5 h-5 animate-bounce" />
+                  <ChevronDown className="w-6 h-6 animate-bounce" />
                 </button>
               </div>
 
@@ -1535,10 +1550,10 @@ export default function App() {
                           className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
                           referrerPolicy="no-referrer"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/30" />
                         
-                        {/* Content Overlay - Aligned to bottom ("del centro para abajo") above floating play card */}
-                        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-20 sm:pb-40 max-w-xl mx-auto w-full z-10">
+                        {/* Content Overlay - CENTRADO CON MARGEN ARRIBA */}
+                        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-center items-center text-center p-5 sm:p-6 pb-16 sm:pb-40 pt-4 sm:pt-10 max-w-xl mx-auto w-full z-10">
                           
                           {/* BADGE TRANSLÚCIDO PARADA X/Y */}
                           <div className="bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full text-white text-[7px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-1.5">
@@ -1695,7 +1710,6 @@ export default function App() {
                                 title={`Ir a: ${prevStop.title}`}
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Anterior</span>
                                 <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
                                   {prevStop.title}
                                 </p>
@@ -1728,7 +1742,6 @@ export default function App() {
                                 title={`Ir a: ${nextStop.title}`}
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Siguiente</span>
                                 <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
                                   {nextStop.title}
                                 </p>
@@ -1803,7 +1816,7 @@ export default function App() {
 
       {/* FOOTER NAVIGATION - ALWAYS FIXED AND VISIBLE WITH EXACTLY 6 BEAUTIFUL COMPACT KEYS */}
       {!showPlano && (
-      <footer className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 flex justify-around items-center z-50 px-1 shadow-lg">
+      <footer className={`fixed bottom-0 left-0 right-0 h-16 landscape:h-12 bg-white border-t border-slate-200 flex justify-around items-center z-50 px-1 shadow-lg transition-transform duration-300 ${hideChrome ? 'translate-y-full' : 'translate-y-0'}`}>
         {/* INICIO */}
         <button
           onClick={() => {

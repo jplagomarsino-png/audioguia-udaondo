@@ -8,7 +8,8 @@ import {
   Bookmark, 
   Map, 
   List, 
-  ChevronRight, 
+  ChevronRight,
+  ChevronDown, 
   ChevronLeft, 
   Volume2, 
   X, 
@@ -415,6 +416,15 @@ export default function App() {
     if (!stop) return basilicaImg;
     return imageOverrides[stop.id] || stop.image;
   };
+
+  // ============================================================
+  // SCROLL LOCK: bloqueado en single view, libre solo en inicio
+  // ============================================================
+  useEffect(() => {
+    const isSingleView = !!activeStop && (activeTab !== 'recorrido' || viewMode === 'lista');
+    document.body.style.overflow = isSingleView ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [activeStop, activeTab, viewMode]);
 
   const handleResetLedger = () => {
     localStorage.removeItem('audioguia_sales_ledger');
@@ -1168,7 +1178,7 @@ export default function App() {
               className="w-full flex flex-col"
             >
               {/* HERO BANNER - Edge to Edge, No Margins */}
-              <div className="w-full relative overflow-hidden h-[30vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
+              <div className="w-full relative overflow-hidden h-[36vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
                 <img 
                   src={basilicaImg} 
                   alt="Basílica de Luján" 
@@ -1192,8 +1202,8 @@ export default function App() {
               </div>
 
               {/* FLOATING CARD - igual que single view */}
-              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-4 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
-                <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-4">
+              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-0.5 sm:gap-5">
+                <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
                     onClick={() => {
@@ -1207,7 +1217,7 @@ export default function App() {
                   />
                 </div>
 
-                <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-2 mt-1 mb-1 sm:mt-8 sm:mb-8">
+                <p className="font-bold italic text-slate-900 text-[9px] sm:text-sm leading-snug font-sans text-center px-1 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
                   {firstStop?.subtitle}
                 </p>
 
@@ -1219,7 +1229,7 @@ export default function App() {
                       setViewMode('mapa');
                       stopAudio();
                     }}
-                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                     title="Ver el recorrido"
                   >
                     <MapPin className="w-4 h-4 fill-current shrink-0" />
@@ -1227,12 +1237,17 @@ export default function App() {
                   </button>
                   <button
                     onClick={handleOpenPlano}
-                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                     title="Explorar el plano"
                   >
                     <Map className="w-4 h-4 shrink-0" />
                     Plano
                   </button>
+                </div>
+
+                {/* Flechita: seguí hacia abajo para la exploración temática */}
+                <div className="flex items-center justify-center pb-1">
+                  <ChevronDown className="w-5 h-5 text-[#0092e0] animate-bounce" />
                 </div>
               </div>
 
@@ -1549,8 +1564,8 @@ export default function App() {
                           />
                         </div>
 
-                        {/* 2. EPÍGRAFE - MAYOR MARGEN LATERAL, PEGADO */}
-                        <p className="font-bold text-slate-400 text-[10px] sm:text-sm leading-snug font-sans text-center px-8 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8 line-clamp-2 sm:line-clamp-none">
+                        {/* 2. EPÍGRAFE - NEGRO ITÁLICO, COMPLETO, A LOS BORDES */}
+                        <p className="font-bold italic text-slate-900 text-[9px] sm:text-sm leading-snug font-sans text-center px-1 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
                           {activeStop.subtitle}
                         </p>
                       </div>
@@ -1658,7 +1673,7 @@ export default function App() {
                       {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
                       <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
 
-                        <div className="relative w-full flex items-start justify-between px-1 sm:px-12 gap-1">
+                        <div className="relative w-full flex items-start justify-between px-4 sm:px-12 gap-1">
                           {/* Horizontal connecting track line behind the dots */}
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 

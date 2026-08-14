@@ -1078,11 +1078,11 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-12 sm:pt-20">
+      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-10 sm:pt-20">
 
       {/* FIXED WHITE PREMIUM HEADER */}
       {!showPlano && (
-      <header className="fixed top-0 left-0 right-0 z-50 h-12 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
@@ -1092,7 +1092,7 @@ export default function App() {
           }}
           className="absolute left-4 top-2 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-7 sm:w-12 h-9 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-6 sm:w-12 h-8 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1219,7 +1219,7 @@ export default function App() {
                       setViewMode('mapa');
                       stopAudio();
                     }}
-                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
                     title="Ver el recorrido"
                   >
                     <MapPin className="w-4 h-4 fill-current shrink-0" />
@@ -1227,7 +1227,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={handleOpenPlano}
-                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
                     title="Explorar el plano"
                   >
                     <Map className="w-4 h-4 shrink-0" />
@@ -1519,7 +1519,7 @@ export default function App() {
                         <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-20 sm:pb-40 max-w-xl mx-auto w-full z-10">
                           
                           {/* BADGE TRANSLÚCIDO PARADA X/Y */}
-                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
+                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-2.5 py-0.5 rounded-full text-white text-[7px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-1.5">
                             {currentStopLabel}
                           </div>
 
@@ -1530,14 +1530,14 @@ export default function App() {
                             </div>
                           )}
 
-                          <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center px-1">
+                          <h2 className="text-white font-display font-black text-xs sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center px-1">
                             {activeStop.title}
                           </h2>
                         </div>
                       </div>
 
                       {/* FLOATING CARD - Centered layout overlapping the banner */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-4 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-3 sm:p-6 shadow-md flex flex-col pt-8 sm:pt-12 gap-0.5 sm:gap-5">
                         
                         {/* 1. REPRODUCTOR AL 50% INCRUSTADO CALADO AL 50% SOBRE EL BORDE SUPERIOR */}
                         <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-4">
@@ -1550,7 +1550,7 @@ export default function App() {
                         </div>
 
                         {/* 2. EPÍGRAFE - GRIS SOBRE BLANCO, DEBAJO DEL REPRODUCTOR */}
-                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-2 mt-1 mb-1 sm:mt-8 sm:mb-8">
+                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-6 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
                           {activeStop.subtitle}
                         </p>
                       </div>
@@ -1639,7 +1639,7 @@ export default function App() {
                             setViewMode('mapa');
                             stopAudio();
                           }}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
                           title="Ver en el recorrido"
                         >
                           <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
@@ -1647,7 +1647,7 @@ export default function App() {
                         </button>
                         <button
                           onClick={handleOpenPlano}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
                           title="Explorar el plano"
                         >
                           <Map className="w-4 h-4 shrink-0" />
@@ -1663,7 +1663,7 @@ export default function App() {
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 
                           {/* 1. Anterior Stop (Left) */}
-                          <div className="flex flex-col items-center text-center z-10 w-24 sm:w-32">
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0">
                             {prevStop ? (
                               <button
                                 onClick={() => {
@@ -1696,7 +1696,7 @@ export default function App() {
                           </div>
 
                           {/* 3. Siguiente Stop (Right) */}
-                          <div className="flex flex-col items-center text-center z-10 w-24 sm:w-32">
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0">
                             {nextStop ? (
                               <button
                                 onClick={() => {
@@ -1740,7 +1740,7 @@ export default function App() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 z-50 flex items-center justify-between gap-3"
+            className="fixed bottom-20 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] max-w-sm md:left-auto md:right-4 md:translate-x-0 md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 z-50 flex items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2 min-w-0">
               <div className="p-2 bg-[#D4AF37] rounded-xl">

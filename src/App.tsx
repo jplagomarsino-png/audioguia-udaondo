@@ -1078,11 +1078,11 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-14 sm:pt-20">
+      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-12 sm:pt-20">
 
       {/* FIXED WHITE PREMIUM HEADER */}
       {!showPlano && (
-      <header className="fixed top-0 left-0 right-0 z-50 h-14 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 h-12 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
@@ -1092,7 +1092,7 @@ export default function App() {
           }}
           className="absolute left-4 top-2 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-8 sm:w-12 h-10 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-7 sm:w-12 h-9 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1101,21 +1101,21 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-12 sm:pl-18 flex flex-col justify-center leading-[0.85] py-1 select-none cursor-pointer"
+          className="flex-grow pl-11 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
         >
-          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de Luján
           </span>
         </div>
 
-        {/* ELEGANT COMPACT JOYSTICK - THREE BUTTONS WITHOUT LABELS */}
-        <div className="flex items-center self-center mr-2 sm:mr-4 select-none">
+        {/* ELEGANT COMPACT JOYSTICK - SOLO DESKTOP (en móvil estorba al título) */}
+        <div className="hidden sm:flex items-center self-center mr-2 sm:mr-4 select-none">
           <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/80 rounded-full px-2 py-1 shadow-sm">
             {/* Back Button */}
             <button
@@ -1223,7 +1223,7 @@ export default function App() {
                     title="Ver el recorrido"
                   >
                     <MapPin className="w-4 h-4 fill-current shrink-0" />
-                    Ver recorrido
+                    Recorrido
                   </button>
                   <button
                     onClick={handleOpenPlano}
@@ -1231,7 +1231,7 @@ export default function App() {
                     title="Explorar el plano"
                   >
                     <Map className="w-4 h-4 shrink-0" />
-                    Ver plano
+                    Plano
                   </button>
                 </div>
               </div>
@@ -1501,7 +1501,7 @@ export default function App() {
                   <div className="flex flex-col gap-3 sm:gap-6 w-full">
                     <div className="flex flex-col relative w-full">
                       {/* 1. TOP BANNER PHOTO */}
-                      <div className="w-full relative overflow-hidden h-[30vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
+                      <div className="w-full relative overflow-hidden h-[36vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
                         <img 
                           src={imgFor(activeStop)} 
                           alt={activeStop.title} 
@@ -1530,7 +1530,7 @@ export default function App() {
                             </div>
                           )}
 
-                          <h2 className="text-white font-display font-black text-lg sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center">
+                          <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center px-1">
                             {activeStop.title}
                           </h2>
                         </div>
@@ -1643,7 +1643,7 @@ export default function App() {
                           title="Ver en el recorrido"
                         >
                           <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
-                          Ver recorrido
+                          Recorrido
                         </button>
                         <button
                           onClick={handleOpenPlano}
@@ -1651,19 +1651,19 @@ export default function App() {
                           title="Explorar el plano"
                         >
                           <Map className="w-4 h-4 shrink-0" />
-                          Ver plano
+                          Plano
                         </button>
                       </div>
 
                       {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
                       <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
 
-                        <div className="relative w-full flex items-center justify-between px-8 sm:px-12">
+                        <div className="relative w-full flex items-start justify-between px-6 sm:px-12 gap-2">
                           {/* Horizontal connecting track line behind the dots */}
-                          <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1/2 -translate-y-1/2 z-0" />
+                          <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 
                           {/* 1. Anterior Stop (Left) */}
-                          <div className="flex flex-col items-center text-center z-10 w-16 sm:w-28">
+                          <div className="flex flex-col items-center text-center z-10 w-24 sm:w-32">
                             {prevStop ? (
                               <button
                                 onClick={() => {
@@ -1675,7 +1675,7 @@ export default function App() {
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
                                 <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Anterior</span>
-                                <p className="text-[9px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight line-clamp-2">
+                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
                                   {prevStop.title}
                                 </p>
                               </button>
@@ -1687,17 +1687,16 @@ export default function App() {
                             )}
                           </div>
 
-                          {/* 2. Current Stop (Middle) - SOLO PUNTO GRANDE TITILANTE */}
-                          <div className="flex flex-col items-center z-10 w-16 sm:w-28">
+                          {/* 2. Current Stop (Middle) - SOLO PUNTO TITILANTE, SIN TEXTO */}
+                          <div className="flex items-start justify-center z-10 w-10 sm:w-14 pt-0.5">
                             <div className="relative flex items-center justify-center">
                               <span className="absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0092e0]/50 animate-ping" />
                               <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#0092e0] border-2 border-sky-200 shadow-sm" />
                             </div>
-                            <span className="text-[8px] font-sans font-black text-[#0092e0] mt-0.5 uppercase tracking-wider">Aquí</span>
                           </div>
 
                           {/* 3. Siguiente Stop (Right) */}
-                          <div className="flex flex-col items-center text-center z-10 w-16 sm:w-28">
+                          <div className="flex flex-col items-center text-center z-10 w-24 sm:w-32">
                             {nextStop ? (
                               <button
                                 onClick={() => {
@@ -1709,7 +1708,7 @@ export default function App() {
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
                                 <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Siguiente</span>
-                                <p className="text-[9px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight line-clamp-2">
+                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
                                   {nextStop.title}
                                 </p>
                               </button>

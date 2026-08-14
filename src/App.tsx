@@ -1128,13 +1128,13 @@ export default function App() {
           }}
           className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer landscape:hidden"
         >
-          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[11px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de Luján
           </span>
         </div>
@@ -1210,20 +1210,20 @@ export default function App() {
                     Parada 1/{fullStopsList.length} • arquitectura
                   </div>
                   
-                  <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center">
+                  <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
                     Bienvenida
                   </h2>
 
                   {/* EPÍGRAFE EN BLANCO SOBRE LA IMAGEN */}
-                  <p className="text-white/90 text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                  <p className="text-white text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
                     {firstStop?.subtitle}
                   </p>
                 </div>
               </div>
 
               {/* FLOATING CARD - igual que single view */}
-              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-14 sm:pt-12 gap-1 sm:gap-5">
-                <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
+              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
+                <div className="absolute top-0 inset-x-0 -translate-y-[60%] z-20 px-2 sm:px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
                     onClick={() => {
@@ -1318,7 +1318,7 @@ export default function App() {
                             <span className="text-[10px] font-sans font-black text-white uppercase tracking-widest leading-none block mb-1">
                               {sec.subtitle} • {count} {count === 1 ? 'parada' : 'paradas'}
                             </span>
-                            <h4 className="font-display font-black text-3xl text-white tracking-[-0.03em] leading-tight uppercase">
+                            <h4 className="font-display font-black text-base text-white tracking-[-0.03em] leading-tight uppercase">
                               {sec.label}
                             </h4>
                           </div>
@@ -1564,22 +1564,22 @@ export default function App() {
                             </div>
                           )}
 
-                          <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center px-1">
+                          <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center px-1 [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
                             {activeStop.title}
                           </h2>
 
                           {/* EPÍGRAFE EN BLANCO, SOBRE LA IMAGEN, DEBAJO DEL TÍTULO */}
-                          <p className="text-white/90 text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                          <p className="text-white text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
                             {activeStop.subtitle}
                           </p>
                         </div>
                       </div>
 
                       {/* FLOATING CARD - pestaña sobre la imagen: reproductor + botones */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-14 sm:pt-12 gap-1 sm:gap-5">
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
                         
-                        {/* 1. REPRODUCTOR INCRUSTADO SOBRE EL BORDE SUPERIOR */}
-                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
+                        {/* 1. REPRODUCTOR INCRUSTADO - entra menos en la card */}
+                        <div className="absolute top-0 inset-x-0 -translate-y-[60%] z-20 px-2 sm:px-4">
                           <AudioPlayerControl 
                             isPlaying={isCurrentPlaying && isPlaying}
                             onClick={() => playTTS(activeStop.id, activeStop.locucion || activeStop.text)}
@@ -1687,11 +1687,11 @@ export default function App() {
                     })()}
                     </div>
 
-                    {/* TIMELINE SEGMENT (arriba en móvil) - SIN CARD DE FONDO */}
-                    <div className="order-2 flex flex-col items-center -mt-1 sm:mt-6 mb-4 sm:mb-16 max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full gap-1 sm:gap-8">
+                    {/* TIMELINE SEGMENT (arriba en móvil) - ANCHO COMPLETO, columnas expandidas */}
+                    <div className="order-2 flex flex-col items-center -mt-1 sm:mt-6 mb-4 sm:mb-16 w-full px-1 sm:px-4 gap-1 sm:gap-8">
                       {/* STATION TIMELINE - puntos directos sobre el fondo, columnas hasta los bordes */}
                       <div className="w-full relative">
-                        <div className="relative w-full flex items-start justify-between px-0 sm:px-12 gap-1">
+                        <div className="relative w-full flex items-start justify-between gap-1">
                           {/* Horizontal connecting track line behind the dots */}
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 
@@ -1767,11 +1767,12 @@ export default function App() {
       {/* --- FLOATING CONTROLLER AT THE BOTTOM (If audio is playing on a scrolled stop) --- */}
       <AnimatePresence>
         {playingStopId && isPlaying && (
+          <div className="fixed bottom-20 inset-x-0 z-[60] flex justify-center md:justify-end md:pr-4 pointer-events-none">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-20 left-1/2 -translate-x-1/2 w-auto min-w-64 max-w-[92vw] md:left-auto md:right-4 md:translate-x-0 md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 z-[60] flex items-center justify-between gap-3"
+            className="pointer-events-auto w-auto min-w-64 max-w-[92vw] md:w-80 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl shadow-xl border border-slate-800 flex items-center justify-between gap-3"
           >
             <div className="flex items-center gap-2 min-w-0">
               <div className="p-2 bg-[#D4AF37] rounded-xl">
@@ -1808,6 +1809,7 @@ export default function App() {
               </button>
             </div>
           </motion.div>
+          </div>
         )}
       </AnimatePresence>
 

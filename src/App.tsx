@@ -1536,8 +1536,8 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* FLOATING CARD - Centered layout overlapping the banner */}
-                      <div className="max-w-xl mx-auto w-[calc(50%-1rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-8 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-3 sm:p-6 shadow-md flex flex-col pt-8 sm:pt-12 gap-0.5 sm:gap-5">
+                      {/* FLOATING CARD - MITAD DE ALTA, solo 20% sobre la imagen */}
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-0.5 sm:gap-5">
                         
                         {/* 1. REPRODUCTOR AL 50% INCRUSTADO CALADO AL 50% SOBRE EL BORDE SUPERIOR */}
                         <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
@@ -1549,8 +1549,8 @@ export default function App() {
                           />
                         </div>
 
-                        {/* 2. EPÍGRAFE - GRIS SOBRE BLANCO, DEBAJO DEL REPRODUCTOR */}
-                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-5 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
+                        {/* 2. EPÍGRAFE - MAYOR MARGEN LATERAL, PEGADO */}
+                        <p className="font-bold text-slate-400 text-[10px] sm:text-sm leading-snug font-sans text-center px-8 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8 line-clamp-2 sm:line-clamp-none">
                           {activeStop.subtitle}
                         </p>
                       </div>
@@ -1639,7 +1639,7 @@ export default function App() {
                             setViewMode('mapa');
                             stopAudio();
                           }}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-2 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                           title="Ver en el recorrido"
                         >
                           <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
@@ -1647,7 +1647,7 @@ export default function App() {
                         </button>
                         <button
                           onClick={handleOpenPlano}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-2 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                           title="Explorar el plano"
                         >
                           <Map className="w-4 h-4 shrink-0" />
@@ -1658,7 +1658,7 @@ export default function App() {
                       {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
                       <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
 
-                        <div className="relative w-full flex items-start justify-between px-2 sm:px-12 gap-2">
+                        <div className="relative w-full flex items-start justify-between px-1 sm:px-12 gap-1">
                           {/* Horizontal connecting track line behind the dots */}
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 

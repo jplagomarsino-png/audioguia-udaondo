@@ -117,7 +117,7 @@ export const ALL_TOUR_STOPS: TourStop[] = [
     section: 'arquitectura',
     image: '/torres.jpg',
     text: 'Secretos a 106 metros de altura y el carillón fundido con cañones de Milán.',
-    locucion: 'Ahora sí, preparemos el cuello porque vamos a elevar la mirada bien arriba, hacia las torres simétricas de 106 metros de altura. Unas montañas impresionantes que parecen querer pinchar las nubes. Estas torres son el símbolo máximo de esa idea de que toda la Basílica es un camino hacia el cielo. En la torre de la izquierda se esconde el tesoro musical: un carillón de 15 campanas de bronce. Fueron fundidas en Milán, Italia, utilizando cañones de la Segunda Guerra Mundial. Pensar que ese metal, que alguna vez fue usado para la guerra, hoy se transformó en un llamado a la paz y a la oración. Para que se den una idea de la magnitud, la campana más grande es un monstruo de 3.400 kilos, mientras que la más pequeña pesa apenas 55 kilos. Las campanas suenan primero avisando, y luego cada media y cada hora. ¡Atentos! Si observan bien, hay un puente que une las dos torres, es la galería a giorno, un espacio abierto que permite cruzar de un lado al otro a esa impresionante altura. Hay visitas guiadas y recorridos a toda la zona alta de la Basílica. Justo arriba de los campanarios aparecen los relojes. Si se fijan bien, son redondos y rompen un poco con el estilo de la Basílica. Es que fueron fabricados bien cerca, en Rosario, Santa Fe. Y sí, están siempre en hora. Y finalmente, coronando todo el edificio, están las cruces de hierro de 6 metros de altura. La de la izquierda tiene la imagen de la Virgen en relieve y la de la derecha el monograma de "Ave María" que se repite en todo el recorrido. Más arriba, el cielo.',
+    locucion: 'Ahora sí, preparemos el cuello porque vamos a elevar la mirada bien arriba, hacia las torres simétricas de 106 metros de altura. Unas montañas impresionantes que parecen querer pinchar las nubes. Pero fíjense bien: allá atrás, justo sobre el centro de la Basílica, aparece una torrecita más pequeña, como un alfiler de bronce que mide 6 metros. Esa aguja no está ahí por capricho; es la que nos indica desde afuera el lugar exacto donde se encuentra el altar mayor y la Virgen. En la torre de la izquierda se esconde el tesoro musical: un carillón de 15 campanas de bronce fundidas con cañones de la Segunda Guerra Mundial. Pensar que ese metal usado para la guerra hoy es un llamado a la paz. ¿No es increíble? La campana más grande pesa 3.400 kilos. Estén atentos, porque suenan cada media hora. Y más arriba, coronando todo, las cruces de hierro que parecen tocar el cielo.',
     gallery: [
       { url: '/torres.jpg', caption: 'Secretos a 106 metros de altura y el carillón fundido con cañones de Milán.' }
     ]
@@ -145,7 +145,7 @@ export const ALL_TOUR_STOPS: TourStop[] = [
     section: 'arquitectura',
     image: '/memorial.jpg',
     text: 'Recuerdo del impacto del año 2000 que marcó el inicio de la restauración.',
-    locucion: '(Nota: El documento original salta de la descripción técnica de los arbotantes en el Stop 8 directamente a los evangelistas en el Stop 42 de la transcripción, pero el índice lo lista aquí. La información pertinente de la caída de la cruz se menciona en las fuentes como un evento que marcó la restauración).',
+    locucion: 'Antes de entrar, deténganse un momento frente a este memorial. Es la antigua cruz que coronaba la torre este. El 13 de junio de 2000, durante una tormenta muy fuerte, esta mole de 1.100 kilos de hierro se desprendió y cayó desde 106 metros de altura. Fue un milagro que no lastimara a nadie, porque cayó en un lugar donde siempre hay gente. Ese ruido no fue solo el golpe; fue el aviso que necesitábamos para darnos cuenta de que la Basílica estaba sufriendo el paso del tiempo y la erosión. Gracias a esa caída se empezó la restauración minuciosa que hoy permite que el templo brille de nuevo. Es un recordatorio de que, a veces, las cosas tienen que caer para poder reconstruirse con más fuerza.',
     gallery: [
       { url: '/memorial.jpg', caption: 'Recuerdo del impacto del año 2000 que marcó el inicio de la restauración.' }
     ]
@@ -277,6 +277,21 @@ export const ALL_TOUR_STOPS: TourStop[] = [
     ]
   },
   {
+    id: 'confesionarios',
+    type: 'sala',
+    title: 'Los Confesionarios: El Encuentro del Perdón',
+    subtitle: 'Piezas de madera tallada donde el perdón sale al encuentro en la nave derecha.',
+    audio: 'confesionarios.mp3',
+    section: 'interior',
+    image: '/confesionarios.jpg',
+    text: 'Piezas de madera tallada donde el perdón sale al encuentro en la nave derecha.',
+    locucion: 'Caminando por esta nave derecha, si prestan atención a los laterales, aparecen los confesionarios. Son piezas de madera tallada que guardan muchísimos secretos y pedidos de perdón. Es lindo imaginar que la misericordia emana desde el centro mismo del templo, ahí donde está el altar y la Virgen, y se derrama hacia estos costados para recibir a los que necesitan un alivio. A veces uno piensa que estarían en lugares más escondidos, pero no; estos nos salen al encuentro acá, recordándonos que el perdón está siempre a mano. Es una invitación a seguir el camino con el alma un poquito más liviana.',
+    gallery: [
+      { url: '/confesionarios.jpg', caption: 'Piezas de madera tallada donde el perdón sale al encuentro en la nave derecha.' }
+    ]
+  },
+
+  {
     id: 'lamparauruguay',
     type: 'sala',
     title: 'La Lámpara Votiva y los Escudos del Uruguay',
@@ -388,6 +403,21 @@ export const ALL_TOUR_STOPS: TourStop[] = [
       { url: '/piedras.jpg', caption: 'Muros que guardan en su interior los mensajes y promesas de los fieles.' }
     ]
   },
+  {
+    id: 'camarinsacristia',
+    type: 'sala',
+    title: 'El Camarín y el Latir de la Sacristía',
+    subtitle: 'El cofre que el Padre Salvaire soñó: la sacristía y la imagen original de 1630.',
+    audio: 'camarin_sacristia.mp3',
+    section: 'interior',
+    image: '/camarin_sacristia.jpg',
+    text: 'El cofre que el Padre Salvaire soñó: la sacristía y la imagen original de 1630.',
+    locucion: 'Estamos justo detrás del altar mayor, en el centro del deambulatorio. Antes de subir, pasamos frente a la Sacristía Principal. Es un lugar de mucha actividad silenciosa donde los sacerdotes y obispos se preparan para la misa; allí late el día a día de quienes dedican su vida a la fe por María. Ahora, si subimos por la escalera de mármol de Carrara, llegamos al Camarín. Este es el verdadero cofre que el Padre Salvaire soñó para su Perla del Plata. Aquí, en este recinto de madera de cedro y adornos dorados, reside la imagen original de terracota de 1630. Es esa talla pequeñita que decidió quedarse a vivir con nosotros hace casi cuatro siglos. Estar acá arriba, tan cerca de Ella, nos permite un momento de intimidad y silencio que es el corazón mismo de toda esta visita.',
+    gallery: [
+      { url: '/camarin_sacristia.jpg', caption: 'El cofre que el Padre Salvaire soñó: la sacristía y la imagen original de 1630.' }
+    ]
+  },
+
   {
     id: 'sanjose',
     type: 'sala',

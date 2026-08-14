@@ -8,6 +8,7 @@ interface Comercio {
   nombre: string;
   contacto: string;
   cbu: string;
+  comisionPct: number;
   activo: boolean;
   creado: number;
   ventas: number;
@@ -28,6 +29,28 @@ interface Venta {
 const fmt = (n: number) => '$' + n.toLocaleString('es-AR');
 const fmtFecha = (t: number | null) => (t ? new Date(t).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }) : '—');
 
+// Selector de % de comisión del punto de venta
+function SelectorComision({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  return (
+    <div className="flex gap-2">
+      {[30, 40, 50].map((pct) => (
+        <button
+          key={pct}
+          type="button"
+          onClick={() => onChange(pct)}
+          className={`flex-1 py-2.5 rounded-xl border-2 text-sm font-black transition-all cursor-pointer ${
+            value === pct
+              ? 'border-[#0092e0] bg-sky-50 text-[#0092e0]'
+              : 'border-slate-200 text-slate-400 hover:border-slate-300'
+          }`}
+        >
+          {pct}%
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminPanel() {
   const [session, setSession] = useState<string>(() => localStorage.getItem('audioguia_admin_session') || '');
   const [password, setPassword] = useState('');
@@ -47,6 +70,7 @@ export default function AdminPanel() {
   const [nombre, setNombre] = useState('');
   const [contacto, setContacto] = useState('');
   const [cbu, setCbu] = useState('');
+  const [comisionPct, setComisionPct] = useState<number>(30);
   const [nuevoCreado, setNuevoCreado] = useState<{ id: string; qrUrl: string; cartelUrl: string } | null>(null);
 
   const headers = () => ({ 'Content-Type': 'application/json', 'X-Session': session });
@@ -98,6 +122,7 @@ export default function AdminPanel() {
     setNombre(c.nombre);
     setContacto(c.contacto);
     setCbu(c.cbu);
+    setComisionPct(c.comisionPct || 30);
     setVista('ficha');
     try {
       const res = await fetch(`${API}/adminVentas?comercio=${c.id}`, { headers: headers() });
@@ -116,7 +141,7 @@ export default function AdminPanel() {
     await fetch(`${API}/adminComercios`, {
       method: 'PATCH',
       headers: headers(),
-      body: JSON.stringify({ id: comercioSel.id, nombre, contacto, cbu }),
+      body: JSON.stringify({ id: comercioSel.id, nombre, contacto, cbu, comisionPct }),
     });
     await cargarComercios();
     verFicha({ ...comercioSel, nombre, contacto, cbu });
@@ -141,7 +166,7 @@ export default function AdminPanel() {
     const res = await fetch(`${API}/adminComercios`, {
       method: 'POST',
       headers: headers(),
-      body: JSON.stringify({ nombre, contacto, cbu }),
+      body: JSON.stringify({ nombre, contacto, cbu, comisionPct }),
     });
     const data = await res.json();
     if (res.ok) {
@@ -233,6 +258,9 @@ export default function AdminPanel() {
                       <h3 className="font-display font-black text-base text-slate-800 truncate">{c.nombre}</h3>
                       <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase ${c.activo ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-500'}`}>
                         {c.activo ? 'Activo' : 'Inactivo'}
+                      </span>
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full uppercase bg-sky-100 text-[#0092e0]">
+                        {c.comisionPct || 30}% comisión
                       </span>
                     </div>
                     <p className="text-[10px] font-mono text-slate-400 mt-0.5">{c.id}</p>
@@ -329,6 +357,10 @@ export default function AdminPanel() {
                 <input value={cbu} onChange={(e) => setCbu(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0092e0] focus:outline-none text-sm" />
               </div>
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-wide text-slate-400 block mb-1">Comisión del comercio</label>
+                <SelectorComision value={comisionPct} onChange={setComisionPct} />
+              </div>
               <button onClick={crearComercio} disabled={loading || !nombre.trim()}
                 className="w-full py-3 rounded-xl bg-[#0092e0] hover:bg-[#0081c7] disabled:opacity-40 text-white font-black text-sm uppercase tracking-wide cursor-pointer">
                 Crear punto de venta
@@ -381,6 +413,10 @@ export default function AdminPanel() {
               <label className="text-[10px] font-black uppercase tracking-wide text-slate-400 block mb-1">CBU / Alias</label>
               <input value={cbu} onChange={(e) => setCbu(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#0092e0] focus:outline-none text-sm" />
+            </div>
+            <div>
+              <label className="text-[10px] font-black uppercase tracking-wide text-slate-400 block mb-1">Comisión del comercio</label>
+              <SelectorComision value={comisionPct} onChange={setComisionPct} />
             </div>
             <button onClick={guardarFicha}
               className="w-full py-2.5 rounded-xl bg-[#0092e0] hover:bg-[#0081c7] text-white font-black text-xs uppercase tracking-wide cursor-pointer">

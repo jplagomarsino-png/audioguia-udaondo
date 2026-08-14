@@ -93,13 +93,22 @@ export async function registrarVenta(paymentId, deviceIdOverride) {
   const expiresAt = now + DURACION_HORAS * 60 * 60 * 1000;
   const paseToken = randomToken();
 
+  // Comisión del comercio: % configurado en la ficha (30/40/50), default 30
+  let pct = COMISION_PCT;
+  if (comercioId) {
+    const cdoc = await fs.collection('comercios').doc(comercioId).get();
+    if (cdoc.exists && cdoc.data().comisionPct) {
+      pct = cdoc.data().comisionPct / 100;
+    }
+  }
+
   await fs.runTransaction(async (t) => {
     t.set(ventaRef, {
       paymentId,
       deviceId,
       comercioId: comercioId || null,
       monto: PRECIO_ARS,
-      comision: comercioId ? Math.round(PRECIO_ARS * COMISION_PCT) : 0,
+      comision: comercioId ? Math.round(PRECIO_ARS * pct) : 0,
       paseToken,
       status: 'approved',
       createdAt: now,

@@ -38,6 +38,7 @@ export default async function handler(req, res) {
           nombre: c.nombre || d.id,
           contacto: c.contacto || '',
           cbu: c.cbu || '',
+          comisionPct: c.comisionPct || 30,
           activo: c.activo !== false,
           creado: c.creado || 0,
           ventas,
@@ -51,8 +52,9 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const { nombre, contacto, cbu } = req.body || {};
+      const { nombre, contacto, cbu, comisionPct } = req.body || {};
       if (!nombre) return res.status(400).json({ error: 'falta nombre' });
+      const pct = [30, 40, 50].includes(Number(comisionPct)) ? Number(comisionPct) : 30;
       let id = generarPosId();
       // evitar colisiones
       while ((await fs.collection('comercios').doc(id).get()).exists) {
@@ -62,6 +64,7 @@ export default async function handler(req, res) {
         nombre,
         contacto: contacto || '',
         cbu: cbu || '',
+        comisionPct: pct,
         activo: true,
         creado: Date.now(),
       };
@@ -83,6 +86,10 @@ export default async function handler(req, res) {
       if (campos.nombre !== undefined) update.nombre = campos.nombre;
       if (campos.contacto !== undefined) update.contacto = campos.contacto;
       if (campos.cbu !== undefined) update.cbu = campos.cbu;
+      if (campos.comisionPct !== undefined) {
+        const pct = Number(campos.comisionPct);
+        update.comisionPct = [30, 40, 50].includes(pct) ? pct : 30;
+      }
       if (campos.activo !== undefined) update.activo = !!campos.activo;
       await ref.update(update);
       return res.json({ ok: true });

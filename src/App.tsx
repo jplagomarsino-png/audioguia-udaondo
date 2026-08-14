@@ -1078,11 +1078,11 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-20">
+      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-14 sm:pt-20">
 
       {/* FIXED WHITE PREMIUM HEADER */}
       {!showPlano && (
-      <header className="fixed top-0 left-0 right-0 z-50 h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 h-14 sm:h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
@@ -1090,9 +1090,9 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="absolute left-4 top-2.5 z-50 flex items-center justify-center cursor-pointer"
+          className="absolute left-4 top-2 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-11 sm:w-12 h-14 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-8 sm:w-12 h-10 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1101,15 +1101,15 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-16 sm:pl-18 flex flex-col justify-center leading-[0.85] py-1 select-none cursor-pointer"
+          className="flex-grow pl-12 sm:pl-18 flex flex-col justify-center leading-[0.85] py-1 select-none cursor-pointer"
         >
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
+          <span className="font-serif font-black tracking-[0.04em] text-[9px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             de Luján
           </span>
         </div>
@@ -1168,7 +1168,7 @@ export default function App() {
               className="w-full flex flex-col"
             >
               {/* HERO BANNER - Edge to Edge, No Margins */}
-              <div className="w-full relative overflow-hidden h-[50vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
+              <div className="w-full relative overflow-hidden h-[30vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
                 <img 
                   src={basilicaImg} 
                   alt="Basílica de Luján" 
@@ -1180,19 +1180,19 @@ export default function App() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
                 
                 {/* Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-36 sm:pb-40 max-w-xl mx-auto w-full z-10">
-                  <div className="bg-white/20 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-white text-[10px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-3">
+                <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-20 sm:pb-40 max-w-xl mx-auto w-full z-10">
+                  <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
                     Parada 1/{fullStopsList.length} • arquitectura
                   </div>
                   
-                  <h2 className="text-white font-display font-black text-2xl sm:text-3xl tracking-[-0.04em] leading-tight uppercase">
+                  <h2 className="text-white font-display font-black text-lg sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center">
                     Bienvenida
                   </h2>
                 </div>
               </div>
 
               {/* FLOATING CARD - igual que single view */}
-              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 shadow-md flex flex-col pt-12 gap-5">
+              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-4 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
                 <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
@@ -1207,31 +1207,31 @@ export default function App() {
                   />
                 </div>
 
-                <p className="font-bold text-slate-400 text-xs sm:text-sm leading-relaxed font-sans text-center px-2 mt-8 mb-8">
+                <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-2 mt-1 mb-1 sm:mt-8 sm:mb-8">
                   {firstStop?.subtitle}
                 </p>
 
-                {/* Botones */}
-                <div className="mt-2 pt-2 border-t border-slate-100 flex flex-col items-center gap-3">
+                {/* Botones - igual ancho */}
+                <div className="grid grid-cols-2 gap-2 w-full">
                   <button
                     onClick={() => {
                       setActiveTab('recorrido');
                       setViewMode('mapa');
                       stopAudio();
                     }}
-                    className="inline-flex items-center gap-2 px-5 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-full transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-xs"
+                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
                     title="Ver el recorrido"
                   >
-                    <MapPin className="w-4 h-4 fill-current" />
+                    <MapPin className="w-4 h-4 fill-current shrink-0" />
                     Ver recorrido
                   </button>
                   <button
                     onClick={handleOpenPlano}
-                    className="inline-flex items-center gap-2 px-5 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-full transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-xs"
+                    className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
                     title="Explorar el plano"
                   >
-                    <Map className="w-4 h-4" />
-                    Explora el plano de la Basílica
+                    <Map className="w-4 h-4 shrink-0" />
+                    Ver plano
                   </button>
                 </div>
               </div>
@@ -1498,10 +1498,10 @@ export default function App() {
                 const isCurrentPlaying = playingStopId === activeStop.id;
                 
                 return (
-                  <div className="flex flex-col gap-6 w-full">
+                  <div className="flex flex-col gap-3 sm:gap-6 w-full">
                     <div className="flex flex-col relative w-full">
                       {/* 1. TOP BANNER PHOTO */}
-                      <div className="w-full relative overflow-hidden h-[50vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
+                      <div className="w-full relative overflow-hidden h-[30vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
                         <img 
                           src={imgFor(activeStop)} 
                           alt={activeStop.title} 
@@ -1516,10 +1516,10 @@ export default function App() {
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
                         
                         {/* Content Overlay - Aligned to bottom ("del centro para abajo") above floating play card */}
-                        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-36 sm:pb-40 max-w-xl mx-auto w-full z-10">
+                        <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-5 sm:p-6 pb-20 sm:pb-40 max-w-xl mx-auto w-full z-10">
                           
                           {/* BADGE TRANSLÚCIDO PARADA X/Y */}
-                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-white text-[10px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-3">
+                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
                             {currentStopLabel}
                           </div>
 
@@ -1530,14 +1530,14 @@ export default function App() {
                             </div>
                           )}
 
-                          <h2 className="text-white font-display font-black text-2xl sm:text-3xl tracking-[-0.04em] leading-tight uppercase">
+                          <h2 className="text-white font-display font-black text-lg sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center">
                             {activeStop.title}
                           </h2>
                         </div>
                       </div>
 
                       {/* FLOATING CARD - Centered layout overlapping the banner */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-5 sm:p-6 shadow-md flex flex-col pt-12 gap-5">
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-4 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
                         
                         {/* 1. REPRODUCTOR AL 50% INCRUSTADO CALADO AL 50% SOBRE EL BORDE SUPERIOR */}
                         <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-4">
@@ -1550,13 +1550,14 @@ export default function App() {
                         </div>
 
                         {/* 2. EPÍGRAFE - GRIS SOBRE BLANCO, DEBAJO DEL REPRODUCTOR */}
-                        <p className="font-bold text-slate-400 text-xs sm:text-sm leading-relaxed font-sans text-center px-2 mt-8 mb-8">
+                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-2 mt-1 mb-1 sm:mt-8 sm:mb-8">
                           {activeStop.subtitle}
                         </p>
                       </div>
                     </div>
 
-                    {/* GALLERY - OUTSIDE OF CARD, SPANNING EDGE-TO-EDGE OF THE SCREEN */}
+                    {/* GALLERY - OUTSIDE OF CARD, SPANNING EDGE-TO-EDGE OF THE SCREEN (al final en móvil) */}
+                    <div className="order-3 w-full">
                     {stopImages && stopImages.length > 0 && (() => {
                       const curIdx = activeGalleryIndexes[activeStop.id] || 0;
                       const activeImage = stopImages[curIdx] || stopImages[0];
@@ -1626,42 +1627,43 @@ export default function App() {
                         </div>
                       );
                     })()}
+                    </div>
 
-                    {/* SINGLE MAP LOCATION BUTTON & STATION TIMELINE SEGMENT */}
-                    <div className="flex flex-col items-center mt-6 mb-16 max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full gap-8">
-                      {/* DOS BOTONES: RECORRIDO + PLANO */}
-                      <div className="flex flex-col items-center gap-3 w-full">
+                    {/* SINGLE MAP LOCATION BUTTON & STATION TIMELINE SEGMENT (arriba en móvil) */}
+                    <div className="order-2 flex flex-col items-center -mt-2 sm:mt-6 mb-4 sm:mb-16 max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full gap-2 sm:gap-8">
+                      {/* DOS BOTONES: RECORRIDO + PLANO - IGUAL ANCHO, PEGADOS */}
+                      <div className="grid grid-cols-2 gap-2 w-full">
                         <button
                           onClick={() => {
                             setActiveTab('recorrido');
                             setViewMode('mapa');
                             stopAudio();
                           }}
-                          className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-full transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-xs sm:text-sm"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
                           title="Ver en el recorrido"
                         >
-                          <MapPin className="w-5 h-5 fill-current" />
+                          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
                           Ver recorrido
-                          </button>
+                        </button>
                         <button
                           onClick={handleOpenPlano}
-                          className="inline-flex items-center gap-2 px-5 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-full transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-xs"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-wider text-[10px] sm:text-xs w-full"
                           title="Explorar el plano"
                         >
-                          <Map className="w-4 h-4" />
-                          Explora el plano de la Basílica
+                          <Map className="w-4 h-4 shrink-0" />
+                          Ver plano
                         </button>
                       </div>
 
-                      {/* STATION TIMELINE SEGMENT */}
-                      <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-5 shadow-xs relative overflow-hidden">
+                      {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
+                      <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
 
-                        <div className="relative w-full flex items-start justify-between">
+                        <div className="relative w-full flex items-center justify-between px-8 sm:px-12">
                           {/* Horizontal connecting track line behind the dots */}
-                          <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-2.5 -translate-y-1/2 z-0" />
+                          <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1/2 -translate-y-1/2 z-0" />
 
                           {/* 1. Anterior Stop (Left) */}
-                          <div className="w-1/3 flex flex-col items-center text-center z-10 px-1">
+                          <div className="flex flex-col items-center text-center z-10 w-16 sm:w-28">
                             {prevStop ? (
                               <button
                                 onClick={() => {
@@ -1671,41 +1673,31 @@ export default function App() {
                                 className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
                                 title={`Ir a: ${prevStop.title}`}
                               >
-                                {/* Station Dot */}
-                                <div className="w-4 h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <span className="text-[9px] font-sans font-bold text-slate-400 mt-1 uppercase tracking-tight">
-                                  Anterior
-                                </span>
-                                <p className="text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-3">
+                                <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
+                                <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Anterior</span>
+                                <p className="text-[9px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight line-clamp-2">
                                   {prevStop.title}
                                 </p>
                               </button>
                             ) : (
                               <div className="flex flex-col items-center opacity-30 select-none">
-                                <div className="w-4 h-4 rounded-full border-2 border-slate-200 bg-slate-100 flex-shrink-0" />
-                                <span className="text-[9px] font-sans font-bold text-slate-400 mt-1 uppercase tracking-tight">
-                                  Inicio
-                                </span>
+                                <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-200 bg-slate-100 flex-shrink-0" />
+                                <span className="text-[8px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Inicio</span>
                               </div>
                             )}
                           </div>
 
-                          {/* 2. Current Stop (Middle - Highlighted) */}
-                          <div className="w-1/3 flex flex-col items-center text-center z-10 px-1">
-                            <div className="flex flex-col items-center w-full">
-                              {/* Station Dot Active */}
-                              <div className="w-5 h-5 rounded-full border-4 border-sky-100 bg-[#0092e0] shadow-xs flex-shrink-0 animate-pulse" />
-                              <span className="text-[9px] font-sans font-black text-[#0092e0] mt-0.5 uppercase tracking-wider">
-                                Estás Aquí
-                              </span>
-                              <p className="text-[11px] font-sans font-black text-slate-900 leading-tight uppercase tracking-tight mt-0.5 line-clamp-3">
-                                {activeStop.title}
-                              </p>
+                          {/* 2. Current Stop (Middle) - SOLO PUNTO GRANDE TITILANTE */}
+                          <div className="flex flex-col items-center z-10 w-16 sm:w-28">
+                            <div className="relative flex items-center justify-center">
+                              <span className="absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0092e0]/50 animate-ping" />
+                              <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#0092e0] border-2 border-sky-200 shadow-sm" />
                             </div>
+                            <span className="text-[8px] font-sans font-black text-[#0092e0] mt-0.5 uppercase tracking-wider">Aquí</span>
                           </div>
 
                           {/* 3. Siguiente Stop (Right) */}
-                          <div className="w-1/3 flex flex-col items-center text-center z-10 px-1">
+                          <div className="flex flex-col items-center text-center z-10 w-16 sm:w-28">
                             {nextStop ? (
                               <button
                                 onClick={() => {
@@ -1715,21 +1707,16 @@ export default function App() {
                                 className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
                                 title={`Ir a: ${nextStop.title}`}
                               >
-                                {/* Station Dot */}
-                                <div className="w-4 h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <span className="text-[9px] font-sans font-bold text-slate-400 mt-1 uppercase tracking-tight">
-                                  Siguiente
-                                </span>
-                                <p className="text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-3">
+                                <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
+                                <span className="text-[8px] sm:text-[9px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Siguiente</span>
+                                <p className="text-[9px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight line-clamp-2">
                                   {nextStop.title}
                                 </p>
                               </button>
                             ) : (
                               <div className="flex flex-col items-center opacity-30 select-none">
-                                <div className="w-4 h-4 rounded-full border-2 border-slate-200 bg-slate-100 flex-shrink-0" />
-                                <span className="text-[9px] font-sans font-bold text-slate-400 mt-1 uppercase tracking-tight">
-                                  Fin
-                                </span>
+                                <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-200 bg-slate-100 flex-shrink-0" />
+                                <span className="text-[8px] font-sans font-bold text-slate-400 mt-0.5 uppercase tracking-tight">Fin</span>
                               </div>
                             )}
                           </div>

@@ -1090,7 +1090,7 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="absolute left-4 top-2 z-50 flex items-center justify-center cursor-pointer"
+          className="absolute left-3 top-1.5 z-50 flex items-center justify-center cursor-pointer"
         >
           <BasilicaLogo className="w-6 sm:w-12 h-8 sm:h-15 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
@@ -1101,7 +1101,7 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-11 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
+          className="flex-grow pl-10 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer"
         >
           <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
@@ -1537,10 +1537,10 @@ export default function App() {
                       </div>
 
                       {/* FLOATING CARD - Centered layout overlapping the banner */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-3 sm:p-6 shadow-md flex flex-col pt-8 sm:pt-12 gap-0.5 sm:gap-5">
+                      <div className="max-w-xl mx-auto w-[calc(50%-1rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-8 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-3 sm:p-6 shadow-md flex flex-col pt-8 sm:pt-12 gap-0.5 sm:gap-5">
                         
                         {/* 1. REPRODUCTOR AL 50% INCRUSTADO CALADO AL 50% SOBRE EL BORDE SUPERIOR */}
-                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-4">
+                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                           <AudioPlayerControl 
                             isPlaying={isCurrentPlaying && isPlaying}
                             onClick={() => playTTS(activeStop.id, activeStop.locucion || activeStop.text)}
@@ -1550,7 +1550,7 @@ export default function App() {
                         </div>
 
                         {/* 2. EPÍGRAFE - GRIS SOBRE BLANCO, DEBAJO DEL REPRODUCTOR */}
-                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-6 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
+                        <p className="font-bold text-slate-400 text-[11px] sm:text-sm leading-snug font-sans text-center px-5 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
                           {activeStop.subtitle}
                         </p>
                       </div>
@@ -1639,7 +1639,7 @@ export default function App() {
                             setViewMode('mapa');
                             stopAudio();
                           }}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-2 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                           title="Ver en el recorrido"
                         >
                           <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
@@ -1647,7 +1647,7 @@ export default function App() {
                         </button>
                         <button
                           onClick={handleOpenPlano}
-                          className="inline-flex items-center justify-center gap-2 px-2 py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-[11px] sm:text-xs w-full"
+                          className="inline-flex items-center justify-center gap-2 px-2 py-2 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
                           title="Explorar el plano"
                         >
                           <Map className="w-4 h-4 shrink-0" />
@@ -1658,7 +1658,7 @@ export default function App() {
                       {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
                       <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
 
-                        <div className="relative w-full flex items-start justify-between px-6 sm:px-12 gap-2">
+                        <div className="relative w-full flex items-start justify-between px-2 sm:px-12 gap-2">
                           {/* Horizontal connecting track line behind the dots */}
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 
@@ -1794,7 +1794,7 @@ export default function App() {
           }`}
         >
           <Compass className="w-4.5 h-4.5" />
-          <span className="text-[9px] font-sans font-extrabold tracking-tight">Inicio</span>
+          <span className="text-[7px] font-sans font-extrabold tracking-tight">Inicio</span>
         </button>
 
         {/* RECORRIDO */}
@@ -1809,7 +1809,7 @@ export default function App() {
           }`}
         >
           <Map className="w-4.5 h-4.5" />
-          <span className="text-[9px] font-sans font-extrabold tracking-tight">Recorrido</span>
+          <span className="text-[7px] font-sans font-extrabold tracking-tight">Recorrido</span>
         </button>
 
         {/* ARQUITECTURA */}
@@ -1823,7 +1823,7 @@ export default function App() {
             }`}
           >
             <Compass className="w-4.5 h-4.5 rotate-45" />
-            <span className="text-[9px] font-sans font-extrabold tracking-tight">Arquitectura</span>
+            <span className="text-[7px] font-sans font-extrabold tracking-tight">Arquitectura</span>
           </button>
         )}
 
@@ -1838,7 +1838,7 @@ export default function App() {
             }`}
           >
             <Bookmark className="w-4.5 h-4.5" />
-            <span className="text-[9px] font-sans font-extrabold tracking-tight">Interior</span>
+            <span className="text-[7px] font-sans font-extrabold tracking-tight">Interior</span>
           </button>
         )}
 
@@ -1853,7 +1853,7 @@ export default function App() {
             }`}
           >
             <Sparkles className="w-4.5 h-4.5" />
-            <span className="text-[9px] font-sans font-extrabold tracking-tight">Vitrales</span>
+            <span className="text-[7px] font-sans font-extrabold tracking-tight">Vitrales</span>
           </button>
         )}
 
@@ -1863,7 +1863,7 @@ export default function App() {
           className="flex flex-col items-center justify-center flex-1 h-full transition-all gap-1 cursor-pointer text-[#0092e0] hover:text-[#0081c7]"
         >
           <Map className="w-4.5 h-4.5" />
-          <span className="text-[9px] font-sans font-extrabold tracking-tight">Plano</span>
+          <span className="text-[7px] font-sans font-extrabold tracking-tight">Plano</span>
         </button>
       </footer>
       )}

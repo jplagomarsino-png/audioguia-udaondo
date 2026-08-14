@@ -1065,13 +1065,13 @@ export default function App() {
           }}
           className="flex-grow pl-16 sm:pl-18 flex flex-col justify-center leading-[0.85] py-1 select-none cursor-pointer"
         >
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[0.7]">
+          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[0.7]">
+          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[0.7]">
+          <span className="font-serif font-black tracking-[0.04em] text-[12px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-normal">
             de Luján
           </span>
         </div>

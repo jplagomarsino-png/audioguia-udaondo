@@ -4,6 +4,7 @@
 // ============================================================
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
 
 // Init Firestore (service account desde env var)
 function initFirestore() {
@@ -17,6 +18,12 @@ function initFirestore() {
 }
 
 export const db = () => initFirestore();
+
+// Storage (fotos de paradas)
+export const bucket = () => {
+  initFirestore();
+  return getStorage().bucket();
+};
 
 export const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN || '';
 export const PRECIO_ARS = 3000;

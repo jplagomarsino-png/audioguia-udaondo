@@ -378,6 +378,44 @@ export default function App() {
     setCurrentPass(null);
   };
 
+  // ============================================================
+  // IMÁGENES DE PARADAS (subidas desde el panel admin)
+  // ============================================================
+  const [imageOverrides, setImageOverrides] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const CACHE_KEY = 'audioguia_img_cache';
+    const tryCache = () => {
+      try {
+        const c = localStorage.getItem(CACHE_KEY);
+        if (c) {
+          const parsed = JSON.parse(c);
+          if (parsed && parsed.at && Date.now() - parsed.at < 24 * 60 * 60 * 1000) {
+            setImageOverrides(parsed.data || {});
+            return true;
+          }
+        }
+      } catch { /* noop */ }
+      return false;
+    };
+    if (tryCache()) return;
+    fetch('https://audioguia-basilica.vercel.app/api/imagenesParadas')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && typeof data === 'object' && !data.error) {
+          setImageOverrides(data);
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch { /* noop */ }
+        }
+      })
+      .catch(() => { /* sin red: quedan las locales */ });
+  }, []);
+
+  // URL efectiva de imagen de una parada (override admin o local)
+  const imgFor = (stop: TourStop | undefined | null): string => {
+    if (!stop) return basilicaImg;
+    return imageOverrides[stop.id] || stop.image;
+  };
+
   const handleResetLedger = () => {
     localStorage.removeItem('audioguia_sales_ledger');
     setSalesLedger({});
@@ -1415,7 +1453,7 @@ export default function App() {
                                       className="w-full h-32 relative bg-slate-950 cursor-pointer group/banner"
                                     >
                                       <img 
-                                        src={stop.image} 
+                                        src={imgFor(stop)} 
                                         alt={stop.title} 
                                         onError={(e) => {
                                           if (e.currentTarget.src !== basilicaImg) {
@@ -1465,7 +1503,7 @@ export default function App() {
                       {/* 1. TOP BANNER PHOTO */}
                       <div className="w-full relative overflow-hidden h-[50vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
                         <img 
-                          src={activeStop.image} 
+                          src={imgFor(activeStop)} 
                           alt={activeStop.title} 
                           onError={(e) => {
                             if (e.currentTarget.src !== basilicaImg) {

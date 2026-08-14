@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Lock, Plus, ArrowLeft, QrCode, Printer, CheckCircle, Trash2 } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Lock, Plus, ArrowLeft, QrCode, Printer, CheckCircle, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
+import { ALL_TOUR_STOPS } from '../data';
 
 const API = 'https://audioguia-basilica.vercel.app/api';
 
@@ -57,7 +58,7 @@ export default function AdminPanel() {
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
 
-  const [vista, setVista] = useState<'dashboard' | 'ficha' | 'nuevo'>('dashboard');
+  const [vista, setVista] = useState<'dashboard' | 'ficha' | 'nuevo' | 'imagenes'>('dashboard');
   const [comercios, setComercios] = useState<Comercio[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -72,6 +73,13 @@ export default function AdminPanel() {
   const [cbu, setCbu] = useState('');
   const [comisionPct, setComisionPct] = useState<number>(30);
   const [nuevoCreado, setNuevoCreado] = useState<{ id: string; qrUrl: string; cartelUrl: string } | null>(null);
+
+  // --- Imágenes de paradas ---
+  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [uploadParada, setUploadParada] = useState<string | null>(null);
+  const [uploadPreview, setUploadPreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const headers = () => ({ 'Content-Type': 'application/json', 'X-Session': session });
 
@@ -187,6 +195,52 @@ export default function AdminPanel() {
     setVista('dashboard');
   };
 
+  // ---------- IMÁGENES DE PARADAS ----------
+  const cargarOverrides = useCallback(async () => {
+    try {
+      const res = await fetch(`${API}/imagenesParadas`);
+      const data = await res.json();
+      if (data && typeof data === 'object' && !data.error) setOverrides(data);
+    } catch { /* noop */ }
+  }, []);
+
+  const onFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setError('Imagen demasiado grande (máx 2 MB)');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setUploadPreview(reader.result as string);
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
+
+  const confirmarUpload = async () => {
+    if (!uploadParada || !uploadPreview) return;
+    setUploading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API}/subirImagen`, {
+        method: 'POST',
+        headers: headers(),
+        body: JSON.stringify({ paradaId: uploadParada, dataUrl: uploadPreview }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setOverrides((prev) => ({ ...prev, [uploadParada]: data.url }));
+        setUploadParada(null);
+        setUploadPreview(null);
+      } else {
+        setError(data.error || 'Error al subir');
+      }
+    } catch {
+      setError('Error de conexión');
+    }
+    setUploading(false);
+  };
+
   // ---------- LOGIN ----------
   if (!session) {
     return (
@@ -229,6 +283,12 @@ export default function AdminPanel() {
               <p className="text-xs text-slate-500">Ventas y comisiones en tiempo real</p>
             </div>
             <div className="flex gap-2">
+              <button
+                onClick={() => { setVista('imagenes'); cargarOverrides(); }}
+                className="flex items-center gap-2 px-4 py-2.5 bg-white border-2 border-[#0092e0]/30 text-[#0092e0] rounded-full text-xs font-black uppercase tracking-wide shadow-sm transition-colors cursor-pointer"
+              >
+                <ImageIcon className="w-4 h-4" /> Fotos de paradas
+              </button>
               <button
                 onClick={() => { setVista('nuevo'); setNuevoCreado(null); }}
                 className="flex items-center gap-2 px-4 py-2.5 bg-[#0092e0] hover:bg-[#0081c7] text-white rounded-full text-xs font-black uppercase tracking-wide shadow-md transition-colors cursor-pointer"
@@ -305,6 +365,106 @@ export default function AdminPanel() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ---------- IMÁGENES DE PARADAS ----------
+  if (vista === 'imagenes') {
+    return (
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6">
+        <div className="max-w-2xl mx-auto">
+          <button onClick={() => setVista('dashboard')} className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 mb-4 cursor-pointer">
+            <ArrowLeft className="w-4 h-4" /> Volver
+          </button>
+          <h1 className="font-display font-black text-2xl text-slate-800 uppercase tracking-tight mb-1">Fotos de paradas</h1>
+          <p className="text-xs text-slate-500 mb-5">Subí la foto de cada parada desde tu galería. Se muestra al instante en la app.</p>
+
+          {error && <p className="text-sm text-red-600 mb-3">{error}</p>}
+
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm divide-y divide-slate-100 overflow-hidden">
+            {ALL_TOUR_STOPS.map((stop) => {
+              const img = overrides[stop.id] || stop.image;
+              const tienePropia = !!overrides[stop.id];
+              return (
+                <div key={stop.id} className="px-4 py-3 flex items-center gap-3">
+                  <div className="w-16 h-11 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                    <img src={img} alt={stop.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-slate-700 truncate">{stop.title}</p>
+                    <p className={`text-[10px] font-bold ${tienePropia ? 'text-emerald-600' : 'text-slate-400'}`}>
+                      {tienePropia ? 'Foto subida ✓' : 'Usa imagen base'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => { setUploadParada(stop.id); setUploadPreview(null); }}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#0092e0] hover:bg-[#0081c7] text-white text-[10px] font-black uppercase tracking-wide cursor-pointer shrink-0"
+                  >
+                    <Upload className="w-3.5 h-3.5" /> Subir
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* MODAL DE SUBIDA */}
+          {uploadParada && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-5" onClick={() => { if (!uploading) { setUploadParada(null); setUploadPreview(null); } }}>
+              <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+                <h2 className="font-black text-base text-slate-800 mb-1">
+                  Foto de: {ALL_TOUR_STOPS.find((s) => s.id === uploadParada)?.title}
+                </h2>
+                <p className="text-[11px] text-slate-500 mb-4">Elegí la imagen desde tu galería o cámara.</p>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={onFileSelected}
+                  className="hidden"
+                />
+
+                {uploadPreview ? (
+                  <div className="mb-4">
+                    <img src={uploadPreview} alt="preview" className="w-full h-44 object-cover rounded-xl border border-slate-200" />
+                    <div className="flex gap-2 mt-3">
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="flex-1 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 cursor-pointer"
+                      >
+                        Cambiar
+                      </button>
+                      <button
+                        onClick={confirmarUpload}
+                        disabled={uploading}
+                        className="flex-1 py-2.5 rounded-xl bg-[#0092e0] hover:bg-[#0081c7] disabled:opacity-50 text-white text-xs font-black uppercase cursor-pointer"
+                      >
+                        {uploading ? 'Subiendo…' : 'Confirmar'}
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full py-10 rounded-xl border-2 border-dashed border-sky-300 bg-sky-50 text-[#0092e0] flex flex-col items-center gap-2 cursor-pointer"
+                  >
+                    <ImageIcon className="w-8 h-8" />
+                    <span className="text-xs font-black uppercase tracking-wide">Tocar para elegir foto</span>
+                    <span className="text-[10px] text-slate-400">Galería o cámara · máx 2 MB</span>
+                  </button>
+                )}
+
+                <button
+                  onClick={() => { if (!uploading) { setUploadParada(null); setUploadPreview(null); } }}
+                  className="mt-3 w-full py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

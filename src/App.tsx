@@ -1178,7 +1178,7 @@ export default function App() {
               className="w-full flex flex-col"
             >
               {/* HERO BANNER - Edge to Edge, No Margins */}
-              <div className="w-full relative overflow-hidden h-[36vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
+              <div className="w-full relative overflow-hidden h-[50vh] sm:h-[55vh] md:h-[60vh] bg-slate-950">
                 <img 
                   src={basilicaImg} 
                   alt="Basílica de Luján" 
@@ -1195,14 +1195,19 @@ export default function App() {
                     Parada 1/{fullStopsList.length} • arquitectura
                   </div>
                   
-                  <h2 className="text-white font-display font-black text-lg sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center">
+                  <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center">
                     Bienvenida
                   </h2>
+
+                  {/* EPÍGRAFE EN BLANCO SOBRE LA IMAGEN */}
+                  <p className="text-white/90 text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                    {firstStop?.subtitle}
+                  </p>
                 </div>
               </div>
 
               {/* FLOATING CARD - igual que single view */}
-              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-0.5 sm:gap-5">
+              <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-1 sm:gap-5">
                 <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
@@ -1217,38 +1222,40 @@ export default function App() {
                   />
                 </div>
 
-                <p className="font-bold italic text-slate-900 text-[9px] sm:text-sm leading-snug font-sans text-center px-1 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
-                  {firstStop?.subtitle}
-                </p>
-
-                {/* Botones - igual ancho */}
-                <div className="grid grid-cols-2 gap-2 w-full">
+                {/* Botones - dentro de la card, igual que single view */}
+                <div className="grid grid-cols-2 gap-1.5 w-full px-1">
                   <button
                     onClick={() => {
                       setActiveTab('recorrido');
                       setViewMode('mapa');
                       stopAudio();
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                     title="Ver el recorrido"
                   >
-                    <MapPin className="w-4 h-4 fill-current shrink-0" />
+                    <MapPin className="w-5 h-5 fill-current shrink-0" />
                     Recorrido
                   </button>
                   <button
                     onClick={handleOpenPlano}
-                    className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                     title="Explorar el plano"
                   >
-                    <Map className="w-4 h-4 shrink-0" />
+                    <Map className="w-5 h-5 shrink-0" />
                     Plano
                   </button>
                 </div>
+              </div>
 
-                {/* Flechita: seguí hacia abajo para la exploración temática */}
-                <div className="flex items-center justify-center pb-1">
-                  <ChevronDown className="w-5 h-5 text-[#0092e0] animate-bounce" />
-                </div>
+              {/* Botón flecha hacia abajo - al final de todo */}
+              <div className="flex items-center justify-center pb-2">
+                <button
+                  onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                  className="w-10 h-10 rounded-full bg-[#0092e0] text-white flex items-center justify-center shadow-md active:scale-90 transition-all cursor-pointer"
+                  title="Seguir explorando"
+                >
+                  <ChevronDown className="w-5 h-5 animate-bounce" />
+                </button>
               </div>
 
 
@@ -1516,7 +1523,7 @@ export default function App() {
                   <div className="flex flex-col gap-3 sm:gap-6 w-full">
                     <div className="flex flex-col relative w-full">
                       {/* 1. TOP BANNER PHOTO */}
-                      <div className="w-full relative overflow-hidden h-[36vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
+                      <div className="w-full relative overflow-hidden h-[50vh] sm:h-[55vh] md:h-[60vh] bg-slate-950 rounded-none shadow-sm">
                         <img 
                           src={imgFor(activeStop)} 
                           alt={activeStop.title} 
@@ -1545,16 +1552,21 @@ export default function App() {
                             </div>
                           )}
 
-                          <h2 className="text-white font-display font-black text-xs sm:text-3xl tracking-[-0.04em] leading-tight uppercase text-center px-1">
+                          <h2 className="text-white font-display font-black text-base sm:text-3xl tracking-[0.01em] leading-tight uppercase text-center px-1">
                             {activeStop.title}
                           </h2>
+
+                          {/* EPÍGRAFE EN BLANCO, SOBRE LA IMAGEN, DEBAJO DEL TÍTULO */}
+                          <p className="text-white/90 text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                            {activeStop.subtitle}
+                          </p>
                         </div>
                       </div>
 
-                      {/* FLOATING CARD - MITAD DE ALTA, solo 20% sobre la imagen */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-0.5 sm:gap-5">
+                      {/* FLOATING CARD - pestaña sobre la imagen: reproductor + botones */}
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-7 sm:pt-12 gap-1 sm:gap-5">
                         
-                        {/* 1. REPRODUCTOR AL 50% INCRUSTADO CALADO AL 50% SOBRE EL BORDE SUPERIOR */}
+                        {/* 1. REPRODUCTOR INCRUSTADO SOBRE EL BORDE SUPERIOR */}
                         <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                           <AudioPlayerControl 
                             isPlaying={isCurrentPlaying && isPlaying}
@@ -1564,10 +1576,29 @@ export default function App() {
                           />
                         </div>
 
-                        {/* 2. EPÍGRAFE - NEGRO ITÁLICO, COMPLETO, A LOS BORDES */}
-                        <p className="font-bold italic text-slate-900 text-[9px] sm:text-sm leading-snug font-sans text-center px-1 sm:px-2 mt-0.5 mb-0.5 sm:mt-8 sm:mb-8">
-                          {activeStop.subtitle}
-                        </p>
+                        {/* 2. BOTONES DENTRO DE LA CARD - pequeños, condensados, iconos grandes */}
+                        <div className="grid grid-cols-2 gap-1.5 w-full px-1">
+                          <button
+                            onClick={() => {
+                              setActiveTab('recorrido');
+                              setViewMode('mapa');
+                              stopAudio();
+                            }}
+                            className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                            title="Ver en el recorrido"
+                          >
+                            <MapPin className="w-5 h-5 fill-current shrink-0" />
+                            Recorrido
+                          </button>
+                          <button
+                            onClick={handleOpenPlano}
+                            className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                            title="Explorar el plano"
+                          >
+                            <Map className="w-5 h-5 shrink-0" />
+                            Plano
+                          </button>
+                        </div>
                       </div>
                     </div>
 
@@ -1644,36 +1675,11 @@ export default function App() {
                     })()}
                     </div>
 
-                    {/* SINGLE MAP LOCATION BUTTON & STATION TIMELINE SEGMENT (arriba en móvil) */}
-                    <div className="order-2 flex flex-col items-center -mt-2 sm:mt-6 mb-4 sm:mb-16 max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full gap-2 sm:gap-8">
-                      {/* DOS BOTONES: RECORRIDO + PLANO - IGUAL ANCHO, PEGADOS */}
-                      <div className="grid grid-cols-2 gap-2 w-full">
-                        <button
-                          onClick={() => {
-                            setActiveTab('recorrido');
-                            setViewMode('mapa');
-                            stopAudio();
-                          }}
-                          className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
-                          title="Ver en el recorrido"
-                        >
-                          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 fill-current shrink-0" />
-                          Recorrido
-                        </button>
-                        <button
-                          onClick={handleOpenPlano}
-                          className="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-2xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tight text-xs sm:text-xs w-full"
-                          title="Explorar el plano"
-                        >
-                          <Map className="w-4 h-4 shrink-0" />
-                          Plano
-                        </button>
-                      </div>
-
-                      {/* STATION TIMELINE SEGMENT - COMPACTO: punto presente grande y titilante, sin título */}
-                      <div className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-3 shadow-xs relative overflow-hidden">
-
-                        <div className="relative w-full flex items-start justify-between px-4 sm:px-12 gap-1">
+                    {/* TIMELINE SEGMENT (arriba en móvil) - SIN CARD DE FONDO */}
+                    <div className="order-2 flex flex-col items-center -mt-1 sm:mt-6 mb-4 sm:mb-16 max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full gap-1 sm:gap-8">
+                      {/* STATION TIMELINE - puntos directos sobre el fondo, columnas hasta los bordes */}
+                      <div className="w-full relative">
+                        <div className="relative w-full flex items-start justify-between px-0 sm:px-12 gap-1">
                           {/* Horizontal connecting track line behind the dots */}
                           <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
 

@@ -126,18 +126,18 @@ export default function PlanoInteractivo({
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Escala inicial: bien cerca (lo mayor entre 2.2× el ancho y 1.4× el alto del viewport)
+  // Escala inicial: COVER - la imagen llena toda la pantalla (arriba-abajo, bordes a bordes)
+  const IMG_W = 1600;
+  const IMG_H = 680; // 3613x1536 real, renderizada a 1600 de ancho
   const getInitialScale = useCallback(() => {
     if (typeof window === 'undefined') return 0.5;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const fitW = vw / 1600;
-    const fitH = vh / 1536;
-    return Math.max(0.2, Math.min(Math.max(fitW * 2.2, fitH * 1.4), 2.2));
+    const fitW = window.innerWidth / IMG_W;
+    const fitH = window.innerHeight / IMG_H;
+    return Math.max(fitW, fitH);
   }, []);
 
-  // Escala actual del transform (para contrarrestar el zoom en los chips)
-  const [viewScale, setViewScale] = useState<number>(() => (typeof window !== 'undefined' ? getInitialScale() : 0.5));
+  // Estado del transform actual (para posicionar chips fuera del transform)
+  const [transform, setTransform] = useState({ scale: 1, posX: 0, posY: 0 });
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
 
@@ -255,7 +255,9 @@ export default function PlanoInteractivo({
           wheel={{ disabled: true }}
           panning={{ disabled: false }}
           onTransformed={(ref) => {
-            if (ref && ref.state) setViewScale(ref.state.scale);
+            if (ref && ref.state) {
+              setTransform({ scale: ref.state.scale, posX: ref.state.positionX, posY: ref.state.positionY });
+            }
           }}
         >
           {({ zoomIn, zoomOut }) => {
@@ -277,59 +279,65 @@ export default function PlanoInteractivo({
                   src={MAP_IMAGE_SRC}
                   alt="Plano de la Basílica de Luján"
                   className="block select-none pointer-events-none"
-                  style={{ width: 1600, height: 'auto' }}
+                  style={{ width: IMG_W, height: 'auto' }}
                   draggable={false}
                 />
-
-                {/* CHIPS DE ZONA */}
-                {MAP_ZONES.map((zone) => {
-                  const isActive = activeZone?.id === zone.id;
-                  return (
-                    <motion.div
-                      key={zone.id}
-                      initial={{ opacity: 0, filter: 'blur(2px)', scale: 0.9 }}
-                      animate={
-                        revealed.has(zone.id)
-                          ? { opacity: 1, filter: 'blur(0px)', scale: isActive ? 1.06 : 1 }
-                          : {}
-                      }
-                      transition={{ duration: 0.8, ease: 'easeOut' }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleChipTap(zone);
-                      }}
-                      className="absolute px-1.5 py-0.5 sm:px-3 sm:py-1.5 rounded-2xl text-center cursor-pointer select-none"
-                      style={{
-                        left: `${zone.labelX}%`,
-                        top: `${zone.labelY}%`,
-                        transform: 'translate(-50%, -50%)',
-                        maxWidth: 110,
-                        zIndex: 5,
-                        background: isActive
-                          ? 'linear-gradient(180deg, #e8c15c, #c79a3c)'
-                          : 'rgba(246, 239, 221, 0.75)',
-                        color: '#3b2312',
-                        border: '1px solid #c79a3c',
-                        fontFamily: "'Palatino Linotype', Georgia, serif",
-                        fontStyle: 'italic',
-                        fontWeight: 700,
-                        fontSize: Math.max(6, Math.min(12.5 / (viewScale || 1), 10)),
-                        lineHeight: 1.2,
-                        boxShadow: isActive
-                          ? '0 4px 16px rgba(199,154,60,0.55)'
-                          : '0 3px 10px rgba(0,0,0,0.35)',
-                      }}
-                    >
-                      {zone.name}
-                    </motion.div>
-                  );
-                })}
               </div>
             </TransformComponent>
             </div>
             );
           }}
         </TransformWrapper>
+
+        {/* OVERLAY DE CHIPS - FUERA DEL TRANSFORM: posición recalculada, tamaño fijo */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {MAP_ZONES.map((zone) => {
+            const isActive = activeZone?.id === zone.id;
+            const x = transform.posX + (zone.labelX / 100) * IMG_W * transform.scale;
+            const y = transform.posY + (zone.labelY / 100) * IMG_H * transform.scale;
+            return (
+              <div
+                key={zone.id}
+                className="absolute pointer-events-auto"
+                style={{ left: x, top: y, transform: 'translate(-50%, -50%)' }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={
+                    revealed.has(zone.id)
+                      ? { opacity: 1, scale: isActive ? 1.08 : 1 }
+                      : {}
+                  }
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChipTap(zone);
+                  }}
+                  className="px-1.5 py-0.5 rounded-xl text-center cursor-pointer select-none"
+                  style={{
+                    maxWidth: 120,
+                    background: isActive
+                      ? 'linear-gradient(180deg, #e8c15c, #c79a3c)'
+                      : 'rgba(246, 239, 221, 0.8)',
+                    color: '#3b2312',
+                    border: '1px solid #c79a3c',
+                    fontFamily: "'Palatino Linotype', Georgia, serif",
+                    fontStyle: 'italic',
+                    fontWeight: 700,
+                    fontSize: 10,
+                    lineHeight: 1.15,
+                    whiteSpace: 'nowrap',
+                    boxShadow: isActive
+                      ? '0 4px 16px rgba(199,154,60,0.55)'
+                      : '0 2px 8px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  {zone.name}
+                </motion.div>
+              </div>
+            );
+          })}
+        </div>
 
         {/* LEYENDA */}
         <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 pointer-events-none">

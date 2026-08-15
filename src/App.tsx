@@ -1238,14 +1238,14 @@ export default function App() {
                 </div>
 
                 {/* Botones - dentro de la card, igual que single view */}
-                <div className="grid grid-cols-2 gap-1.5 w-full px-1">
+                <div className="grid grid-cols-2 gap-1 w-full px-1 -mt-1">
                   <button
                     onClick={() => {
                       setActiveTab('recorrido');
                       setViewMode('mapa');
                       stopAudio();
                     }}
-                    className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                     title="Ver el recorrido"
                   >
                     <MapPin className="w-5 h-5 fill-current shrink-0" />
@@ -1253,7 +1253,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={handleOpenPlano}
-                    className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                    className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                     title="Explorar el plano"
                   >
                     <Map className="w-5 h-5 shrink-0" />
@@ -1588,15 +1588,15 @@ export default function App() {
                           />
                         </div>
 
-                        {/* 2. BOTONES DENTRO DE LA CARD - pequeños, condensados, iconos grandes */}
-                        <div className="grid grid-cols-2 gap-1.5 w-full px-1">
+                        {/* 2. BOTONES DENTRO DE LA CARD - subidos, delgados, juntos */}
+                        <div className="grid grid-cols-2 gap-1 w-full px-1 -mt-1">
                           <button
                             onClick={() => {
                               setActiveTab('recorrido');
                               setViewMode('mapa');
                               stopAudio();
                             }}
-                            className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                            className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                             title="Ver en el recorrido"
                           >
                             <MapPin className="w-5 h-5 fill-current shrink-0" />
@@ -1604,7 +1604,7 @@ export default function App() {
                           </button>
                           <button
                             onClick={handleOpenPlano}
-                            className="inline-flex items-center justify-center gap-1.5 px-1 py-1 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
+                            className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
                             title="Explorar el plano"
                           >
                             <Map className="w-5 h-5 shrink-0" />

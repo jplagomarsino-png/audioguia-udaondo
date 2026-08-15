@@ -1215,7 +1215,7 @@ export default function App() {
                   </h2>
 
                   {/* EPÍGRAFE EN BLANCO SOBRE LA IMAGEN */}
-                  <p className="text-white text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
+                  <p className="text-white text-[9px] sm:text-sm font-bold leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
                     {firstStop?.subtitle}
                   </p>
                 </div>
@@ -1223,7 +1223,7 @@ export default function App() {
 
               {/* FLOATING CARD - igual que single view */}
               <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
-                <div className="absolute top-0 inset-x-0 -translate-y-[60%] z-20 px-2 sm:px-4">
+                <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                   <AudioPlayerControl 
                     isPlaying={playingStopId === firstStop.id && isPlaying}
                     onClick={() => {
@@ -1569,7 +1569,7 @@ export default function App() {
                           </h2>
 
                           {/* EPÍGRAFE EN BLANCO, SOBRE LA IMAGEN, DEBAJO DEL TÍTULO */}
-                          <p className="text-white text-[9px] sm:text-sm font-bold italic leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
+                          <p className="text-white text-[9px] sm:text-sm font-bold leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
                             {activeStop.subtitle}
                           </p>
                         </div>
@@ -1578,8 +1578,8 @@ export default function App() {
                       {/* FLOATING CARD - pestaña sobre la imagen: reproductor + botones */}
                       <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
                         
-                        {/* 1. REPRODUCTOR INCRUSTADO - entra menos en la card */}
-                        <div className="absolute top-0 inset-x-0 -translate-y-[60%] z-20 px-2 sm:px-4">
+                        {/* 1. REPRODUCTOR INCRUSTADO - centrado en el borde superior */}
+                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
                           <AudioPlayerControl 
                             isPlaying={isCurrentPlaying && isPlaying}
                             onClick={() => playTTS(activeStop.id, activeStop.locucion || activeStop.text)}
@@ -1707,7 +1707,7 @@ export default function App() {
                                 title={`Ir a: ${prevStop.title}`}
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
+                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-3">
                                   {prevStop.title}
                                 </p>
                               </button>
@@ -1739,7 +1739,7 @@ export default function App() {
                                 title={`Ir a: ${nextStop.title}`}
                               >
                                 <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5">
+                                <p className="text-[8px] sm:text-[10px] font-sans font-black text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-3">
                                   {nextStop.title}
                                 </p>
                               </button>

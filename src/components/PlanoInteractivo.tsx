@@ -137,7 +137,32 @@ export default function PlanoInteractivo({
   }, []);
 
   // Estado del transform actual (para posicionar chips fuera del transform)
-  const [transform, setTransform] = useState({ scale: 1, posX: 0, posY: 0 });
+  // Inicializado con el centrado esperado (centerOnInit) para que los chips se vean desde el primer render
+  const [transform, setTransform] = useState(() => {
+    if (typeof window === 'undefined') return { scale: 1, posX: 0, posY: 0 };
+    const s = Math.max(window.innerWidth / IMG_W, window.innerHeight / IMG_H);
+    return {
+      scale: s,
+      posX: (window.innerWidth - IMG_W * s) / 2,
+      posY: (window.innerHeight - IMG_H * s) / 2,
+    };
+  });
+
+  // Forzar el zoom inicial real al montar (garantiza que el plano abra en COVER)
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (transformRef.current) {
+        const s = getInitialScale();
+        transformRef.current.setTransform(
+          (window.innerWidth - IMG_W * s) / 2,
+          (window.innerHeight - IMG_H * s) / 2,
+          s,
+          0
+        );
+      }
+    }, 150);
+    return () => clearTimeout(t);
+  }, [getInitialScale]);
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
 

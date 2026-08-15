@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { 
   Play, 
   Pause, 
@@ -28,7 +28,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BASILICA_TOUR_DATA, ALL_TOUR_STOPS, TourStop } from './data';
+import { ALL_TOUR_STOPS, TourStop } from './data';
 import basilicaImg from './assets/images/basilica_lujan_1782603179083.jpg';
 import AudioPlayerControl from './components/AudioPlayerControl';
 import PlanoInteractivo from './components/PlanoInteractivo';
@@ -580,10 +580,7 @@ export default function App() {
 
   // --- DERIVED DATA ---
   // The complete list of sequential stops for the full tour
-  const fullStopsList = useMemo(() => {
-    const mainCat = BASILICA_TOUR_DATA.find(cat => cat.id === 'recorrido');
-    return mainCat ? mainCat.stops : [];
-  }, []);
+  const fullStopsList = useMemo(() => ALL_TOUR_STOPS, []);
 
   // First stop of the tour (used as default)
   const firstStop = useMemo(() => {
@@ -1815,8 +1812,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* FOOTER NAVIGATION - ALWAYS FIXED AND VISIBLE WITH EXACTLY 6 BEAUTIFUL COMPACT KEYS */}
-      {!showPlano && (
+      {/* FOOTER NAVIGATION - visible en toda la app, incluido el plano */}
       <footer className={`fixed bottom-0 left-0 right-0 h-16 landscape:h-10 bg-white border-t border-slate-200 flex justify-around items-center z-50 px-1 shadow-lg transition-transform duration-300 ${hideChrome ? 'translate-y-full' : 'translate-y-0'}`}>
         {/* INICIO */}
         <button

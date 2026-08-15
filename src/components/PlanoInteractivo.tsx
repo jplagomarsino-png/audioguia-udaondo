@@ -131,12 +131,6 @@ export default function PlanoInteractivo({
   // Escala inicial: COVER - la imagen llena toda la pantalla (arriba-abajo, bordes a bordes)
   const IMG_W = 1600;
   const IMG_H = 680; // 3613x1536 real, renderizada a 1600 de ancho
-  const getInitialScale = useCallback(() => {
-    if (typeof window === 'undefined') return 0.5;
-    const fitW = window.innerWidth / IMG_W;
-    const fitH = window.innerHeight / IMG_H;
-    return Math.max(fitW, fitH);
-  }, []);
 
   // Medidas REALES del visor (no el viewport: en móvil el alto difiere por header/footer)
   const getViewSize = useCallback(() => {

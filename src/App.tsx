@@ -670,20 +670,23 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [activeStop, activeTab, viewMode]);
 
-  // ============================================================
-  // AUTO-HIDE HEADER/FOOTER al scrollear hacia abajo (espacio en landscape)
-  // ============================================================
-  const [hideChrome, setHideChrome] = useState(false);
+  // Si el usuario toca un tab del footer global mientras el plano está abierto, se cierra el plano
   useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setHideChrome(y > lastY && y > 80);
-      lastY = y;
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    if (showPlano) setShowPlano(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  // ============================================================
+  // HEADER/FOOTER: se esconden SOLO al navegar el mapa (pan/zoom). Nunca en inicio/single view
+  // ============================================================
+  const [mapBusy, setMapBusy] = useState(false);
+  const mapBusyTimer = useRef<number | null>(null);
+  const handleMapPan = useCallback(() => {
+    setMapBusy(true);
+    if (mapBusyTimer.current) window.clearTimeout(mapBusyTimer.current);
+    mapBusyTimer.current = window.setTimeout(() => setMapBusy(false), 1400);
   }, []);
+  const hideChrome = showPlano && mapBusy;
 
   const isSingleView = useMemo(() => {
     return activeTab !== 'inicio' && (activeTab !== 'recorrido' || viewMode === 'lista') && !!activeStop;
@@ -1099,14 +1102,14 @@ export default function App() {
               stopAudio();
               setShowPlano(false);
             }}
+            onUserPan={handleMapPan}
           />
         )}
       </AnimatePresence>
 
       <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-10 sm:pt-20">
 
-      {/* FIXED WHITE PREMIUM HEADER */}
-      {!showPlano && (
+      {/* FIXED WHITE PREMIUM HEADER - visible en toda la app, incluido el plano */}
       <header className={`fixed top-0 left-0 right-0 z-50 h-10 sm:h-20 landscape:h-3 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm transition-transform duration-300 ${hideChrome ? '-translate-y-full' : 'translate-y-0'}`}>
         
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
@@ -1175,7 +1178,6 @@ export default function App() {
           </div>
         </div>
       </header>
-      )}
 
       {/* MAIN CONTENT AREA */}
       <main className="flex-grow flex flex-col w-full">
@@ -1899,7 +1901,6 @@ export default function App() {
           <span className="text-[7px] font-sans font-extrabold tracking-tight">Plano</span>
         </button>
       </footer>
-      )}
 
       {/* IMMERSIVE FULL-SCREEN GALLERY MODAL */}
       <AnimatePresence>

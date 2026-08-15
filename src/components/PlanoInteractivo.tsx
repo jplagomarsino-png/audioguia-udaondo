@@ -94,6 +94,7 @@ interface PlanoInteractivoProps {
   onStop: () => void;
   onNavigate: (tab: string) => void;
   onClose: () => void;
+  onUserPan?: () => void;
 }
 
 /* ============================================================
@@ -107,6 +108,7 @@ export default function PlanoInteractivo({
   onStop,
   onNavigate,
   onClose,
+  onUserPan,
 }: PlanoInteractivoProps) {
   const [activeStopId, setActiveStopId] = useState<string | null>(null);
   const transformRef = useRef<ReactZoomPanPinchRef | null>(null);
@@ -136,8 +138,22 @@ export default function PlanoInteractivo({
     return Math.max(fitW, fitH);
   }, []);
 
+  // Medidas REALES del visor (no el viewport: en móvil el alto difiere por header/footer)
+  const getViewSize = useCallback(() => {
+    if (containerRef.current) {
+      const r = containerRef.current.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) return { w: r.width, h: r.height };
+    }
+    return { w: window.innerWidth, h: window.innerHeight };
+  }, []);
+
+  // Escala inicial: COVER del visor real (imagen llena la pantalla, bordes a bordes)
+  const getInitialScale = useCallback(() => {
+    const { w, h } = getViewSize();
+    return Math.max(w / IMG_W, h / IMG_H);
+  }, [getViewSize]);
+
   // Estado del transform actual (para posicionar chips fuera del transform)
-  // Inicializado con el centrado esperado (centerOnInit) para que los chips se vean desde el primer render
   const [transform, setTransform] = useState(() => {
     if (typeof window === 'undefined') return { scale: 1, posX: 0, posY: 0 };
     const s = Math.max(window.innerWidth / IMG_W, window.innerHeight / IMG_H);
@@ -148,21 +164,18 @@ export default function PlanoInteractivo({
     };
   });
 
-  // Forzar el zoom inicial real al montar (garantiza que el plano abra en COVER)
+  // Forzar el zoom inicial real al montar usando las medidas reales del visor
   useEffect(() => {
-    const t = setTimeout(() => {
+    const apply = () => {
       if (transformRef.current) {
-        const s = getInitialScale();
-        transformRef.current.setTransform(
-          (window.innerWidth - IMG_W * s) / 2,
-          (window.innerHeight - IMG_H * s) / 2,
-          s,
-          0
-        );
+        const { w, h } = getViewSize();
+        const s = Math.max(w / IMG_W, h / IMG_H);
+        transformRef.current.setTransform((w - IMG_W * s) / 2, (h - IMG_H * s) / 2, s, 0);
       }
-    }, 150);
+    };
+    const t = setTimeout(apply, 200);
     return () => clearTimeout(t);
-  }, [getInitialScale]);
+  }, [getViewSize]);
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
 
@@ -221,51 +234,7 @@ export default function PlanoInteractivo({
   ];
 
   return (
-    <div className="fixed inset-0 z-[90] bg-[#f6efdd] flex flex-col">
-      {/* HEADER — mismo estilo que App.tsx: blanco, h-20, SVG logo + joystick + X */}
-      <header className="flex-none h-20 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm z-10">
-        {/* Logo SVG (click → inicio) */}
-        <div
-          onClick={() => onNavigate('inicio')}
-          className="flex items-center justify-center cursor-pointer"
-        >
-          <BasilicaLogo className="w-11 h-14 text-[#0092e0]" />
-        </div>
-
-        {/* Joystick: prev / mapa / next */}
-        <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200/80 rounded-full px-2 py-1 shadow-sm">
-          <button
-            onClick={handlePanelPrev}
-            className="w-7 h-7 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-90 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-sm"
-            title="Parada anterior"
-          >
-            <SkipBack className="w-3.5 h-3.5 fill-current" />
-          </button>
-          <button
-            onClick={() => onNavigate('recorrido')}
-            className="w-7 h-7 bg-white text-[#0092e0] border border-[#0092e0] hover:bg-sky-50 active:scale-90 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-xs"
-            title="Ver mapa del recorrido"
-          >
-            <MapPin className="w-3.5 h-3.5 fill-current" />
-          </button>
-          <button
-            onClick={handlePanelNext}
-            className="w-7 h-7 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-90 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-sm"
-            title="Siguiente parada"
-          >
-            <SkipForward className="w-3.5 h-3.5 fill-current" />
-          </button>
-        </div>
-
-        {/* X para cerrar */}
-        <button
-          onClick={onClose}
-          className="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
-          title="Cerrar plano"
-        >
-          <X className="w-5 h-5 text-slate-600" />
-        </button>
-      </header>
+    <div className="fixed inset-0 z-40 bg-[#f6efdd] flex flex-col">
 
       {/* VISOR DEL PLANO */}
       <div ref={containerRef} className="flex-1 relative overflow-hidden bg-[#f6efdd]">
@@ -282,6 +251,7 @@ export default function PlanoInteractivo({
           onTransformed={(ref) => {
             if (ref && ref.state) {
               setTransform({ scale: ref.state.scale, posX: ref.state.positionX, posY: ref.state.positionY });
+              if (onUserPan) onUserPan();
             }
           }}
         >
@@ -364,13 +334,6 @@ export default function PlanoInteractivo({
           })}
         </div>
 
-        {/* LEYENDA */}
-        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-          <span className="bg-[#2a1a0f]/80 backdrop-blur text-[#e8c15c]/70 text-[10px] px-3 py-1 rounded-full">
-            Tocá un nombre para explorar esa zona
-          </span>
-        </div>
-
         {/* PANEL REPRODUCTOR (60% opacidad) — se cierra al tocar fuera */}
         <AnimatePresence>
           {activeZone && (
@@ -438,23 +401,6 @@ export default function PlanoInteractivo({
           )}
         </AnimatePresence>
       </div>
-
-      {/* FOOTER DE NAVEGACIÓN — invertido: celeste, iconos blancos */}
-      <footer className="flex-none h-14 bg-[#0092e0] border-t border-sky-700 flex justify-around items-center z-10 shadow-lg">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => onNavigate(tab.id)}
-              className="flex flex-col items-center justify-center flex-1 h-full transition-all gap-0.5 cursor-pointer text-white/80 hover:text-white"
-            >
-              <Icon className="w-4 h-4" />
-              <span className="text-[8px] font-sans font-extrabold tracking-tight">{tab.label}</span>
-            </button>
-          );
-        })}
-      </footer>
     </div>
   );
 }

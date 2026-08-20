@@ -609,7 +609,14 @@ export default function App() {
   const activeStops = useMemo(() => {
     if (activeTab === 'inicio') return [];
     if (activeTab === 'recorrido') return tourMode === 'rapido' ? quickStops : fullStopsList;
-    
+    if (activeTab === 'vitrales') {
+      // Vitrales no tiene sección propia (van dentro de interior): las paradas de los vitrales
+      return ALL_TOUR_STOPS.filter(stop => stop.section === 'interior' && (
+        stop.title.includes('Vitral') || stop.title.includes('Bautismo') ||
+        stop.title.includes('Carlos Borromeo') || stop.title.includes('Reyes') ||
+        stop.title.includes('Predicadores')
+      ));
+    }
     // Filter stops based on lowercase section mapping
     return ALL_TOUR_STOPS.filter(stop => stop.section === activeTab);
   }, [activeTab, fullStopsList, tourMode, quickStops]);
@@ -733,7 +740,10 @@ export default function App() {
   const handleSelectCategory = (category: 'arquitectura' | 'interior' | 'vitrales') => {
     setActiveTab(category);
     stopAudio();
-    const firstStopOfCat = ALL_TOUR_STOPS.find(s => s.section === category);
+    // Vitrales no tiene sección propia (va dentro de interior): apunto a la parada del arte del vitral
+    const firstStopOfCat = category === 'vitrales'
+      ? ALL_TOUR_STOPS.find(s => s.title.includes('Tabla de los Pobres')) || ALL_TOUR_STOPS.find(s => s.section === 'interior')
+      : ALL_TOUR_STOPS.find(s => s.section === category);
     if (firstStopOfCat) {
       setSelectedStopId(firstStopOfCat.id);
     }
@@ -1143,7 +1153,7 @@ export default function App() {
           }}
           className="absolute left-3 -top-0.5 z-50 flex items-center justify-center cursor-pointer"
         >
-          <BasilicaLogo className="w-9 sm:w-12 h-12 sm:h-15 landscape:w-6 landscape:h-8 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
+          <BasilicaLogo className="w-9 sm:w-12 h-12 sm:h-14 landscape:w-6 landscape:h-8 text-[#0092e0] transition-transform duration-300 hover:scale-105" />
         </div>
 
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
@@ -1152,15 +1162,15 @@ export default function App() {
             setActiveTab('inicio');
             stopAudio();
           }}
-          className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer landscape:hidden"
+          className="flex-grow pl-13 sm:pl-18 flex flex-col justify-center leading-[1.05] py-0.5 select-none cursor-pointer landscape:hidden max-w-[55vw] sm:max-w-none"
         >
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-xs lg:text-sm text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             Audioguía
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-xs lg:text-sm text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de la Basílica
           </span>
-          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-sm md:text-base text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
+          <span className="font-serif font-black tracking-[0.03em] text-[8px] sm:text-xs lg:text-sm text-[#0092e0] uppercase leading-[1.05] whitespace-nowrap">
             de Luján
           </span>
         </div>
@@ -1335,8 +1345,10 @@ export default function App() {
                     { id: 'arquitectura', label: 'Arquitectura', desc: 'Exterior, fachada, columnas, torres y estructura del templo.', img: 'https://images.unsplash.com/photo-1548625361-155de6c7f54a?auto=format&fit=crop&w=800&q=80', subtitle: 'Todo el exterior' },
                     { id: 'interior', label: 'Interior', desc: 'Nave central, crucero, altar mayor, camarín de la Virgen, capillas y altares.', img: '/navecentral.jpg', subtitle: 'Nave y altares' },
                     { id: 'vitrales', label: 'Los Vitrales', desc: 'La teología de la luz a través de la deslumbrante colección de vitrales franceses.', img: '/vitrales.jpg', subtitle: 'Luz y teología' }
-                  ].filter(sec => ALL_TOUR_STOPS.some(s => s.section === sec.id)).map(sec => {
-                    const count = ALL_TOUR_STOPS.filter(s => s.section === sec.id).length;
+                  ].map(sec => {
+                    const count = sec.id === 'vitrales'
+                      ? ALL_TOUR_STOPS.filter(s => s.section === 'interior' && (s.title.includes('Vitral') || s.title.includes('Bautismo') || s.title.includes('Carlos Borromeo') || s.title.includes('Reyes'))).length
+                      : ALL_TOUR_STOPS.filter(s => s.section === sec.id).length;
                     return (
                       <div 
                         key={sec.id}
@@ -1449,7 +1461,7 @@ export default function App() {
                 <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                   <div>
                     <h2 className="font-display font-black tracking-[-0.05em] text-2xl text-slate-700 leading-none mt-0.5 capitalize">
-                      {activeTab === 'recorrido' ? 'Acompañanos en el recorrido' : activeTab === 'interior' ? 'Interior' : activeTab}
+                      {activeTab === 'recorrido' ? 'Todas las paradas' : activeTab === 'interior' ? 'Interior' : activeTab === 'vitrales' ? 'Vitrales' : activeTab}
                     </h2>
                   </div>
 
@@ -1893,8 +1905,8 @@ export default function App() {
             activeTab === 'inicio' ? 'text-[#0092e0]' : 'text-slate-400 hover:text-slate-600'
           }`}
         >
-          <Compass className="w-4.5 h-4.5" />
-          <span className="text-[7px] font-sans font-extrabold tracking-tight">Inicio</span>
+          <Compass className="w-4 h-4" />
+          <span className="text-[6px] font-sans font-extrabold tracking-tight">Inicio</span>
         </button>
 
         {/* RECORRIDO */}
@@ -1909,8 +1921,8 @@ export default function App() {
             activeTab === 'recorrido' ? 'text-[#0092e0]' : 'text-slate-400 hover:text-slate-600'
           }`}
         >
-          <Map className="w-4.5 h-4.5" />
-          <span className="text-[7px] font-sans font-extrabold tracking-tight">Recorrido</span>
+          <MapPin className="w-4 h-4 fill-current" />
+          <span className="text-[6px] font-sans font-extrabold tracking-tight">Recorrido</span>
         </button>
 
         {/* ARQUITECTURA */}
@@ -1924,7 +1936,7 @@ export default function App() {
             }`}
           >
             <Compass className="w-4.5 h-4.5 rotate-45" />
-            <span className="text-[7px] font-sans font-extrabold tracking-tight">Arquitectura</span>
+            <span className="text-[6px] font-sans font-extrabold tracking-tight">Arquitectura</span>
           </button>
         )}
 
@@ -1939,24 +1951,22 @@ export default function App() {
             }`}
           >
             <Bookmark className="w-4.5 h-4.5" />
-            <span className="text-[7px] font-sans font-extrabold tracking-tight">Interior</span>
+            <span className="text-[6px] font-sans font-extrabold tracking-tight">Interior</span>
           </button>
         )}
 
-        {/* VITRALES */}
-        {ALL_TOUR_STOPS.some(s => s.section === 'vitrales') && (
-          <button
-            onClick={() => {
-              handleSelectCategory('vitrales');
-            }}
-            className={`flex flex-col items-center justify-center flex-1 h-full transition-all gap-1 cursor-pointer ${
-              activeTab === 'vitrales' ? 'text-[#0092e0]' : 'text-slate-400 hover:text-slate-600'
-            }`}
-          >
-            <Sparkles className="w-4.5 h-4.5" />
-            <span className="text-[7px] font-sans font-extrabold tracking-tight">Vitrales</span>
-          </button>
-        )}
+        {/* VITRALES - siempre visible (apunta a la parada del arte del vitral) */}
+        <button
+          onClick={() => {
+            handleSelectCategory('vitrales');
+          }}
+          className={`flex flex-col items-center justify-center flex-1 h-full transition-all gap-1 cursor-pointer ${
+            activeTab === 'vitrales' ? 'text-[#0092e0]' : 'text-slate-400 hover:text-slate-600'
+          }`}
+        >
+          <Sparkles className="w-4 h-4" />
+          <span className="text-[6px] font-sans font-extrabold tracking-tight">Vitrales</span>
+        </button>
 
         {/* PLANO */}
         <button
@@ -1964,7 +1974,7 @@ export default function App() {
           className="flex flex-col items-center justify-center flex-1 h-full transition-all gap-1 cursor-pointer text-[#0092e0] hover:text-[#0081c7]"
         >
           <Map className="w-4.5 h-4.5" />
-          <span className="text-[7px] font-sans font-extrabold tracking-tight">Plano</span>
+          <span className="text-[6px] font-sans font-extrabold tracking-tight">Plano</span>
         </button>
       </footer>
 

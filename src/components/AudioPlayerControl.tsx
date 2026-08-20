@@ -55,38 +55,38 @@ export default function AudioPlayerControl({
   }
 
   return (
-    <div className="relative flex items-center justify-between py-5 select-none w-full mx-auto px-4">
+    <div className="relative flex items-center justify-between py-4 select-none w-full mx-auto px-2 sm:px-4">
       <button
         onClick={(e) => { e.stopPropagation(); if (onPrev) onPrev(); }}
-        className="w-10 h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0 relative z-20"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0 relative z-20"
         title="Parada anterior"
       >
-        <SkipBack className="w-4.5 h-4.5 fill-current" />
+        <SkipBack className="w-4 h-4 fill-current" />
       </button>
 
-      <div className="absolute left-14 right-14 h-0.5 bg-[#0092e0]/60 top-1/2 -translate-y-1/2 z-0" />
+      <div className="absolute left-11 right-11 sm:left-14 sm:right-14 h-0.5 bg-[#0092e0]/60 top-1/2 -translate-y-1/2 z-0" />
 
       <button
         onClick={(e) => { e.stopPropagation(); onClick(); }}
-        className={`relative z-10 w-16 h-16 sm:w-18 sm:h-18 rounded-full flex items-center justify-center shadow-md transition-transform active:scale-95 border-4 border-white cursor-pointer ${
+        className={`relative z-10 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-md transition-transform active:scale-95 border-4 border-white cursor-pointer flex-shrink-0 ${
           isPlaying
             ? 'bg-[#D4AF37] hover:bg-[#C5A028] text-white shadow-amber-200/50'
             : 'bg-[#0092e0] hover:bg-[#0081c7] text-white shadow-sky-100'
         }`}
       >
         {isPlaying ? (
-          <Pause className="w-6 sm:w-7 h-6 sm:h-7 fill-white" />
+          <Pause className="w-5 sm:w-6 h-5 sm:h-6 fill-white" />
         ) : (
-          <Play className="w-6 sm:w-7 h-6 sm:h-7 fill-white ml-1" />
+          <Play className="w-5 sm:w-6 h-5 sm:h-6 fill-white ml-1" />
         )}
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); if (onNext) onNext(); }}
-        className="w-10 h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0 relative z-20"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0 relative z-20"
         title="Siguiente parada"
       >
-        <SkipForward className="w-4.5 h-4.5 fill-current" />
+        <SkipForward className="w-4 h-4 fill-current" />
       </button>
     </div>
   );

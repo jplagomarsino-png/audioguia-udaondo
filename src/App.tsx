@@ -1654,20 +1654,28 @@ export default function App() {
                         </div>
                       </div>
 
-                      {/* FLOATING CARD - pestaña sobre la imagen: reproductor + botones */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5">
+                      {/* FLOATING CARD - en Recorrido: SIN card, contenido edge-to-edge; en categorías: diseño actual */}
+                      <div className={
+                        activeTab === 'recorrido'
+                          ? "w-full relative z-10 -mt-4 sm:-mt-16 flex flex-col gap-1 sm:gap-5 px-3 sm:px-4"
+                          : "max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-16 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-6 shadow-md flex flex-col pt-10 sm:pt-12 gap-1 sm:gap-5"
+                      }>
                         
                         {/* 1. REPRODUCTOR INCRUSTADO - centrado en el borde superior */}
-                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
+                        <div className={activeTab === 'recorrido' ? "relative z-20 px-0 sm:px-4 -mt-1" : "absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4"}>
                           <AudioPlayerControl 
                             isPlaying={isCurrentPlaying && isPlaying}
                             onClick={() => playTTS(activeStop.id, activeStop.locucion || activeStop.text)}
                             onPrev={handlePrevStop}
                             onNext={handleNextStop}
                           />
+                          {/* Línea celeste 50% DEBAJO del reproductor - SOLO en Recorrido */}
+                          {activeTab === 'recorrido' && (
+                            <div className="h-1 bg-[#0092e0]/50 rounded-full mt-0.5 sm:hidden" />
+                          )}
                         </div>
 
-                        {/* 2. BOTONES DENTRO DE LA CARD - subidos, delgados, juntos */}
+                        {/* 2. BOTONES DENTRO/SIN CARD - subidos, delgados, juntos */}
                         <div className="grid grid-cols-2 gap-1 w-full px-1 -mt-1">
                           <button
                             onClick={() => {

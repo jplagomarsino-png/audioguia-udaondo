@@ -545,6 +545,26 @@ export const ALL_TOUR_STOPS: TourStop[] = [
   },
 ];
 
+// Recorrido Vía Rápida: 15 paradas esenciales, en el orden del recorrido esencial.
+// La referencia (Ref.) se calcula desde ALL_TOUR_STOPS para concordar con el título.
+export const QUICK_TOUR_IDS: string[] = [
+  'bienvenida',
+  'neogotico',
+  'portadas',
+  'apostoles',
+  'torres',
+  'navecentral',
+  'vitrales',
+  'medalla',
+  'crucero',
+  'altar_mayor',
+  'sentido_abside',
+  'camarin_sacristia',
+  'negro_manuel',
+  'sagradocorazon',
+  'salida',
+];
+
 export const TOUR_CATEGORIES: TourCategory[] = [
   { id: 'arquitectura', title: 'Arquitectura', description: 'Exterior, fachada, columnas, torres y estructura del templo.', image: '/portadas.jpg' },
   { id: 'interior', title: 'Interior', description: 'Nave central, crucero, altar mayor, camarín de la Virgen, capillas y altares.', image: '/navecentral.jpg' },

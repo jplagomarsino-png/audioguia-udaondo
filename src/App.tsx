@@ -7,10 +7,11 @@ import {
   Sparkles, 
   Bookmark, 
   Map, 
-  List, 
+  List,
   ChevronRight,
-  ChevronDown, 
-  ChevronLeft, 
+  ChevronsDown,
+  FastForward,
+  ChevronLeft,
   Volume2, 
   X, 
   VolumeX, 
@@ -28,7 +29,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ALL_TOUR_STOPS, TourStop } from './data';
+import { ALL_TOUR_STOPS, QUICK_TOUR_IDS, TourStop } from './data';
 import basilicaImg from './assets/images/basilica_lujan_1782603179083.jpg';
 import AudioPlayerControl from './components/AudioPlayerControl';
 import PlanoInteractivo from './components/PlanoInteractivo';
@@ -238,11 +239,21 @@ export default function App() {
     setShowPlano(true);
   };
 
+  // Helper to open the Vía Rápida (recorrido esencial de 15 paradas)
+  const handleOpenViaRapida = () => {
+    setTourMode('rapido');
+    setActiveTab('recorrido');
+    setViewMode('lista');
+    stopAudio();
+    setSelectedStopId(QUICK_TOUR_IDS[0]);
+  };
+
   // Navigate from plano to a stop
   const handlePlanoNavigate = (stopId: string) => {
     setShowPlano(false);
     setActiveTab('recorrido');
     setViewMode('lista');
+    setTourMode('completo');
     handleJumpToStop(stopId, false);
   };
 
@@ -425,6 +436,7 @@ export default function App() {
   // --- STATE ---
   const [activeTab, setActiveTab] = useState<'inicio' | 'recorrido' | 'arquitectura' | 'interior' | 'vitrales'>('inicio');
   const [viewMode, setViewMode] = useState<'lista' | 'mapa'>('lista');
+  const [tourMode, setTourMode] = useState<'completo' | 'rapido'>('completo');
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null);
   
   // Audio Playback / TTS State
@@ -587,14 +599,20 @@ export default function App() {
     return fullStopsList[0];
   }, [fullStopsList]);
 
+  // Paradas del recorrido Vía Rápida (orden explícito del recorrido esencial)
+  const quickStops = useMemo(() => {
+    const found = QUICK_TOUR_IDS.map(id => ALL_TOUR_STOPS.find(s => s.id === id));
+    return found.filter((s): s is TourStop => !!s);
+  }, []);
+
   // Get active stops based on the active tab
   const activeStops = useMemo(() => {
     if (activeTab === 'inicio') return [];
-    if (activeTab === 'recorrido') return fullStopsList;
+    if (activeTab === 'recorrido') return tourMode === 'rapido' ? quickStops : fullStopsList;
     
     // Filter stops based on lowercase section mapping
     return ALL_TOUR_STOPS.filter(stop => stop.section === activeTab);
-  }, [activeTab, fullStopsList]);
+  }, [activeTab, fullStopsList, tourMode, quickStops]);
 
   // Current stop index, previous stop, and next stop relative to the current active stops list
   const currentStopIndex = useMemo(() => {
@@ -649,6 +667,12 @@ export default function App() {
   // Compute a dynamic label indicating stop numbering (e.g. "Parada 1/10 • arquitectura")
   const currentStopLabel = useMemo(() => {
     if (!activeStop) return '';
+    if (activeTab === 'recorrido' && tourMode === 'rapido') {
+      const qi = quickStops.findIndex(s => s.id === activeStop.id);
+      const displayIdx = qi >= 0 ? qi + 1 : 1;
+      const ref = fullStopsList.findIndex(s => s.id === activeStop.id) + 1;
+      return `Parada ${displayIdx}/${quickStops.length} • Ref. ${ref}`;
+    }
     if (activeTab === 'recorrido' || activeTab === 'inicio') {
       return `Parada ${activeStopIndex + 1}/${fullStopsList.length} • ${activeStop.section}`;
     } else {
@@ -656,7 +680,7 @@ export default function App() {
       const displayIdx = idx >= 0 ? idx + 1 : 1;
       return `Parada ${displayIdx}/${activeStops.length} • ${activeStop.section}`;
     }
-  }, [activeStop, activeTab, activeStopIndex, fullStopsList.length, activeStops]);
+  }, [activeStop, activeTab, tourMode, quickStops, activeStopIndex, fullStopsList.length, activeStops]);
 
   // ============================================================
   // SCROLL LOCK: bloqueado en single view, libre en inicio/recorrido
@@ -752,6 +776,7 @@ export default function App() {
       if (activeTab === 'inicio') {
         setActiveTab('recorrido');
         setViewMode('lista');
+        setTourMode('completo');
       }
       handleJumpToStop(next.id, false);
     }
@@ -770,6 +795,7 @@ export default function App() {
       if (activeTab === 'inicio') {
         setActiveTab('recorrido');
         setViewMode('lista');
+        setTourMode('completo');
       }
       handleJumpToStop(prev.id, false);
     }
@@ -1156,6 +1182,7 @@ export default function App() {
               onClick={() => {
                 setActiveTab('recorrido');
                 setViewMode('mapa');
+                setTourMode('completo');
                 stopAudio();
               }}
               className="w-7 h-7 bg-white text-[#0092e0] border border-[#0092e0] hover:bg-sky-50 active:scale-90 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-xs"
@@ -1229,6 +1256,7 @@ export default function App() {
                       playTTS(firstStop.id, firstStop.locucion || firstStop.text);
                       setActiveTab('recorrido');
                       setViewMode('lista');
+                      setTourMode('completo');
                       setSelectedStopId(firstStop.id);
                     }}
                     onPrev={handlePrevStop}
@@ -1242,6 +1270,7 @@ export default function App() {
                     onClick={() => {
                       setActiveTab('recorrido');
                       setViewMode('mapa');
+                      setTourMode('completo');
                       stopAudio();
                     }}
                     className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
@@ -1261,15 +1290,32 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Botón flecha hacia abajo - al final, BLANCO con ícono celeste */}
-              <div className="flex items-center justify-center pt-3 pb-2">
-                <button
-                  onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-                  className="w-11 h-11 rounded-full bg-white text-[#0092e0] border-2 border-sky-100 flex items-center justify-center shadow-md active:scale-90 transition-all cursor-pointer"
-                  title="Seguir explorando"
-                >
-                  <ChevronDown className="w-6 h-6 animate-bounce" />
-                </button>
+              {/* Botones redondos: Explora (scroll) + Vía Rápida - columnas simétricas a Recorrido/Plano */}
+              <div className="grid grid-cols-2 gap-2 w-full max-w-xl mx-auto px-4 pt-3 pb-2">
+                <div className="flex flex-col items-center gap-1">
+                  <button
+                    onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+                    className="w-10 h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0"
+                    title="Seguir explorando"
+                  >
+                    <ChevronsDown className="w-4.5 h-4.5" />
+                  </button>
+                  <span className="text-[8px] sm:text-[10px] font-sans font-black uppercase tracking-tight text-[#0092e0]">
+                    Explora
+                  </span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <button
+                    onClick={handleOpenViaRapida}
+                    className="w-10 h-10 rounded-full bg-white text-[#0092e0] border-2 border-[#0092e0] shadow-md hover:bg-sky-50 active:scale-90 transition-all cursor-pointer flex items-center justify-center flex-shrink-0"
+                    title="Recorrido Vía Rápida"
+                  >
+                    <FastForward className="w-4.5 h-4.5" />
+                  </button>
+                  <span className="text-[8px] sm:text-[10px] font-sans font-black uppercase tracking-tight text-[#0092e0]">
+                    Vía Rápida
+                  </span>
+                </div>
               </div>
 
 
@@ -1363,6 +1409,26 @@ export default function App() {
                   </div>
                 </div>
               </div>
+
+              {/* CARD CTA: Vía Rápida - blanca con letras celestes, mismo diseño que la del Plano */}
+              <div className="max-w-xl mx-auto w-full px-4 pb-8">
+                <div
+                  onClick={handleOpenViaRapida}
+                  className="bg-white hover:bg-sky-50 rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer group border-2 border-[#0092e0]/30"
+                >
+                  <div className="p-5 flex flex-col items-center text-center gap-2">
+                    <div className="w-14 h-14 rounded-xl bg-[#0092e0]/10 text-[#0092e0] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform border border-[#0092e0]/30">
+                      <FastForward className="w-7 h-7" />
+                    </div>
+                    <h4 className="font-display font-black text-base text-[#0092e0] tracking-[-0.03em] uppercase leading-tight">
+                      Vía Rápida
+                    </h4>
+                    <p className="text-xs text-[#0092e0]/80 font-sans font-semibold leading-relaxed">
+                      Recorre y conoce lo esencial de la Basílica.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -1421,7 +1487,7 @@ export default function App() {
                     {/* Vertical Connecting Line */}
                     <div className="absolute left-3.5 top-3 bottom-3 w-1 bg-gradient-to-b from-[#0092e0] to-sky-300 rounded-full" />
 
-                    {fullStopsList.map((stop, index) => {
+                    {activeStops.map((stop, index) => {
                       const isSelected = selectedStopId === stop.id;
                       const isCurrentPlaying = playingStopId === stop.id;
                       
@@ -1454,7 +1520,9 @@ export default function App() {
                               className="text-left focus:outline-none block cursor-pointer group-hover:translate-x-0.5 transition-transform"
                             >
                               <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-slate-400">
-                                Parada {index + 1}/{fullStopsList.length} • {stop.section}
+                                {activeTab === 'recorrido' && tourMode === 'rapido'
+                                  ? `Parada ${index + 1}/${activeStops.length} • Ref. ${fullStopsList.findIndex(s => s.id === stop.id) + 1}`
+                                  : `Parada ${index + 1}/${activeStops.length} • ${stop.section}`}
                               </span>
                               <h4 className={`font-display font-black text-sm leading-none mt-0.5 transition-colors ${
                                 isSelected ? 'text-[#0092e0]' : 'text-slate-700 group-hover:text-[#0092e0]'
@@ -1593,6 +1661,7 @@ export default function App() {
                             onClick={() => {
                               setActiveTab('recorrido');
                               setViewMode('mapa');
+                              setTourMode('completo');
                               stopAudio();
                             }}
                             className="inline-flex items-center justify-center gap-1.5 px-1 py-0.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-black uppercase tracking-tighter text-[9px] sm:text-xs w-full"
@@ -1833,6 +1902,7 @@ export default function App() {
           onClick={() => {
             setActiveTab('recorrido');
             setViewMode('mapa');
+            setTourMode('completo');
             stopAudio();
           }}
           className={`flex flex-col items-center justify-center flex-1 h-full transition-all gap-1 cursor-pointer ${

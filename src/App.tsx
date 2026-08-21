@@ -1526,8 +1526,8 @@ export default function App() {
                           <div className="pl-5">
                             <button
                               onClick={() => {
-                                setSelectedStopId(stop.id);
-                                setViewMode('lista');
+                                // Abre el mini-panel con el reproductor MANTENIENDO la vista del recorrido (mapa)
+                                handleJumpToStop(stop.id);
                               }}
                               className="text-left focus:outline-none block cursor-pointer group-hover:translate-x-0.5 transition-transform"
                             >
@@ -1557,11 +1557,10 @@ export default function App() {
                                   className="overflow-hidden mt-3"
                                 >
                                   <div className="overflow-hidden shadow-sm space-y-0 rounded-xl">
-                                    {/* Stop Banner Image */}
+                                    {/* Stop Banner Image - mantiene la vista del recorrido */}
                                     <div 
                                       onClick={() => {
-                                        setSelectedStopId(stop.id);
-                                        setViewMode('lista');
+                                        handleJumpToStop(stop.id);
                                       }}
                                       className="w-full h-44 relative bg-slate-950 cursor-pointer group/banner rounded-xl overflow-hidden"
                                     >

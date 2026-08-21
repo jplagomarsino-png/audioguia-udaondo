@@ -1491,11 +1491,11 @@ export default function App() {
                 </div>
               )}
 
-              {/* MAPA CONCEPTUAL INTERACTIVO */}
+              {/* MAPA CONCEPTUAL INTERACTIVO - edge-to-edge, sin card */}
               {activeTab === 'recorrido' && viewMode === 'mapa' && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-5">
+                <div className="w-full px-1 sm:px-6 space-y-4">
                   {/* Timeline Graph */}
-                  <div className="relative pl-6 space-y-5">
+                  <div className="relative pl-7 sm:pl-8 space-y-4">
                     {/* Vertical Connecting Line */}
                     <div className="absolute left-3.5 top-3 bottom-3 w-1 bg-gradient-to-b from-[#0092e0] to-sky-300 rounded-full" />
 
@@ -1556,14 +1556,14 @@ export default function App() {
                                   transition={{ duration: 0.2 }}
                                   className="overflow-hidden mt-3"
                                 >
-                                  <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm space-y-0">
+                                  <div className="overflow-hidden shadow-sm space-y-0 rounded-xl">
                                     {/* Stop Banner Image */}
                                     <div 
                                       onClick={() => {
                                         setSelectedStopId(stop.id);
                                         setViewMode('lista');
                                       }}
-                                      className="w-full h-32 relative bg-slate-950 cursor-pointer group/banner"
+                                      className="w-full h-44 relative bg-slate-950 cursor-pointer group/banner rounded-xl overflow-hidden"
                                     >
                                       <img 
                                         src={imgFor(stop)} 
@@ -1585,7 +1585,7 @@ export default function App() {
                                     </div>
                                     
                                     {/* Body with Play/Pause (no written text or gallery) */}
-                                    <div className="p-4">
+                                    <div className="pt-2">
                                       {/* SIMPLE CENTRALIZED PLAY BUTTON - NO TEXT */}
                                       <AudioPlayerControl 
                                         isPlaying={isCurrentPlaying && isPlaying}

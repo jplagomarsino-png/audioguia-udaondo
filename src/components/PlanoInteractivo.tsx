@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TransformWrapper, TransformComponent, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import { X, Map, Compass, Bookmark, Sparkles, ChevronRight, SkipBack, MapPin, SkipForward } from 'lucide-react';
@@ -128,7 +128,7 @@ export default function PlanoInteractivo({
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Escala inicial: COVER - la imagen llena toda la pantalla (arriba-abajo, bordes a bordes)
+  // Dimensiones de referencia de la imagen del plano
   const IMG_W = 1600;
   const IMG_H = 680; // 3613x1536 real, renderizada a 1600 de ancho
 
@@ -141,35 +141,55 @@ export default function PlanoInteractivo({
     return { w: window.innerWidth, h: window.innerHeight };
   }, []);
 
-  // Escala inicial: COVER del visor real (imagen llena la pantalla, bordes a bordes)
-  const getInitialScale = useCallback(() => {
-    const { w, h } = getViewSize();
-    return Math.max(w / IMG_W, h / IMG_H);
+  // Escala + posición inicial según orientación.
+  // Vertical (celular): ajusta por ALTO (poco/ningún zoom, máxima porción visible del
+  // plano) y arranca pegado a la izquierda -> vista parcial que se completa haciendo
+  // swipe a la derecha, recorriendo todo el mapa.
+  // Horizontal / PC: "cover" centrado (comportamiento actual, sin cambios).
+  const computeInitialTransform = useCallback((w: number, h: number) => {
+    const isPortrait = h >= w;
+    if (isPortrait) {
+      const s = h / IMG_H;
+      return { scale: s, posX: 0, posY: (h - IMG_H * s) / 2 };
+    }
+    const s = Math.max(w / IMG_W, h / IMG_H);
+    return { scale: s, posX: (w - IMG_W * s) / 2, posY: (h - IMG_H * s) / 2 };
+  }, []);
+
+  // Tamaño real del visor, medido ANTES de montar el TransformWrapper para que la
+  // escala/posición inicial se calculen una sola vez y con datos reales (sin el salto
+  // que producía calcular una vez en el render y corregir 200ms después).
+  const [viewSize, setViewSize] = useState<{ w: number; h: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const measure = () => setViewSize(getViewSize());
+    measure();
+    window.addEventListener('resize', measure);
+    window.addEventListener('orientationchange', measure);
+    return () => {
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('orientationchange', measure);
+    };
   }, [getViewSize]);
 
-  // Estado del transform actual (para posicionar chips fuera del transform)
-  const [transform, setTransform] = useState(() => {
-    if (typeof window === 'undefined') return { scale: 1, posX: 0, posY: 0 };
-    const s = Math.max(window.innerWidth / IMG_W, window.innerHeight / IMG_H);
-    return {
-      scale: s,
-      posX: (window.innerWidth - IMG_W * s) / 2,
-      posY: (window.innerHeight - IMG_H * s) / 2,
-    };
-  });
+  const initial = viewSize ? computeInitialTransform(viewSize.w, viewSize.h) : null;
 
-  // Forzar el zoom inicial real al montar usando las medidas reales del visor
+  // Escala actual: SOLO se usa para contra-escalar el tamaño de las etiquetas (no su
+  // posición, que queda fija en el mismo nodo transformado que la imagen -> cero lag).
+  const [scale, setScale] = useState(1);
+
   useEffect(() => {
-    const apply = () => {
-      if (transformRef.current) {
-        const { w, h } = getViewSize();
-        const s = Math.max(w / IMG_W, h / IMG_H);
-        transformRef.current.setTransform((w - IMG_W * s) / 2, (h - IMG_H * s) / 2, s, 0);
-      }
-    };
-    const t = setTimeout(apply, 200);
-    return () => clearTimeout(t);
-  }, [getViewSize]);
+    if (initial) setScale(initial.scale);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewSize]);
+
+  // Si cambia el tamaño/orientación del visor ya montado (p. ej. rotar el celular),
+  // recalcular y reaplicar el transform inicial.
+  useEffect(() => {
+    if (!viewSize || !transformRef.current) return;
+    const { scale: s, posX, posY } = computeInitialTransform(viewSize.w, viewSize.h);
+    transformRef.current.setTransform(posX, posY, s, 0);
+  }, [viewSize, computeInitialTransform]);
 
   const stopById = (id: string) => stops.find((s) => s.id === id);
 
@@ -232,19 +252,22 @@ export default function PlanoInteractivo({
 
       {/* VISOR DEL PLANO */}
       <div ref={containerRef} className="flex-1 relative overflow-hidden bg-[#f6efdd]">
+        {initial && (
         <TransformWrapper
           ref={transformRef}
-          initialScale={getInitialScale()}
-          minScale={getInitialScale()}
+          initialScale={initial.scale}
+          initialPositionX={initial.posX}
+          initialPositionY={initial.posY}
+          minScale={initial.scale}
           maxScale={3.2}
-          centerOnInit
+          centerOnInit={false}
           limitToBounds
           doubleClick={{ mode: 'zoomIn' }}
           wheel={{ disabled: true }}
           panning={{ disabled: false }}
           onTransformed={(ref) => {
             if (ref && ref.state) {
-              setTransform({ scale: ref.state.scale, posX: ref.state.positionX, posY: ref.state.positionY });
+              setScale(ref.state.scale);
               if (onUserPan) onUserPan();
             }
           }}
@@ -263,70 +286,74 @@ export default function PlanoInteractivo({
               wrapperStyle={{ width: '100%', height: '100%' }}
               contentStyle={{ position: 'relative' }}
             >
-              <div className="relative">
+              <div className="relative" style={{ width: IMG_W, height: IMG_H }}>
                 <img
                   src={MAP_IMAGE_SRC}
                   alt="Plano de la Basílica de Luján"
                   className="block select-none pointer-events-none"
-                  style={{ width: IMG_W, height: 'auto' }}
+                  style={{ width: '100%', height: '100%' }}
                   draggable={false}
                 />
+
+                {/* ETIQUETAS: dentro del MISMO nodo transformado que la imagen.
+                    Posicionadas en % respecto de la imagen -> paneo/zoom perfectamente
+                    sincronizados, sin cálculo en JS y sin lag ("pegadas" al lugar). */}
+                {MAP_ZONES.map((zone) => {
+                  const isActive = activeZone?.id === zone.id;
+                  return (
+                    <div
+                      key={zone.id}
+                      className="absolute"
+                      style={{
+                        left: `${zone.labelX}%`,
+                        top: `${zone.labelY}%`,
+                        transform: `translate(-50%, -50%) scale(${1 / scale})`,
+                        transformOrigin: 'center center',
+                      }}
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={
+                          revealed.has(zone.id)
+                            ? { opacity: 1, scale: isActive ? 1.08 : 1 }
+                            : {}
+                        }
+                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleChipTap(zone);
+                        }}
+                        className="px-1.5 py-0.5 rounded-xl text-center cursor-pointer select-none"
+                        style={{
+                          maxWidth: 120,
+                          background: isActive
+                            ? 'linear-gradient(180deg, #e8c15c, #c79a3c)'
+                            : 'rgba(246, 239, 221, 0.8)',
+                          color: '#3b2312',
+                          border: '1px solid #c79a3c',
+                          fontFamily: "'Palatino Linotype', Georgia, serif",
+                          fontStyle: 'italic',
+                          fontWeight: 700,
+                          fontSize: 10,
+                          lineHeight: 1.15,
+                          whiteSpace: 'nowrap',
+                          boxShadow: isActive
+                            ? '0 4px 16px rgba(199,154,60,0.55)'
+                            : '0 2px 8px rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        {zone.name}
+                      </motion.div>
+                    </div>
+                  );
+                })}
               </div>
             </TransformComponent>
             </div>
             );
           }}
         </TransformWrapper>
-
-        {/* OVERLAY DE CHIPS - FUERA DEL TRANSFORM: posición recalculada, tamaño fijo */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          {MAP_ZONES.map((zone) => {
-            const isActive = activeZone?.id === zone.id;
-            const x = transform.posX + (zone.labelX / 100) * IMG_W * transform.scale;
-            const y = transform.posY + (zone.labelY / 100) * IMG_H * transform.scale;
-            return (
-              <div
-                key={zone.id}
-                className="absolute pointer-events-auto"
-                style={{ left: x, top: y, transform: 'translate(-50%, -50%)' }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={
-                    revealed.has(zone.id)
-                      ? { opacity: 1, scale: isActive ? 1.08 : 1 }
-                      : {}
-                  }
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleChipTap(zone);
-                  }}
-                  className="px-1.5 py-0.5 rounded-xl text-center cursor-pointer select-none"
-                  style={{
-                    maxWidth: 120,
-                    background: isActive
-                      ? 'linear-gradient(180deg, #e8c15c, #c79a3c)'
-                      : 'rgba(246, 239, 221, 0.8)',
-                    color: '#3b2312',
-                    border: '1px solid #c79a3c',
-                    fontFamily: "'Palatino Linotype', Georgia, serif",
-                    fontStyle: 'italic',
-                    fontWeight: 700,
-                    fontSize: 10,
-                    lineHeight: 1.15,
-                    whiteSpace: 'nowrap',
-                    boxShadow: isActive
-                      ? '0 4px 16px rgba(199,154,60,0.55)'
-                      : '0 2px 8px rgba(0,0,0,0.3)',
-                  }}
-                >
-                  {zone.name}
-                </motion.div>
-              </div>
-            );
-          })}
-        </div>
+        )}
 
         {/* PANEL REPRODUCTOR (60% opacidad) — se cierra al tocar fuera */}
         <AnimatePresence>

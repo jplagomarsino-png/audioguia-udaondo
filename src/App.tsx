@@ -698,12 +698,6 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [activeStop, activeTab, viewMode]);
 
-  // Si el usuario toca un tab del footer global mientras el plano está abierto, se cierra el plano
-  useEffect(() => {
-    if (showPlano) setShowPlano(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab]);
-
   // ============================================================
   // HEADER/FOOTER: se esconden SOLO al navegar el mapa (pan/zoom). Nunca en inicio/single view
   // ============================================================
@@ -738,6 +732,7 @@ export default function App() {
 
   // Handle selecting a thematic category
   const handleSelectCategory = (category: 'arquitectura' | 'interior' | 'vitrales') => {
+    setShowPlano(false);
     setActiveTab(category);
     stopAudio();
     // Vitrales no tiene sección propia (va dentro de interior): apunto a la parada del arte del vitral
@@ -1148,6 +1143,7 @@ export default function App() {
         {/* LOGO IN HEADER - CLICKABLE TO RETURN HOME */}
         <div 
           onClick={() => {
+            setShowPlano(false);
             setActiveTab('inicio');
             stopAudio();
           }}
@@ -1159,6 +1155,7 @@ export default function App() {
         {/* HEADER TITLE - THREE LINES, SERIF CAPS (CINZEL) */}
         <div 
           onClick={() => {
+            setShowPlano(false);
             setActiveTab('inicio');
             stopAudio();
           }}
@@ -1190,6 +1187,7 @@ export default function App() {
             {/* Location Trigger (middle button, goes to conceptual map) */}
             <button
               onClick={() => {
+                setShowPlano(false);
                 setActiveTab('recorrido');
                 setViewMode('mapa');
                 setTourMode('completo');
@@ -1897,6 +1895,7 @@ export default function App() {
         {/* INICIO */}
         <button
           onClick={() => {
+            setShowPlano(false);
             setActiveTab('inicio');
             stopAudio();
           }}
@@ -1911,6 +1910,7 @@ export default function App() {
         {/* RECORRIDO */}
         <button
           onClick={() => {
+            setShowPlano(false);
             setActiveTab('recorrido');
             setViewMode('mapa');
             setTourMode('completo');

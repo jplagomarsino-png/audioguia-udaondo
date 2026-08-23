@@ -292,6 +292,29 @@ export default function App() {
     }
   };
 
+  // Desbloqueo directo sin pago (botón "Entrar directo")
+  const handleFreeEntry = () => {
+    const now = Date.now();
+    const expires = now + 24 * 60 * 60 * 1000; // 24 horas
+    const newPass = {
+      token: "free_pass_" + Math.random().toString(36).substring(2),
+      paidAt: now,
+      expiresAt: expires,
+      merchant: activeMerchantId || null,
+    };
+    localStorage.setItem('audioguia_lujan_pass', JSON.stringify(newPass));
+    setCurrentPass(newPass);
+    // Registra la venta del comercio si entró por QR (comisión real del local adherido)
+    if (activeMerchantId) {
+      const updatedLedger = {
+        ...salesLedger,
+        [activeMerchantId]: (salesLedger[activeMerchantId] || 0) + 1,
+      };
+      localStorage.setItem('audioguia_sales_ledger', JSON.stringify(updatedLedger));
+      setSalesLedger(updatedLedger);
+    }
+  };
+
   // ============================================================
   // MERCADO PAGO REAL (Checkout Pro via Firebase Functions)
   // ============================================================
@@ -833,277 +856,68 @@ export default function App() {
 
   if (!currentPass) {
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans selection:bg-[#0092e0]/20 selection:text-slate-900 pb-12 pt-6">
-        <div className="max-w-md mx-auto w-full px-4 flex-grow flex flex-col justify-center">
-          
-          {/* LOGO & BRANDING */}
-          <div className="flex items-center gap-4.5 mb-6 text-left max-w-sm mx-auto justify-center">
-            <BasilicaLogo className="w-20 sm:w-24 h-20 sm:h-24 text-[#0092e0] shrink-0 filter drop-shadow-[0_4px_12px_rgba(0,146,224,0.12)]" />
-            <div className="flex flex-col justify-center leading-[0.95] select-none">
-              <span className="font-serif font-black tracking-[0.03em] text-[15px] sm:text-[17px] text-[#0092e0] uppercase">
-                Basílica
-              </span>
-              <span className="font-serif font-black tracking-[0.03em] text-[15px] sm:text-[17px] text-[#0092e0] uppercase">
-                Nuestra Señora
-              </span>
-              <span className="font-serif font-black tracking-[0.03em] text-[15px] sm:text-[17px] text-[#0092e0] uppercase">
-                de Luján
-              </span>
-              <span className="font-sans font-bold tracking-[0.18em] text-[10px] sm:text-[11px] text-[#D4AF37] uppercase mt-2.5 pt-1.5 border-t border-slate-200">
-                Audioguía Oficial
-              </span>
+      <div className="min-h-screen bg-white text-slate-800 flex flex-col font-sans selection:bg-[#0092e0]/20 selection:text-slate-900 overflow-hidden">
+        <div className="max-w-sm mx-auto w-full px-5 flex-grow flex flex-col justify-center">
+
+          {/* LOGO & BRANDING - compacto */}
+          <div className="flex items-center gap-3 mb-5 justify-center select-none">
+            <BasilicaLogo className="w-14 sm:w-16 h-14 sm:h-16 text-[#0092e0] shrink-0" />
+            <div className="flex flex-col justify-center leading-[0.95]">
+              <span className="font-serif font-black tracking-[0.03em] text-[14px] sm:text-[15px] text-[#0092e0] uppercase">Basílica</span>
+              <span className="font-serif font-black tracking-[0.03em] text-[14px] sm:text-[15px] text-[#0092e0] uppercase">Nuestra Señora</span>
+              <span className="font-serif font-black tracking-[0.03em] text-[14px] sm:text-[15px] text-[#0092e0] uppercase">de Luján</span>
+              <span className="font-sans font-bold tracking-[0.18em] text-[9px] sm:text-[10px] text-[#D4AF37] uppercase mt-1.5 pt-1 border-t border-slate-200">Audioguía Oficial</span>
             </div>
           </div>
 
-          {/* PREVIEW CONTAINER (LOOKS LIKE A REAL TEMPLE APPLICATION BEHIND A LOCK) */}
-          <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-lg mb-6 relative">
-            
-            {/* Real app preview mockup under a semi-blurred lock overlay */}
-            <div className="p-4 opacity-50 select-none pointer-events-none">
-              <div className="relative h-44 rounded-2xl overflow-hidden mb-4">
-                <img src={basilicaImg} alt="Basílica de Luján" className="w-full h-full object-cover filter brightness-90" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-3 left-3 text-white">
-                  <span className="text-[9px] bg-sky-500 text-white px-2 py-0.5 rounded-full font-bold uppercase">Parada Activa</span>
-                  <p className="font-serif font-bold text-sm mt-1">1. Pórtico de Acceso de la Basílica</p>
-                </div>
-                {/* Small gold Lock button/badge */}
-                <div className="absolute top-3 right-3 bg-[#D4AF37] border border-[#b38e47] text-white px-2.5 py-1 rounded-full font-sans font-black text-[10px] tracking-wider uppercase shadow-md flex items-center gap-1 z-10">
-                  <Lock className="w-3 h-3 fill-current" />
-                  <span>Lock</span>
-                </div>
-              </div>
+          {/* UN SOLO CARD PRINCIPAL */}
+          <div className="bg-white border border-slate-200 rounded-3xl shadow-md overflow-hidden">
 
-              {/* Mock Player */}
-              <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-100 flex items-center justify-between gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-600">
-                  <Volume2 className="w-5 h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                    <div className="h-full w-1/3 bg-sky-500 rounded-full"></div>
-                  </div>
-                  <div className="flex justify-between text-[10px] text-slate-400 mt-1 font-mono">
-                    <span>0:45</span>
-                    <span>3:20</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Mock stops */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center p-2 rounded-xl bg-slate-50 text-xs border border-slate-100">
-                  <span className="font-medium">2. La Fachada Principal y Torres</span>
-                  <span className="text-slate-400 font-mono">2:45</span>
-                </div>
-                <div className="flex justify-between items-center p-2 rounded-xl bg-slate-50 text-xs border border-slate-100">
-                  <span className="font-medium">3. El Pórtico de Bronce Histórico</span>
-                  <span className="text-slate-400 font-mono">4:10</span>
-                </div>
+            {/* Mini vista previa difuminada */}
+            <div className="relative h-24 overflow-hidden">
+              <img src={basilicaImg} alt="Basílica de Luján" className="w-full h-full object-cover object-center filter brightness-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute bottom-2 left-3 right-3 text-white flex items-center justify-between">
+                <span className="font-serif font-bold text-sm">1. Bienvenida</span>
               </div>
             </div>
 
-            {/* FROSTED LOCK OVERLAY WITH PAYMENT INFORMATION */}
-            <div className="absolute inset-0 bg-slate-50/75 backdrop-blur-xs flex flex-col justify-center p-6 text-center">
-              <div className="max-w-xs mx-auto">
-                <div className="w-12 h-12 rounded-full bg-amber-100 border border-amber-300 text-[#D4AF37] flex items-center justify-center mx-auto mb-4 shadow-sm animate-bounce">
-                  <Lock className="w-5 h-5" />
-                </div>
-                
-                <h3 className="font-serif font-black text-xl text-slate-900 mb-2">
-                  Pase de Acceso Digital
-                </h3>
-                <p className="text-xs sm:text-[13px] font-semibold text-slate-700 mb-5 leading-normal bg-sky-50/70 border border-sky-100/60 p-3 rounded-2xl">
-                  Para desbloquear toda la guía con todos los audios y las galerías fotográficas.
-                </p>
-
-                <div className="bg-white border border-sky-100 rounded-2xl p-4 shadow-sm mb-5 flex justify-between items-center">
-                  <div className="text-left">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">PRECIO TOTAL</span>
-                    <span className="font-serif font-black text-2xl text-[#0092e0]">$3.000</span>
-                    <span className="text-[10px] text-slate-400 font-bold ml-1">ARS</span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[10px] bg-sky-50 text-[#0092e0] border border-sky-200 font-bold px-2 py-1 rounded-full uppercase tracking-wider">
-                      Acceso Único
-                    </span>
-                  </div>
-                </div>
-
-                {/* SIMULATED MERCADOPAGO BUTTON */}
-                {isProcessingPayment ? (
-                  <div className="bg-sky-50 border border-sky-100 rounded-2xl p-4 text-center">
-                    <div className="inline-block w-6 h-6 border-3 border-[#0092e0] border-t-transparent rounded-full animate-spin mb-2"></div>
-                    <p className="text-xs font-bold text-slate-800 animate-pulse">{paymentStep}</p>
-                    <p className="text-[10px] text-slate-400 mt-1">Conectando...</p>
-                  </div>
-                ) : (
-                  <button
-                    onClick={handleRealPayment}
-                    className="w-full bg-[#0092e0] hover:bg-[#0081c7] active:scale-98 text-white py-3.5 px-6 rounded-2xl font-black text-base tracking-wide shadow-md border-b-4 border-sky-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <MercadoPagoLogo className="w-9 h-7 shrink-0 rounded" />
-                    <span>Pagar por Mercado Pago</span>
-                  </button>
-                )}
-
-                {/* CLARIFICATIONS UNDER PAYMENT */}
-                <div className="mt-5 pt-4 border-t border-slate-200/80 flex flex-col gap-2">
-                  <div className="flex items-center gap-2 text-left bg-sky-50/50 p-2 rounded-xl border border-sky-100/50 w-full">
-                    <CheckCircle className="w-4 h-4 text-[#0092e0] shrink-0" />
-                    <span className="text-[11px] text-slate-700 font-bold leading-tight">
-                      Paga con todos los medios habilitados.
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-left bg-emerald-50/50 p-2 rounded-xl border border-emerald-100/50 w-full">
-                    <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <span className="text-[11px] text-slate-700 font-bold leading-tight">
-                      Acreditación y acceso inmediato.
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-left bg-amber-50/50 p-2 rounded-xl border border-amber-100/50 w-full">
-                    <CheckCircle className="w-4 h-4 text-[#D4AF37] shrink-0" />
-                    <span className="text-[11px] text-slate-700 font-bold leading-tight">
-                      Pase por 24 hs
-                    </span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          {/* ACTIVE QR REFERRAL CARD (CELESTE & WHITE) PLACED BELOW THE MAIN LOCK PANEL */}
-          {activeMerchantId && (
-            <div className="bg-white border-2 border-sky-100 rounded-2xl p-4 mb-6 text-center shadow-md relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-[#D4AF37]"></div>
-              <div className="flex items-center justify-center gap-2 text-[#0092e0] mb-1.5">
-                <Store className="w-5 h-5 text-[#0092e0]" />
-                <span className="font-sans font-bold text-xs tracking-wider uppercase text-sky-700">Comercio Adherido</span>
-              </div>
-              <h3 className="font-serif text-lg font-bold text-slate-900 mb-1">
-                {COMERCIOS[activeMerchantId] || "Local Autorizado"}
+            <div className="p-5 text-center">
+              <h3 className="font-serif font-black text-lg text-slate-900 mb-1">
+                Pase de Acceso Digital
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                ¡Gracias por visitarnos! El <strong className="text-[#0092e0]">30%</strong> de tu acceso apoya directamente a este comercio de cercanía de Luján.
+              <p className="text-xs font-semibold text-slate-600 mb-4 leading-normal">
+                Acceso completo a los 47 audios y las galerías fotográficas.
+              </p>
+
+              {/* PRECIO TOTAL ÚNICO */}
+              <div className="bg-sky-50/60 border border-sky-100 rounded-2xl px-4 py-3 mb-4">
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">PRECIO TOTAL</span>
+                <span className="font-serif font-black text-2xl text-[#0092e0]">$0000</span>
+                <span className="text-[10px] text-slate-400 font-bold ml-1">ARS</span>
+              </div>
+
+              {/* PAGAR POR MERCADO PAGO - ACTIVO */}
+              <button
+                onClick={handleRealPayment}
+                className="w-full bg-[#0092e0] hover:bg-[#0081c7] active:scale-[0.98] text-white py-3.5 px-6 rounded-2xl font-black text-base tracking-wide shadow-md border-b-4 border-sky-700 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <MercadoPagoLogo className="w-9 h-7 shrink-0 rounded" />
+                <span>Pagar por Mercado Pago</span>
+              </button>
+
+              {/* ENTRAR DIRECTO - desbloqueo sin pago */}
+              <button
+                onClick={handleFreeEntry}
+                className="w-full bg-white hover:bg-slate-50 active:scale-[0.98] text-[#0092e0] border-2 border-[#0092e0]/30 py-3.5 px-6 rounded-2xl font-black text-base tracking-wide shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer mt-2.5"
+              >
+                <span className="font-sans">Entrar directo</span>
+              </button>
+
+              <p className="text-[10px] text-slate-400 mt-4 leading-relaxed">
+                Tu pase es válido por 24 horas desde la compra.
               </p>
             </div>
-          )}
-
-          {/* SIMULATOR AND DEV CONSOLE (LIGHT STYLED FOR BETTER INTEGRATION) */}
-          <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-md">
-            <button 
-              onClick={() => setShowSimPanel(!showSimPanel)}
-              className="w-full flex justify-between items-center text-slate-600 font-mono text-xs font-bold uppercase tracking-wider select-none cursor-pointer hover:text-slate-900"
-            >
-              <div className="flex items-center gap-2">
-                <QrCode className="w-4 h-4 text-[#0092e0] animate-pulse" />
-                <span className="text-slate-800">🛠️ Simulador QR y Ventas de Comercios</span>
-              </div>
-              <span className="text-[10px] text-[#0092e0]">{showSimPanel ? "Ocultar ▲" : "Ver ▼"}</span>
-            </button>
-
-            {showSimPanel && (
-              <div className="mt-4 pt-4 border-t border-slate-100 space-y-5 text-xs text-slate-600">
-                
-                {/* MERCHANT SELECTOR SIMULATOR */}
-                <div>
-                  <p className="font-bold text-slate-800 mb-1.5 font-mono flex items-center gap-1.5 text-[11px] uppercase">
-                    <Store className="w-3.5 h-3.5 text-[#0092e0]" />
-                    1. Simular Escaneo de QR Comercial:
-                  </p>
-                  <p className="text-slate-500 mb-3 text-[10px] leading-normal">
-                    Seleccioná qué QR del local comercial cercano escaneó el visitante para entrar:
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {Object.entries(COMERCIOS).map(([key, value]) => {
-                      const isActive = activeMerchantId === key;
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => {
-                            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + `?comercio=${key}`;
-                            window.history.pushState({ path: newUrl }, '', newUrl);
-                            setActiveMerchantId(key);
-                          }}
-                          className={`p-2 rounded-xl text-left font-sans transition-all active:scale-95 text-[11px] border cursor-pointer ${
-                            isActive 
-                              ? 'bg-sky-50 text-[#0092e0] border-[#0092e0] font-bold shadow-sm' 
-                              : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                          }`}
-                        >
-                          <span className="block truncate font-semibold">{value}</span>
-                          <span className="text-[8px] font-mono text-slate-400">?comercio={key}</span>
-                        </button>
-                      );
-                    })}
-                    <button
-                      onClick={() => {
-                        const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                        window.history.pushState({ path: newUrl }, '', newUrl);
-                        setActiveMerchantId(null);
-                        localStorage.removeItem('audioguia_referred_merchant');
-                      }}
-                      className={`p-2 rounded-xl text-center font-sans transition-all active:scale-95 text-[11px] border cursor-pointer col-span-2 ${
-                        !activeMerchantId 
-                          ? 'bg-amber-50 text-[#D4AF37] border-[#D4AF37] font-bold' 
-                          : 'bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100'
-                      }`}
-                    >
-                      <span>Entrada Directa General (Sin QR de Comercio)</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* TRACKING COMMISSION METRICS */}
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 font-mono">
-                  <div className="flex justify-between items-center mb-2.5">
-                    <p className="font-bold text-slate-700 text-[10px] uppercase tracking-wider flex items-center gap-1">
-                      <DollarSign className="w-3.5 h-3.5 text-[#D4AF37]" />
-                      Reporte de Comisiones del Local (30%)
-                    </p>
-                    <button 
-                      onClick={handleResetLedger}
-                      className="text-[9px] text-red-600 hover:text-red-800 cursor-pointer font-bold"
-                    >
-                      [Resetear]
-                    </button>
-                  </div>
-                  <div className="space-y-2 divide-y divide-slate-100">
-                    {Object.entries(COMERCIOS).map(([key, name]) => {
-                      const sales = salesLedger[key] || 0;
-                      const commission = sales * 900; // 30% of 3000 ARS = 900 ARS
-                      return (
-                        <div key={key} className="flex justify-between items-center pt-2 text-[10px] sm:text-[11px]">
-                          <span className="text-slate-600 font-sans truncate pr-2">{name}</span>
-                          <span className="text-right shrink-0">
-                            <span className="text-slate-800 font-bold">{sales} pase{sales !== 1 ? 's' : ''}</span>
-                            <span className="text-[#0092e0] ml-2 font-bold">(${commission} ARS)</span>
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-3 pt-2.5 border-t border-slate-200 text-[10px] text-slate-500 leading-normal font-sans">
-                    📈 <strong>Comisión del 30%:</strong> Cada venta registrada mediante un QR de comercio acredita automáticamente <strong>$900 ARS</strong> de ganancia al local correspondiente.
-                  </div>
-                </div>
-
-                {/* QUICK ACTIONS */}
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleCompletePayment(activeMerchantId)}
-                    className="flex-1 bg-amber-50 hover:bg-amber-100 text-[#D4AF37] border border-[#D4AF37]/50 py-2.5 rounded-xl font-bold transition-all text-center cursor-pointer text-xs"
-                  >
-                    Simular Desbloqueo Rápido (Entrar)
-                  </button>
-                </div>
-
-              </div>
-            )}
           </div>
 
         </div>

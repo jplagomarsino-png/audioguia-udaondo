@@ -1,11 +1,11 @@
 {
-  "name": "AudioGuía Complejo Udaondo",
+  "name": "Audioguía Complejo Museográfico Enrique Udaondo",
   "short_name": "Guía Udaondo",
-  "description": "Audioguía oficial del Complejo Museográfico Provincial Enrique Udaondo",
+  "description": "Audioguía oficial del Complejo Museográfico Provincial Enrique Udaondo: recorrido interactivo con audio, fotografías y contexto histórico.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f4f7f6",
-  "theme_color": "#00a8e8",
+  "theme_color": "#0092e0",
   "icons": [
     {
       "src": "logo.png",

@@ -10,7 +10,12 @@ coverage/
 !.env.example
 
 # Basura de trabajo (no va al repo)
+.hermes/
+temp_drive_photos/
+UDAONDO AUDIOGUIA/
 *.zip
+*.jfif
+check_icon_bbox.py
 demo plan/
 texto_completo_v2.txt
 textos_pantalla*.md

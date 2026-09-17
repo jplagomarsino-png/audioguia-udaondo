@@ -40,13 +40,13 @@ const MUSEUM_ICON_IMAGES: Record<MuseumId, string> = {
   otros: '/iconos/otros-espacios.webp',
 };
 
-// Íconos temáticos para las salas
+// Íconos temáticos para las salas (restituidos con sus archivos correspondientes)
 const SALA_ICON_IMAGES: Record<string, string> = {
-  'origenes-colonia': '/iconos/historico.webp',
+  'origenes-colonia': '/iconos/encuentro.webp',
   'pueblos-originarios': '/iconos/originarios-1.webp',
   'planta-alta-cabildo': '/iconos/cabildo-planta-alta.webp',
   'independencia': '/iconos/independencia.webp',
-  'autonomias-rosas': '/iconos/encuentro.webp',
+  'autonomias-rosas': '/iconos/reoganizacion-nacional.webp',
   'vida-gaucha': '/iconos/vida-gaucha.webp',
   'evolucion-contrastes': '/iconos/evolucion.webp',
   'carretas-motores': '/iconos/carretas-y-motores.webp',
@@ -396,7 +396,7 @@ export default function App() {
                   alt="Complejo Museográfico Enrique Udaondo"
                   className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
                 />
-                <div className="absolute inset-0 bg-black/20" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
 
                 <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-4 sm:p-6 pt-2 sm:pt-6 max-w-xl mx-auto w-full z-10">
                   <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-black uppercase tracking-wider text-center mb-2">
@@ -513,13 +513,12 @@ export default function App() {
                             onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                             className="w-full h-full object-cover object-center brightness-90"
                           />
-                          <div className="absolute inset-0 bg-black/40" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
                           <div className="absolute top-4 left-4 right-4">
-                            <span className="text-[10px] font-sans font-black text-white uppercase tracking-widest leading-none block mb-1">
+                            <span className="text-[10px] font-sans font-black text-white uppercase tracking-widest leading-none block mb-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
                               {museum.shortTitle} • {stopCount} {stopCount === 1 ? 'parada' : 'paradas'}
                             </span>
-                            <h4 className="font-display font-black text-base text-white tracking-[-0.03em] leading-tight uppercase">
+                            <h4 className="font-display font-black text-base text-white tracking-[-0.03em] leading-tight uppercase [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
                               {museum.title}
                             </h4>
                           </div>
@@ -527,12 +526,12 @@ export default function App() {
 
                         {/* Ícono central grande */}
                         <div className="absolute top-32 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center">
-                          <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg border-2 border-[#0092e0] p-1.5 overflow-hidden">
+                          <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg border-2 border-[#0092e0] p-0.5 overflow-hidden">
                             {iconImg ? (
                               <img
                                 src={iconImg}
                                 alt={museum.title}
-                                className="w-full h-full object-contain"
+                                className="w-full h-full object-contain scale-105"
                               />
                             ) : (
                               <div className="text-[#0092e0]">
@@ -662,9 +661,9 @@ export default function App() {
                   onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                   className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
                 <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-4 sm:p-6 max-w-xl mx-auto w-full z-10">
-                  <span className="text-[9px] sm:text-[11px] font-sans font-black text-sky-300 uppercase tracking-widest mb-1">
+                  <span className="text-[9px] sm:text-[11px] font-sans font-black text-sky-300 uppercase tracking-widest mb-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
                     {activeMuseum.hasTour ? 'Recorrido con salas' : 'Espacios del Complejo'} •{' '}
                     {ALL_TOUR_STOPS.filter(s => s.museum === activeMuseum.id).length} paradas
                   </span>
@@ -699,20 +698,24 @@ export default function App() {
                       {!isExpanded && (
                         <button
                           onClick={() => handleToggleExpand(introStop.id)}
-                          className="w-full text-left px-4 py-3.5 bg-[#0092e0] hover:bg-[#0081c7] text-white transition-colors cursor-pointer flex items-center gap-3 group"
+                          className="w-full text-left px-3 py-2 sm:py-2.5 hover:bg-sky-50 transition-colors cursor-pointer flex items-center gap-2.5 sm:gap-3 group"
                         >
-                          <div className="w-9 h-9 rounded-full bg-white text-[#0092e0] flex items-center justify-center font-sans font-black text-sm flex-shrink-0 shadow-sm">
-                            {introStop.stopNumber}
+                          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl overflow-hidden border-2 border-[#0092e0] bg-white shadow-sm flex items-center justify-center flex-shrink-0 p-0">
+                            <img
+                              src={MUSEUM_ICON_IMAGES[activeMuseum.id]}
+                              alt={introStop.title}
+                              className="w-full h-full object-contain scale-105"
+                            />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <span className="text-[8px] font-sans font-black text-white/80 uppercase tracking-widest block">
+                            <span className="text-[8px] font-sans font-black text-[#0092e0] uppercase tracking-widest block">
                               Comenzar acá
                             </span>
-                            <h4 className="font-display font-black text-sm text-white leading-tight line-clamp-2">
+                            <h4 className="font-display font-black text-sm text-slate-800 leading-tight group-hover:text-[#0092e0] transition-colors line-clamp-2">
                               {introStop.title}
                             </h4>
                           </div>
-                          <div className="w-9 h-9 rounded-full bg-white/20 text-white flex items-center justify-center flex-shrink-0 group-hover:bg-white group-hover:text-[#0092e0] transition-colors">
+                          <div className="w-9 h-9 rounded-full bg-[#0092e0]/10 text-[#0092e0] flex items-center justify-center flex-shrink-0 group-hover:bg-[#0092e0] group-hover:text-white transition-colors">
                             <Play className="w-4 h-4 fill-current ml-0.5" strokeWidth={2.5} />
                           </div>
                         </button>
@@ -727,8 +730,8 @@ export default function App() {
                               onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                               className="w-full h-full object-cover object-center brightness-90"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                            <span className="absolute bottom-2 left-3 text-white text-[9px] font-sans font-black uppercase tracking-widest">
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                            <span className="absolute bottom-2 left-3 bg-slate-950/70 backdrop-blur-xs px-2 py-0.5 rounded-full text-white text-[9px] font-sans font-black uppercase tracking-widest">
                               Parada {introStop.stopNumber} • {activeMuseum.shortTitle}
                             </span>
                           </div>
@@ -740,7 +743,7 @@ export default function App() {
                               onNext={activeMuseum.hasTour ? handleNextStop : undefined}
                             />
                           </div>
-                          <p className="text-[10px] text-slate-500 font-sans mt-2 leading-relaxed px-1">
+                          <p className="text-[10px] text-slate-500 font-sans mt-2 leading-relaxed px-1 text-center">
                             {introStop.subtitle}
                           </p>
                           <button
@@ -772,26 +775,27 @@ export default function App() {
 
                   return (
                     <div key={sala.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                      {/* ENCABEZADO DE SALA celeste */}
-                      <div className="bg-[#0092e0] border-b border-[#0081c7]">
+                      {/* ENCABEZADO DE SALA celeste con ícono temático a todo color */}
+                      <div className="border-b border-[#0081c7] bg-[#0092e0]">
                         {(() => {
                           const fila = (
-                            <div className="flex items-center gap-2.5 sm:gap-3 px-3 py-2.5 text-white">
-                              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0092e0]/30 border-2 border-white flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-1">
+                            <div className="flex items-center gap-2.5 sm:gap-3 px-3 py-2 sm:py-2.5 text-white">
+                              {/* Ícono de la sala ajustado al borde para maximizar la imagen y reducir grosor */}
+                              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl overflow-hidden border-2 border-white bg-white shadow-sm flex items-center justify-center flex-shrink-0 p-0">
                                 {salaIconSrc ? (
                                   <img
                                     src={salaIconSrc}
                                     alt={sala.title}
-                                    className="w-full h-full object-contain brightness-0 invert"
+                                    className="w-full h-full object-contain scale-105"
                                   />
                                 ) : (
-                                  <div className="text-white">
+                                  <div className="text-[#0092e0]">
                                     {MUSEUM_ICONS[activeMuseum.id]}
                                   </div>
                                 )}
                               </div>
                               <div className="min-w-0 flex-1">
-                                <span className="text-[8px] font-sans font-black text-white/80 uppercase tracking-[0.22em] block">
+                                <span className="text-[7.5px] font-sans font-black text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">
                                   Sala
                                 </span>
                                 <h3 className="font-display font-black text-sm text-white uppercase tracking-tight leading-tight line-clamp-2">
@@ -836,8 +840,8 @@ export default function App() {
                                 onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                                 className="w-full h-full object-cover object-center brightness-90"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                              <span className="absolute bottom-2 left-3 text-white text-[9px] font-sans font-black uppercase tracking-widest">
+                              <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                              <span className="absolute bottom-2 left-3 bg-slate-950/70 backdrop-blur-xs px-2 py-0.5 rounded-full text-white text-[9px] font-sans font-black uppercase tracking-widest">
                                 Parada {introStopSala.stopNumber} • {activeMuseum.shortTitle}
                               </span>
                             </div>
@@ -895,8 +899,8 @@ export default function App() {
                                       onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                                       className="w-full h-full object-cover object-center brightness-90"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                                    <span className="absolute bottom-2 left-3 text-white text-[9px] font-sans font-black uppercase tracking-widest">
+                                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                                    <span className="absolute bottom-2 left-3 bg-slate-950/70 backdrop-blur-xs px-2 py-0.5 rounded-full text-white text-[9px] font-sans font-black uppercase tracking-widest">
                                       Parada {stop.stopNumber} • {activeMuseum.shortTitle}
                                     </span>
                                   </div>

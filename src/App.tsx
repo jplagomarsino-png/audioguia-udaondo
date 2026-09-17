@@ -337,14 +337,17 @@ export default function App() {
             <img
               src="/logo-udaondo.png"
               alt="Complejo Museográfico Enrique Udaondo"
-              className="h-10 sm:h-14 landscape:h-8 w-auto object-contain drop-shadow-sm shrink-0"
+              className="h-11 sm:h-16 landscape:h-9 w-auto object-contain drop-shadow-sm shrink-0"
             />
-            <div className="flex flex-col justify-center leading-none min-w-0">
-              <span className="font-sans font-black tracking-[0.02em] text-[11px] sm:text-base lg:text-lg text-white uppercase whitespace-nowrap">
-                Audioguía del Udaondo
+            <div className="flex flex-col justify-center leading-[1.05] min-w-0">
+              <span className="font-sans font-black tracking-[0.03em] text-[10px] sm:text-sm lg:text-base text-white uppercase whitespace-nowrap">
+                Audioguía
               </span>
-              <span className="text-[5px] sm:text-[7px] landscape:hidden font-sans font-bold text-white/80 uppercase tracking-[0.16em] whitespace-nowrap overflow-hidden text-ellipsis mt-0.5 sm:mt-1">
-                Complejo Museográfico Provincial Enrique Udaondo
+              <span className="font-sans font-black tracking-[0.03em] text-[8px] sm:text-[11px] lg:text-xs text-white/95 uppercase whitespace-nowrap">
+                Udaondo
+              </span>
+              <span className="text-[5px] sm:text-[6.5px] landscape:hidden font-sans font-bold text-white/80 uppercase tracking-[0.14em] whitespace-nowrap overflow-hidden text-ellipsis mt-0.5">
+                Complejo Museográfico Provincial
               </span>
             </div>
           </div>

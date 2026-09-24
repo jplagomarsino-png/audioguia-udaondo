@@ -383,29 +383,29 @@ export default function App() {
       {/* FIXED CELESTE HEADER */}
       <header className="fixed top-0 left-0 right-0 z-50 h-16 sm:h-22 landscape:h-14 bg-[#0092e0] border-b border-[#0081c7] shadow-md">
         <div className="h-full w-full flex items-center justify-center px-3 sm:px-5">
-          {/* GRUPO CENTRADO EN PANTALLA: TEXTO A LA IZQUIERDA (JUSTIFICADO DERECHA) + LOGO 100% MÁS GRANDE */}
+          {/* GRUPO CENTRADO EN PANTALLA: TEXTO A LA IZQUIERDA (JUSTIFICADO DERECHA) + LOGO 40% MÁS GRANDE */}
           <div
             onClick={handleGoInicio}
-            className="flex items-center gap-3 sm:gap-4 cursor-pointer select-none"
+            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer select-none"
           >
-            {/* TEXTO A SU LADO IZQUIERDO JUSTIFICADO A LA DERECHA */}
-            <div className="flex flex-col justify-center items-end text-right leading-tight">
-              <span className="font-sans font-bold tracking-tight text-xs sm:text-base text-white uppercase leading-none">
+            {/* TEXTO A SU LADO IZQUIERDO JUSTIFICADO A LA DERECHA (20% MÁS PEQUEÑO) */}
+            <div className="flex flex-col justify-center items-end text-right leading-none">
+              <span className="font-sans font-bold tracking-tight text-[10px] sm:text-xs text-white uppercase leading-none">
                 Audioguía
               </span>
-              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight mt-0.5 whitespace-nowrap">
+              <span className="font-sans font-medium text-[6.5px] sm:text-[8px] text-white/95 leading-tight mt-0.5 whitespace-nowrap uppercase">
                 del Complejo
               </span>
-              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight whitespace-nowrap">
-                museográfico.
+              <span className="font-sans font-bold text-[6.5px] sm:text-[8px] text-white/95 leading-tight whitespace-nowrap uppercase">
+                MUSEOGRÁFICO.
               </span>
             </div>
 
-            {/* LOGO 100% MÁS GRANDE */}
+            {/* LOGO 40% MÁS GRANDE */}
             <img
               src="/logo-udaondo.png"
               alt="Complejo Museográfico Enrique Udaondo"
-              className="h-12 sm:h-18 landscape:h-10 w-auto object-contain drop-shadow-md shrink-0"
+              className="h-14 sm:h-20 landscape:h-11 w-auto object-contain drop-shadow-md shrink-0"
             />
           </div>
         </div>
@@ -787,10 +787,11 @@ export default function App() {
                                   Parada {stop.stopNumber}
                                 </span>
                               </div>
-                              {/* PIE DE LA PARADA */}
-                              <div className="px-3.5 py-2.5 flex items-center gap-2.5">
-                                <div className="min-w-0 flex-1">
-                                  <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
+                              {/* PIE DE LA PARADA CON TÍTULO CENTRADO */}
+                              <div className="px-3.5 py-2.5 flex items-center justify-between gap-2.5">
+                                <div className="w-7 h-7 shrink-0" />
+                                <div className="min-w-0 flex-1 text-center">
+                                  <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight text-center">
                                     {stop.title}
                                   </h4>
                                 </div>
@@ -983,10 +984,11 @@ export default function App() {
                                 Parada {stop.stopNumber}
                               </span>
                             </div>
-                            {/* PIE DE LA PARADA */}
-                            <div className="px-3.5 py-2.5 flex items-center gap-2.5">
-                              <div className="min-w-0 flex-1">
-                                <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
+                            {/* PIE DE LA PARADA CON TÍTULO CENTRADO */}
+                            <div className="px-3.5 py-2.5 flex items-center justify-between gap-2.5">
+                              <div className="w-7 h-7 shrink-0" />
+                              <div className="min-w-0 flex-1 text-center">
+                                <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight text-center">
                                   {stop.title}
                                 </h4>
                               </div>
@@ -1013,79 +1015,115 @@ export default function App() {
                 })()}
               </AnimatePresence>
 
-              {/* FICHA INDIVIDUAL DE PARADA (VISIÓN SINGLE - clavada entre encabezado y footer) */}
+              {/* FICHA INDIVIDUAL DE PARADA (VISIÓN SINGLE - sin scroll, fija entre encabezado y footer) */}
               <AnimatePresence>
                 {expandedStopId && (() => {
                   const selectedStop = ALL_TOUR_STOPS.find(s => s.id === expandedStopId);
                   if (!selectedStop) return null;
                   const isPlayingHere = playingStopId === selectedStop.id && isPlaying;
+
+                  // Orden numérico de paradas dentro del museo
+                  const curIdx = museumStops.findIndex(s => s.id === selectedStop.id);
+                  const prevStop = curIdx > 0 ? museumStops[curIdx - 1] : null;
+                  const nextStop = curIdx >= 0 && curIdx < museumStops.length - 1 ? museumStops[curIdx + 1] : null;
+
                   return (
                     <motion.div
                       key={selectedStop.id}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
+                      exit={{ opacity: 0, y: 15 }}
                       transition={{ duration: 0.2 }}
-                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-40 bg-white flex flex-col overflow-y-auto"
+                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-40 bg-slate-50 flex flex-col justify-between overflow-hidden"
                     >
-                      {/* BANDA SUPERIOR DE TÍTULO (a pantalla completa sin márgenes) */}
-                      <div className="w-full bg-[#0092e0] text-white px-4 py-2.5 sm:py-3 border-b border-[#0081c7] flex items-center justify-between shadow-sm shrink-0">
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[7.5px] sm:text-[8.5px] font-sans font-bold text-sky-100 uppercase tracking-widest block leading-none mb-0.5">
-                            Parada {selectedStop.stopNumber} • {activeMuseum.shortTitle}
-                          </span>
-                          <h2 className="font-sans font-bold text-xs sm:text-sm md:text-base text-white uppercase tracking-tight leading-tight">
-                            {selectedStop.title}
-                          </h2>
-                        </div>
-                        <button
-                          onClick={() => setExpandedStopId(null)}
-                          className="ml-2 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 text-white flex items-center justify-center shrink-0 cursor-pointer transition-all"
-                          title="Cerrar ficha"
-                        >
-                          <X className="w-4 h-4" strokeWidth={2.75} />
-                        </button>
-                      </div>
-
-                      {/* FOTO TIPO BANNER A PANTALLA COMPLETA (sin márgenes) */}
-                      <div className="w-full relative h-48 sm:h-64 md:h-80 bg-slate-950 shrink-0">
+                      {/* HERO BANNER A PANTALLA COMPLETA HASTA EL CABEZAL */}
+                      <div className="w-full relative overflow-hidden h-[45vh] sm:h-[50vh] bg-slate-950 shrink-0">
                         <img
                           src={selectedStop.image}
                           alt={selectedStop.title}
                           onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                          className="w-full h-full object-cover object-center brightness-95"
+                          className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-                      </div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent pointer-events-none" />
 
-                      {/* REPRODUCTOR DE AUDIO */}
-                      <div className="w-full max-w-md mx-auto px-4 pt-4 pb-2">
-                        <AudioPlayerControl
-                          isPlaying={isPlayingHere}
-                          onClick={() => playTTS(selectedStop.id, selectedStop.locucion || selectedStop.text)}
-                          onPrev={activeMuseum.hasTour ? handlePrevStop : undefined}
-                          onNext={activeMuseum.hasTour ? handleNextStop : undefined}
-                        />
-                      </div>
-
-                      {/* EPÍGRAFE (centrado, 20% más grande, bold Encode Sans) */}
-                      {selectedStop.subtitle && (
-                        <div className="w-full max-w-lg mx-auto px-6 py-3 text-center">
-                          <p className="text-sm sm:text-base font-sans font-bold text-slate-800 leading-relaxed">
-                            {selectedStop.subtitle}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* BOTÓN CERRAR (gris oscuro, vuelve al listado de paradas) */}
-                      <div className="w-full max-w-xs mx-auto px-4 pt-4 pb-8 text-center">
+                        {/* BOTÓN X FLOTANTE */}
                         <button
                           onClick={() => setExpandedStopId(null)}
-                          className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
+                          className="absolute top-2.5 right-3 z-20 w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors"
+                          title="Cerrar"
                         >
-                          <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
-                          Volver a la Sala
+                          <X className="w-4 h-4" strokeWidth={2.75} />
                         </button>
+
+                        {/* TEXTOS CENTRADOS SOBRE LA IMAGEN (IDEM BIENVENIDA) */}
+                        <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-3 sm:p-5 pt-2 sm:pt-4 max-w-xl mx-auto w-full z-10">
+                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-full text-white text-[8px] sm:text-[10px] font-sans font-bold uppercase tracking-wider text-center mb-1">
+                            Parada {selectedStop.stopNumber} • {activeMuseum.shortTitle}
+                          </div>
+                          <h2 className="text-white font-display font-bold text-sm sm:text-2xl tracking-tight leading-tight uppercase text-center [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
+                            {selectedStop.title}
+                          </h2>
+                          {selectedStop.subtitle && (
+                            <p className="text-white text-[8.5px] sm:text-xs font-medium leading-snug font-sans text-center px-4 mt-0.5 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
+                              {selectedStop.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* FLOATING CARD CON REPRODUCTOR (FUERA DE LA IMAGEN) */}
+                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-8 relative z-10 bg-white rounded-2xl border border-slate-100 p-1 pb-1.5 sm:p-4 shadow-md flex flex-col pt-8 sm:pt-10">
+                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
+                          <AudioPlayerControl
+                            isPlaying={isPlayingHere}
+                            onClick={() => playTTS(selectedStop.id, selectedStop.locucion || selectedStop.text)}
+                            onPrev={prevStop ? () => setExpandedStopId(prevStop.id) : () => setExpandedStopId(null)}
+                            onNext={nextStop ? () => setExpandedStopId(nextStop.id) : undefined}
+                          />
+                        </div>
+                      </div>
+
+                      {/* ESQUEMA / TIMELINE DE PARADAS (IDEM BIENVENIDA) */}
+                      <div className="w-full max-w-xl mx-auto px-2 pt-2 pb-3">
+                        <div className="relative w-full flex items-start justify-between gap-1">
+                          <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
+
+                          {/* ANTERIOR / VOLVER A SALA */}
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-2 sm:px-4">
+                            <button
+                              onClick={prevStop ? () => setExpandedStopId(prevStop.id) : () => setExpandedStopId(null)}
+                              className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
+                              title={prevStop ? `Parada ${prevStop.stopNumber}: ${prevStop.title}` : 'Volver a la sala'}
+                            >
+                              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
+                              <p className="text-[7.5px] sm:text-[9px] font-sans font-bold text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-2 text-center">
+                                {prevStop ? `Parada ${prevStop.stopNumber} • ${prevStop.title}` : 'Volver a Sala'}
+                              </p>
+                            </button>
+                          </div>
+
+                          {/* PUNTO DEL MEDIO TITILANDO SIN ACLARACIÓN (DONDE ESTÁS PARADO) */}
+                          <div className="flex items-start justify-center z-10 w-10 sm:w-14 pt-0.5">
+                            <div className="relative flex items-center justify-center">
+                              <span className="absolute w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-[#0092e0]/50 animate-ping" />
+                              <div className="relative w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#0092e0] border-2 border-sky-200 shadow-sm" />
+                            </div>
+                          </div>
+
+                          {/* SIGUIENTE PARADA */}
+                          <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-2 sm:px-4">
+                            <button
+                              onClick={nextStop ? () => setExpandedStopId(nextStop.id) : () => setExpandedStopId(null)}
+                              className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
+                              title={nextStop ? `Parada ${nextStop.stopNumber}: ${nextStop.title}` : 'Volver a la sala'}
+                            >
+                              <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
+                              <p className="text-[7.5px] sm:text-[9px] font-sans font-bold text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-2 text-center">
+                                {nextStop ? `Parada ${nextStop.stopNumber} • ${nextStop.title}` : 'Fin de Sala'}
+                              </p>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </motion.div>
                   );

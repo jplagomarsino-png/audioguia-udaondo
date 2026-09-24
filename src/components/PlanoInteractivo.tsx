@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, type MouseEvent, type WheelEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TransformWrapper, TransformComponent, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import { X, Map, Compass, Bookmark, Sparkles, ChevronRight, SkipBack, MapPin, SkipForward } from 'lucide-react';
@@ -232,7 +232,7 @@ export default function PlanoInteractivo({
   const isCurrentZonePlaying = activeStop && currentPlayingStopId === activeStop.id && isPlaying;
 
   // Tocar fuera del panel → cerrar
-  const handleBgTap = (e: React.MouseEvent) => {
+  const handleBgTap = (e: MouseEvent) => {
     if (e.target === e.currentTarget) {
       setActiveStopId(null);
       onStop();
@@ -274,7 +274,7 @@ export default function PlanoInteractivo({
         >
           {({ zoomIn, zoomOut }) => {
             // Interceptar wheel para zoom suave manual
-            const handleWheel = (e: React.WheelEvent) => {
+            const handleWheel = (e: WheelEvent) => {
               e.preventDefault();
               const step = 0.04;
               if (e.deltaY < 0) zoomIn(step);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, type ChangeEvent } from 'react';
 import { Lock, Plus, ArrowLeft, QrCode, Printer, CheckCircle, Trash2, Image as ImageIcon, Upload } from 'lucide-react';
 import { ALL_TOUR_STOPS } from '../data';
 
@@ -204,7 +204,7 @@ export default function AdminPanel() {
     } catch { /* noop */ }
   }, []);
 
-  const onFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileSelected = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) {

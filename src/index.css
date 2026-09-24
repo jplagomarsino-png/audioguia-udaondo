@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat", sans-serif;
-  --font-serif: "Cinzel", Georgia, serif;
+  --font-sans: "Encode Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Encode Sans", sans-serif;
+  --font-serif: "Encode Sans", Georgia, serif;
 }
 
 /* Custom styles for high-contrast scrollbars and smooth transitions */

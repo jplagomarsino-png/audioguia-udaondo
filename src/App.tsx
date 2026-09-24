@@ -393,11 +393,11 @@ export default function App() {
               <span className="font-sans font-bold tracking-tight text-[10px] sm:text-xs text-white uppercase leading-none">
                 Audioguía
               </span>
-              <span className="font-sans font-medium text-[6.5px] sm:text-[8px] text-white/95 leading-tight mt-0.5 whitespace-nowrap uppercase">
+              <span className="font-sans font-medium text-[6.5px] sm:text-[8px] text-white/95 leading-tight mt-0.5 whitespace-nowrap">
                 del Complejo
               </span>
-              <span className="font-sans font-bold text-[6.5px] sm:text-[8px] text-white/95 leading-tight whitespace-nowrap uppercase">
-                MUSEOGRÁFICO.
+              <span className="font-sans font-bold text-[6.5px] sm:text-[8px] text-white/95 leading-tight whitespace-nowrap">
+                Museográfico.
               </span>
             </div>
 

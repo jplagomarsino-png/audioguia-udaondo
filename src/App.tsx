@@ -378,32 +378,35 @@ export default function App() {
   // ============================
   return (
     <>
-      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-14 sm:pt-20 landscape:pt-12">
+      <div className="min-h-screen bg-slate-50 text-slate-700 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 pb-24 pt-16 sm:pt-22 landscape:pt-14">
 
       {/* FIXED CELESTE HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-14 sm:h-20 landscape:h-12 bg-[#0092e0] border-b border-[#0081c7] shadow-md">
-        <div className="h-full w-full flex items-center justify-between px-3 sm:px-5">
-          {/* LOGO + EPÍGRAFE A SU DERECHA (sobre el lado izquierdo) */}
+      <header className="fixed top-0 left-0 right-0 z-50 h-16 sm:h-22 landscape:h-14 bg-[#0092e0] border-b border-[#0081c7] shadow-md">
+        <div className="h-full w-full flex items-center justify-center px-3 sm:px-5">
+          {/* GRUPO CENTRADO EN PANTALLA: TEXTO A LA IZQUIERDA (JUSTIFICADO DERECHA) + LOGO 100% MÁS GRANDE */}
           <div
             onClick={handleGoInicio}
-            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer min-w-0 select-none"
+            className="flex items-center gap-3 sm:gap-4 cursor-pointer select-none"
           >
-            <img
-              src="/logo-udaondo.png"
-              alt="Complejo Museográfico Enrique Udaondo"
-              className="h-10 sm:h-14 landscape:h-8 w-auto object-contain drop-shadow-sm shrink-0"
-            />
-            <div className="flex flex-col justify-center leading-tight min-w-0">
+            {/* TEXTO A SU LADO IZQUIERDO JUSTIFICADO A LA DERECHA */}
+            <div className="flex flex-col justify-center items-end text-right leading-tight">
               <span className="font-sans font-bold tracking-tight text-xs sm:text-base text-white uppercase leading-none">
                 Audioguía
               </span>
-              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight mt-0.5">
+              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight mt-0.5 whitespace-nowrap">
                 del Complejo
               </span>
-              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight">
+              <span className="font-sans font-medium text-[8px] sm:text-[10px] text-white/95 leading-tight whitespace-nowrap">
                 museográfico.
               </span>
             </div>
+
+            {/* LOGO 100% MÁS GRANDE */}
+            <img
+              src="/logo-udaondo.png"
+              alt="Complejo Museográfico Enrique Udaondo"
+              className="h-12 sm:h-18 landscape:h-10 w-auto object-contain drop-shadow-md shrink-0"
+            />
           </div>
         </div>
       </header>
@@ -719,85 +722,208 @@ export default function App() {
 
               <div className="max-w-xl mx-auto w-full px-3.5 py-4 space-y-4">
 
-                {/* Fila especial: Introducción al museo (se omite si ya es el renglón de una sala) */}
-                {(() => {
-                  const introStop = ALL_TOUR_STOPS.find(s => s.id === activeMuseum.introStopId);
-                  const introAbsorbidaEnSala = activeMuseum.salas.some(s => s.introStopId === activeMuseum.introStopId);
-                  if (!introStop || introAbsorbidaEnSala) return null;
-                  return (
-                    <div key={`intro-${introStop.id}`} className="rounded-2xl border border-[#0081c7] overflow-hidden shadow-sm cursor-pointer" onClick={() => setExpandedStopId(introStop.id)}>
-                      <div className="w-full h-28 sm:h-36 relative bg-slate-950">
-                        <img
-                          src={introStop.image}
-                          alt={introStop.title}
-                          onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                          className="w-full h-full object-cover object-center brightness-90"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-                        <div className="absolute inset-0 bg-[#0092e0]/30 pointer-events-none" />
-                      </div>
-                      <div className="bg-[#0092e0] px-3 py-2 flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
-                          <img src={MUSEUM_ICON_IMAGES[activeMuseum.id]} alt={introStop.title} className="w-full h-full object-contain scale-105" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-widest block leading-none mb-0.5">Comenzar acá</span>
-                          <h4 className="font-sans font-bold text-xs sm:text-sm text-white leading-snug tracking-tight">{introStop.title}</h4>
-                        </div>
-                        <div className="w-8 h-8 rounded-full bg-white text-[#0092e0] flex items-center justify-center shrink-0 shadow-sm">
-                          <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })()}
+                {/* SI EL MUSEO TIENE 1 SOLA SALA (EJ. MUSEO DEL AUTOMÓVIL): MUESTRA DIRECTO EL CABEZAL DE SALA Y TODAS LAS PARADAS */}
+                {activeMuseum.salas.length === 1 ? (
+                  (() => {
+                    const sala = activeMuseum.salas[0];
+                    const salaStops = sala.stopIds
+                      .map(id => ALL_TOUR_STOPS.find(s => s.id === id))
+                      .filter((s): s is TourStop => !!s);
+                    const salaIconSrc = SALA_ICON_IMAGES[sala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
 
-                {/* Cards de salas — NIVEL 2: foto abierta + header celeste */}
-                {activeMuseum.salas.map(sala => {
-                  const salaStops = sala.stopIds
-                    .map(id => ALL_TOUR_STOPS.find(s => s.id === id))
-                    .filter((s): s is TourStop => !!s);
-                  const visibleCount = salaStops.length;
-                  const salaIconSrc = SALA_ICON_IMAGES[sala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
-                  const salaImg = getSalaImage(sala, activeMuseum);
+                    return (
+                      <div className="space-y-4">
+                        {/* BOTÓN SUPERIOR VOLVER AL INICIO */}
+                        <div className="flex items-center justify-between">
+                          <button
+                            onClick={handleGoInicio}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors shadow-2xs"
+                          >
+                            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
+                            Volver al Inicio
+                          </button>
+                          <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-wider">
+                            {salaStops.length} paradas
+                          </span>
+                        </div>
 
-                  return (
-                    <div
-                      key={sala.id}
-                      className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform"
-                      onClick={() => handleSelectSala(sala.id)}
-                    >
-                      {/* FOTO ABIERTA DE LA SALA */}
-                      <div className="w-full h-28 sm:h-36 relative bg-slate-950">
-                        <img
-                          src={salaImg}
-                          alt={sala.title}
-                          onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                          className="w-full h-full object-cover object-center brightness-90"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-                      </div>
-                      {/* HEADER CELESTE DE LA SALA */}
-                      <div className="bg-[#0092e0] border-t border-[#0081c7] px-3 py-2 flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
-                          {salaIconSrc ? (
-                            <img src={salaIconSrc} alt={sala.title} className="w-full h-full object-contain scale-105" />
-                          ) : (
-                            <div className="text-[#0092e0]">{MUSEUM_ICONS[activeMuseum.id]}</div>
-                          )}
+                        {/* CABEZAL DE LA SALA */}
+                        <div className="bg-[#0092e0] rounded-2xl border border-[#0081c7] px-3.5 py-2.5 flex items-center gap-3 text-white shadow-sm">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden border-2 border-white bg-white shadow-sm flex items-center justify-center flex-shrink-0 p-0">
+                            {salaIconSrc ? (
+                              <img src={salaIconSrc} alt={sala.title} className="w-full h-full object-contain scale-105" />
+                            ) : (
+                              <div className="text-[#0092e0]">{MUSEUM_ICONS[activeMuseum.id]}</div>
+                            )}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <span className="text-[7.5px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">
+                              Sala
+                            </span>
+                            <h3 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">
+                              {sala.title}
+                            </h3>
+                          </div>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">Sala</span>
-                          <h3 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">{sala.title}</h3>
+
+                        {/* LISTA DE PARADAS ABIERTAS */}
+                        <div className="space-y-3">
+                          {salaStops.map(stop => (
+                            <div
+                              key={stop.id}
+                              className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform bg-white"
+                              onClick={() => setExpandedStopId(stop.id)}
+                            >
+                              {/* FOTO ABIERTA DE LA PARADA */}
+                              <div className="w-full h-28 sm:h-36 relative bg-slate-950">
+                                <img
+                                  src={stop.image}
+                                  alt={stop.title}
+                                  onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
+                                  className="w-full h-full object-cover object-center brightness-90"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
+                                <span className="absolute top-2 left-3 bg-slate-950/70 backdrop-blur-sm px-2 py-0.5 rounded-full text-white text-[8px] font-sans font-bold uppercase tracking-wider">
+                                  Parada {stop.stopNumber}
+                                </span>
+                              </div>
+                              {/* PIE DE LA PARADA */}
+                              <div className="px-3.5 py-2.5 flex items-center gap-2.5">
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
+                                    {stop.title}
+                                  </h4>
+                                </div>
+                                <div className="w-7 h-7 rounded-full bg-[#0092e0]/10 text-[#0092e0] flex items-center justify-center shrink-0 hover:bg-[#0092e0] hover:text-white transition-colors">
+                                  <Play className="w-3 h-3 fill-current ml-0.5" strokeWidth={2.5} />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <span className="text-[9px] font-sans font-bold text-white/80 uppercase tracking-wider shrink-0">
-                          {visibleCount} {visibleCount === 1 ? 'parada' : 'paradas'}
-                        </span>
-                        <ChevronRight className="w-4 h-4 text-white/70 shrink-0" strokeWidth={2.5} />
+
+                        {/* BOTÓN AL FINAL DEL RECORRIDO PARA VOLVER */}
+                        <div className="pt-4 pb-8">
+                          <button
+                            onClick={handleGoInicio}
+                            className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
+                          >
+                            <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+                            Volver al Inicio
+                          </button>
+                        </div>
                       </div>
+                    );
+                  })()
+                ) : (
+                  /* SI EL MUSEO TIENE MÚLTIPLES SALAS (HISTÓRICO, TRANSPORTES): MUESTRA ÍNDICE DE SALAS */
+                  <>
+                    {/* BOTÓN SUPERIOR VOLVER AL INICIO */}
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={handleGoInicio}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors shadow-2xs"
+                      >
+                        <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
+                        Volver al Inicio
+                      </button>
+                      <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-wider">
+                        {activeMuseum.salas.length} salas
+                      </span>
                     </div>
-                  );
-                })}
+
+                    {/* Fila especial: Introducción al museo */}
+                    {(() => {
+                      const introStop = ALL_TOUR_STOPS.find(s => s.id === activeMuseum.introStopId);
+                      const introAbsorbidaEnSala = activeMuseum.salas.some(s => s.introStopId === activeMuseum.introStopId);
+                      if (!introStop || introAbsorbidaEnSala) return null;
+                      return (
+                        <div key={`intro-${introStop.id}`} className="rounded-2xl border border-[#0081c7] overflow-hidden shadow-sm cursor-pointer" onClick={() => setExpandedStopId(introStop.id)}>
+                          <div className="w-full h-28 sm:h-36 relative bg-slate-950">
+                            <img
+                              src={introStop.image}
+                              alt={introStop.title}
+                              onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
+                              className="w-full h-full object-cover object-center brightness-90"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                            <div className="absolute inset-0 bg-[#0092e0]/30 pointer-events-none" />
+                          </div>
+                          <div className="bg-[#0092e0] px-3 py-2 flex items-center gap-2.5">
+                            <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
+                              <img src={MUSEUM_ICON_IMAGES[activeMuseum.id]} alt={introStop.title} className="w-full h-full object-contain scale-105" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-widest block leading-none mb-0.5">Comenzar acá</span>
+                              <h4 className="font-sans font-bold text-xs sm:text-sm text-white leading-snug tracking-tight">{introStop.title}</h4>
+                            </div>
+                            <div className="w-8 h-8 rounded-full bg-white text-[#0092e0] flex items-center justify-center shrink-0 shadow-sm">
+                              <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* Cards de salas — NIVEL 2: foto abierta + header celeste */}
+                    {activeMuseum.salas.map(sala => {
+                      const salaStops = sala.stopIds
+                        .map(id => ALL_TOUR_STOPS.find(s => s.id === id))
+                        .filter((s): s is TourStop => !!s);
+                      const visibleCount = salaStops.length;
+                      const salaIconSrc = SALA_ICON_IMAGES[sala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
+                      const salaImg = getSalaImage(sala, activeMuseum);
+
+                      return (
+                        <div
+                          key={sala.id}
+                          className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform"
+                          onClick={() => handleSelectSala(sala.id)}
+                        >
+                          {/* FOTO ABIERTA DE LA SALA */}
+                          <div className="w-full h-28 sm:h-36 relative bg-slate-950">
+                            <img
+                              src={salaImg}
+                              alt={sala.title}
+                              onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
+                              className="w-full h-full object-cover object-center brightness-90"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
+                          </div>
+                          {/* HEADER CELESTE DE LA SALA */}
+                          <div className="bg-[#0092e0] border-t border-[#0081c7] px-3 py-2 flex items-center gap-2.5">
+                            <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
+                              {salaIconSrc ? (
+                                <img src={salaIconSrc} alt={sala.title} className="w-full h-full object-contain scale-105" />
+                              ) : (
+                                <div className="text-[#0092e0]">{MUSEUM_ICONS[activeMuseum.id]}</div>
+                              )}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">Sala</span>
+                              <h3 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">{sala.title}</h3>
+                            </div>
+                            <span className="text-[9px] font-sans font-bold text-white/80 uppercase tracking-wider shrink-0">
+                              {visibleCount} {visibleCount === 1 ? 'parada' : 'paradas'}
+                            </span>
+                            <ChevronRight className="w-4 h-4 text-white/70 shrink-0" strokeWidth={2.5} />
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* BOTÓN AL FINAL DEL LISTADO DE SALAS */}
+                    <div className="pt-4 pb-8">
+                      <button
+                        onClick={handleGoInicio}
+                        className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
+                      >
+                        <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+                        Volver al Inicio
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* NIVEL 3 — VISTA SALA: fotos de paradas abiertas */}
@@ -811,16 +937,17 @@ export default function App() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 30 }}
                       transition={{ duration: 0.2 }}
-                      className="fixed top-14 sm:top-20 landscape:top-12 bottom-16 landscape:bottom-10 inset-x-0 z-30 bg-slate-50 flex flex-col overflow-y-auto"
+                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-30 bg-slate-50 flex flex-col overflow-y-auto"
                     >
-                      {/* CABEZAL DE LA SALA */}
-                      <div className="w-full bg-[#0092e0] text-white px-3 py-2.5 border-b border-[#0081c7] flex items-center gap-3 shrink-0">
+                      {/* CABEZAL DE LA SALA CON BOTÓN DE REGRESO CLARO */}
+                      <div className="w-full bg-[#0092e0] text-white px-3 py-2.5 border-b border-[#0081c7] flex items-center gap-3 shrink-0 shadow-sm">
                         <button
                           onClick={handleBackToSalas}
-                          className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center shrink-0 cursor-pointer transition-colors"
-                          title="Volver al museo"
+                          className="inline-flex items-center gap-1 py-1 px-2.5 rounded-lg bg-white/20 hover:bg-white/30 text-white font-sans font-bold text-[10px] uppercase tracking-wider shrink-0 cursor-pointer transition-colors"
+                          title="Volver a las salas"
                         >
-                          <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+                          <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
+                          Salas
                         </button>
                         <div className="w-8 h-8 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center shrink-0 p-0">
                           {salaIconSrc ? (
@@ -869,6 +996,17 @@ export default function App() {
                             </div>
                           </div>
                         ))}
+
+                        {/* BOTÓN AL FINAL DE LA SALA PARA VOLVER AL LISTADO DE SALAS */}
+                        <div className="pt-4 pb-8">
+                          <button
+                            onClick={handleBackToSalas}
+                            className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
+                          >
+                            <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+                            Volver a Salas de {activeMuseum.shortTitle}
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   );
@@ -888,7 +1026,7 @@ export default function App() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 20 }}
                       transition={{ duration: 0.2 }}
-                      className="fixed top-14 sm:top-20 landscape:top-12 bottom-16 landscape:bottom-10 inset-x-0 z-40 bg-white flex flex-col overflow-y-auto"
+                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-40 bg-white flex flex-col overflow-y-auto"
                     >
                       {/* BANDA SUPERIOR DE TÍTULO (a pantalla completa sin márgenes) */}
                       <div className="w-full bg-[#0092e0] text-white px-4 py-2.5 sm:py-3 border-b border-[#0081c7] flex items-center justify-between shadow-sm shrink-0">
@@ -939,13 +1077,14 @@ export default function App() {
                         </div>
                       )}
 
-                      {/* BOTÓN CERRAR (gris oscuro, vuelve al acordeón de salas) */}
+                      {/* BOTÓN CERRAR (gris oscuro, vuelve al listado de paradas) */}
                       <div className="w-full max-w-xs mx-auto px-4 pt-4 pb-8 text-center">
                         <button
                           onClick={() => setExpandedStopId(null)}
-                          className="w-full py-2.5 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all"
+                          className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
                         >
-                          Cerrar
+                          <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+                          Volver a la Sala
                         </button>
                       </div>
                     </motion.div>

@@ -383,25 +383,25 @@ export default function App() {
       {/* FIXED CELESTE HEADER */}
       <header className="fixed top-0 left-0 right-0 z-50 h-16 sm:h-22 landscape:h-14 bg-[#0092e0] border-b border-[#0081c7] shadow-md">
         <div className="h-full w-full flex items-center justify-center px-3 sm:px-5">
-          {/* GRUPO CENTRADO EN PANTALLA: TEXTO A LA IZQUIERDA (JUSTIFICADO DERECHA) + LOGO 40% MÁS GRANDE */}
+          {/* GRUPO CENTRADO EN PANTALLA: TEXTO A LA IZQUIERDA (JUSTIFICADO DERECHA, ALINEADO AL BORDE INFERIOR DEL LOGO) + LOGO */}
           <div
             onClick={handleGoInicio}
-            className="flex items-center gap-2.5 sm:gap-3.5 cursor-pointer select-none"
+            className="flex items-end gap-2 sm:gap-2.5 cursor-pointer select-none pb-0.5 sm:pb-1"
           >
-            {/* TEXTO A SU LADO IZQUIERDO JUSTIFICADO A LA DERECHA (20% MÁS PEQUEÑO) */}
-            <div className="flex flex-col justify-center items-end text-right leading-none">
-              <span className="font-sans font-bold tracking-tight text-[10px] sm:text-xs text-white uppercase leading-none">
+            {/* TEXTO A SU LADO IZQUIERDO JUSTIFICADO A LA DERECHA (+15% MÁS GRANDE) */}
+            <div className="flex flex-col justify-end items-end text-right leading-none pb-0.5">
+              <span className="font-sans font-bold tracking-tight text-[11.5px] sm:text-[14px] text-white uppercase leading-none">
                 Audioguía
               </span>
-              <span className="font-sans font-medium text-[6.5px] sm:text-[8px] text-white/95 leading-tight mt-0.5 whitespace-nowrap">
+              <span className="font-sans font-medium text-[7.5px] sm:text-[9.5px] text-white/95 leading-tight mt-0.5 whitespace-nowrap">
                 del Complejo
               </span>
-              <span className="font-sans font-bold text-[6.5px] sm:text-[8px] text-white/95 leading-tight whitespace-nowrap">
-                Museográfico.
+              <span className="font-sans font-bold text-[7.5px] sm:text-[9.5px] text-white/95 leading-tight whitespace-nowrap">
+                Museográfico
               </span>
             </div>
 
-            {/* LOGO 40% MÁS GRANDE */}
+            {/* LOGO */}
             <img
               src="/logo-udaondo.png"
               alt="Complejo Museográfico Enrique Udaondo"
@@ -436,10 +436,10 @@ export default function App() {
 
                 <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-4 sm:p-6 pt-2 sm:pt-6 max-w-xl mx-auto w-full z-10">
                   <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-white text-[9px] sm:text-xs font-sans font-bold uppercase tracking-wider text-center mb-2">
-                    Bienvenidos • Parada 0
+                    Bienvenida • Parada 0
                   </div>
                   <h2 className="text-white font-display font-bold text-lg sm:text-3xl tracking-tight leading-tight uppercase text-center [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
-                    Bienvenidos.
+                    Bienvenida
                   </h2>
                   <p className="text-white text-[9px] sm:text-xs font-medium leading-snug font-sans text-center px-6 mt-1 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
                     {firstStop?.subtitle}
@@ -550,18 +550,18 @@ export default function App() {
                             className="w-full h-full object-cover object-center brightness-90"
                           />
                           <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-                          <div className="absolute top-4 left-4 right-4">
-                            <span className="text-[10px] font-sans font-black text-white uppercase tracking-widest leading-none block mb-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+                          <div className="absolute top-4 left-4 right-4 text-center">
+                            <span className="text-[10px] font-sans font-black text-white uppercase tracking-widest leading-none block mb-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)] text-center">
                               {museum.shortTitle} • {stopCount} {stopCount === 1 ? 'parada' : 'paradas'}
                             </span>
-                            <h4 className="font-display font-black text-base text-white tracking-[-0.03em] leading-tight uppercase [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+                            <h4 className="font-display font-black text-base text-white tracking-[-0.03em] leading-tight uppercase [text-shadow:0_1px_4px_rgba(0,0,0,0.8)] text-center">
                               {museum.title}
                             </h4>
                           </div>
                         </div>
 
-                        {/* Ícono central grande */}
-                        <div className="absolute top-32 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center">
+                        {/* Ícono central 50/50 a caballo entre imagen y card blanca */}
+                        <div className="absolute top-40 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
                           <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg border-2 border-[#0092e0] p-0.5 overflow-hidden">
                             {iconImg ? (
                               <img
@@ -577,7 +577,7 @@ export default function App() {
                           </div>
                         </div>
 
-                        <div className="p-2 pt-10 bg-white">
+                        <div className="p-3 pt-9 bg-white">
                           <p className="font-bold text-slate-600 text-xs font-sans leading-relaxed text-center px-1">
                             {museum.description}
                           </p>
@@ -688,8 +688,31 @@ export default function App() {
               transition={{ duration: 0.25 }}
               className="w-full flex flex-col"
             >
+              {/* TOP BAR / BOTONES DE NAVEGACIÓN SUPERIOR */}
+              <div className="max-w-xl mx-auto w-full px-4 pt-3 pb-2 flex items-center justify-between border-b border-slate-200">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleGoInicio}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors"
+                    title="Volver al Inicio"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
+                    Volver al Inicio
+                  </button>
+                  <button
+                    onClick={handleGoInicio}
+                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#0092e0]/10 hover:bg-[#0092e0]/20 text-[#0092e0] font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors"
+                    title="Índice de Salas y Museos"
+                  >
+                    Índice
+                  </button>
+                </div>
+                <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-wider">
+                  {museumStops.length} {museumStops.length === 1 ? 'parada' : 'paradas'}
+                </span>
+              </div>
 
-              {/* BANNER COMPACTO del museo */}
+              {/* BANNER COMPACTO DEL MUSEO */}
               <div className="w-full relative overflow-hidden h-40 sm:h-52 md:h-64 bg-slate-950">
                 <img
                   src={activeMuseum.image}
@@ -701,7 +724,7 @@ export default function App() {
                 <div className="absolute inset-x-0 bottom-0 flex flex-col justify-end items-center text-center p-3 sm:p-5 max-w-xl mx-auto w-full z-10">
                   <span className="text-[8px] sm:text-[9.5px] font-sans font-bold text-sky-200 uppercase tracking-wider mb-0.5 [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
                     {activeMuseum.hasTour ? 'Recorrido con salas' : 'Espacios del Complejo'} •{' '}
-                    {ALL_TOUR_STOPS.filter(s => s.museum === activeMuseum.id).length} paradas
+                    {museumStops.length} paradas
                   </span>
                   <h2 className="text-white font-display font-bold text-sm sm:text-2xl tracking-tight leading-tight uppercase text-center [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
                     {activeMuseum.title}
@@ -712,44 +735,130 @@ export default function App() {
                 </div>
               </div>
 
-              {/* HINT */}
-              <div className="flex items-center justify-center gap-1 pt-3 text-[#0092e0]">
-                <ChevronDown className="w-3.5 h-3.5 animate-bounce" strokeWidth={2.5} />
-                <span className="text-[8px] font-sans font-bold uppercase tracking-wider">
-                  Tocá una sala para explorarla
-                </span>
-              </div>
+              {/* LISTA UNIFICADA DE SALAS Y PARADAS */}
+              <div className="max-w-xl mx-auto w-full px-3.5 py-4 space-y-6">
 
-              <div className="max-w-xl mx-auto w-full px-3.5 py-4 space-y-4">
+                {/* FILA ESPECIAL: INTRODUCCIÓN AL MUSEO ("Comenzar acá" sin overlay celeste) */}
+                {(() => {
+                  const introStop = ALL_TOUR_STOPS.find(s => s.id === activeMuseum.introStopId);
+                  const introAbsorbidaEnSala = activeMuseum.salas.some(s => s.introStopId === activeMuseum.introStopId);
+                  if (!introStop || introAbsorbidaEnSala) return null;
+                  const isExpanded = expandedStopId === introStop.id;
 
-                {/* SI EL MUSEO TIENE 1 SOLA SALA (EJ. MUSEO DEL AUTOMÓVIL): MUESTRA DIRECTO EL CABEZAL DE SALA Y TODAS LAS PARADAS */}
-                {activeMuseum.salas.length === 1 ? (
-                  (() => {
-                    const sala = activeMuseum.salas[0];
+                  if (isExpanded) {
+                    return (
+                      <div
+                        key={`intro-${introStop.id}`}
+                        id={`stop-exp-${introStop.id}`}
+                        className="bg-white rounded-2xl border-2 border-[#0092e0]/40 overflow-hidden shadow-md transition-all duration-300 relative my-2"
+                      >
+                        <div className="w-full h-36 sm:h-44 relative bg-slate-950">
+                          <img
+                            src={introStop.image}
+                            alt={introStop.title}
+                            onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
+                            className="w-full h-full object-cover object-center brightness-90"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                          <div className="absolute top-2.5 inset-x-3 flex items-center justify-between">
+                            <span className="inline-block bg-slate-950/70 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wider">
+                              Comenzar acá • Parada {introStop.stopNumber}
+                            </span>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setExpandedStopId(null); }}
+                              className="w-7 h-7 rounded-full bg-slate-950/70 backdrop-blur-sm text-white hover:bg-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                              title="Cerrar"
+                            >
+                              <X className="w-3.5 h-3.5" strokeWidth={2.75} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* BOTÓN PLAY 50/50 A CABALLO ENTRE IMAGEN Y BLANCO */}
+                        <div className="absolute top-36 sm:top-44 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              playTTS(introStop.id, introStop.locucion || introStop.text);
+                            }}
+                            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-white active:scale-95 transition-all cursor-pointer ${
+                              playingStopId === introStop.id && isPlaying
+                                ? 'bg-[#D4AF37] hover:bg-[#C5A028] text-white'
+                                : 'bg-[#0092e0] hover:bg-[#0081c7] text-white'
+                            }`}
+                            title={playingStopId === introStop.id && isPlaying ? 'Pausar' : 'Reproducir'}
+                          >
+                            {playingStopId === introStop.id && isPlaying ? (
+                              <Pause className="w-6 h-6 sm:w-7 sm:h-7 fill-white" />
+                            ) : (
+                              <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white ml-0.5" strokeWidth={2.5} />
+                            )}
+                          </button>
+                        </div>
+
+                        {/* TEXTO COMPLETO EN FONDO BLANCO */}
+                        <div className="p-4 pt-10 sm:pt-11 bg-white text-center flex flex-col items-center">
+                          <span className="text-[8px] sm:text-[9px] font-sans font-black text-[#0092e0] uppercase tracking-widest leading-none mb-1">
+                            Comenzar acá
+                          </span>
+                          <h4 className="font-sans font-bold text-sm sm:text-base text-slate-800 leading-snug tracking-tight text-center">
+                            {introStop.title}
+                          </h4>
+                          {introStop.subtitle && (
+                            <p className="text-[10px] sm:text-xs text-slate-500 font-sans mt-1.5 text-center px-2 leading-relaxed">
+                              {introStop.subtitle}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div
+                      key={`intro-${introStop.id}`}
+                      onClick={() => {
+                        setExpandedStopId(introStop.id);
+                        playTTS(introStop.id, introStop.locucion || introStop.text);
+                      }}
+                      className="w-full text-left p-3 sm:p-3.5 rounded-2xl border-2 border-[#0092e0]/40 bg-sky-50/50 hover:bg-sky-50 hover:shadow-sm transition-all cursor-pointer flex items-center gap-3 active:scale-[0.99]"
+                    >
+                      <div className="w-9 h-9 rounded-xl overflow-hidden border border-[#0092e0]/30 bg-white flex items-center justify-center shrink-0 p-0.5 shadow-2xs">
+                        <img src={MUSEUM_ICON_IMAGES[activeMuseum.id]} alt={introStop.title} className="w-full h-full object-contain scale-105" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[7.5px] font-sans font-bold text-[#0092e0] uppercase tracking-wider block leading-none mb-0.5">
+                          Comenzar acá
+                        </span>
+                        <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
+                          {introStop.title}
+                        </h4>
+                        {introStop.subtitle && (
+                          <p className="text-[9.5px] sm:text-[10.5px] text-slate-500 font-sans mt-0.5 leading-snug">
+                            {introStop.subtitle}
+                          </p>
+                        )}
+                      </div>
+                      <div className="w-8 h-8 rounded-full bg-[#0092e0] text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* SALAS Y SUS PARADAS CON MARGEN DIFERENCIAL */}
+                {activeMuseum.salas.length > 0 ? (
+                  activeMuseum.salas.map(sala => {
                     const salaStops = sala.stopIds
                       .map(id => ALL_TOUR_STOPS.find(s => s.id === id))
                       .filter((s): s is TourStop => !!s);
                     const salaIconSrc = SALA_ICON_IMAGES[sala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
 
                     return (
-                      <div className="space-y-4">
-                        {/* BOTÓN SUPERIOR VOLVER AL INICIO */}
-                        <div className="flex items-center justify-between">
-                          <button
-                            onClick={handleGoInicio}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors shadow-2xs"
-                          >
-                            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
-                            Volver al Inicio
-                          </button>
-                          <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-wider">
-                            {salaStops.length} paradas
-                          </span>
-                        </div>
-
-                        {/* CABEZAL DE LA SALA */}
-                        <div className="bg-[#0092e0] rounded-2xl border border-[#0081c7] px-3.5 py-2.5 flex items-center gap-3 text-white shadow-sm">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl overflow-hidden border-2 border-white bg-white shadow-sm flex items-center justify-center flex-shrink-0 p-0">
+                      <div key={sala.id} className="space-y-3">
+                        {/* CABEZAL DE SALA */}
+                        <div className="bg-slate-100/90 border border-slate-200/80 rounded-2xl p-3 flex items-center gap-3 shadow-2xs">
+                          <div className="w-11 h-11 rounded-xl overflow-hidden border-2 border-white bg-white shadow-sm flex items-center justify-center shrink-0 p-0.5">
                             {salaIconSrc ? (
                               <img src={salaIconSrc} alt={sala.title} className="w-full h-full object-contain scale-105" />
                             ) : (
@@ -757,399 +866,246 @@ export default function App() {
                             )}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <span className="text-[7.5px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">
+                            <span className="text-[8px] font-sans font-black text-[#0092e0] uppercase tracking-widest block leading-none mb-0.5">
                               Sala
                             </span>
-                            <h3 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">
+                            <h3 className="font-sans font-bold text-xs sm:text-sm text-slate-800 tracking-tight leading-snug">
                               {sala.title}
                             </h3>
+                            <span className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">
+                              {salaStops.length} {salaStops.length === 1 ? 'parada' : 'paradas'}
+                            </span>
                           </div>
                         </div>
 
-                        {/* LISTA DE PARADAS ABIERTAS */}
-                        <div className="space-y-3">
-                          {salaStops.map(stop => (
-                            <div
-                              key={stop.id}
-                              className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform bg-white"
-                              onClick={() => setExpandedStopId(stop.id)}
-                            >
-                              {/* FOTO ABIERTA DE LA PARADA */}
-                              <div className="w-full h-28 sm:h-36 relative bg-slate-950">
-                                <img
-                                  src={stop.image}
-                                  alt={stop.title}
-                                  onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                                  className="w-full h-full object-cover object-center brightness-90"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-                                <span className="absolute top-2 left-3 bg-slate-950/70 backdrop-blur-sm px-2 py-0.5 rounded-full text-white text-[8px] font-sans font-bold uppercase tracking-wider">
-                                  Parada {stop.stopNumber}
-                                </span>
-                              </div>
-                              {/* PIE DE LA PARADA CON TÍTULO CENTRADO */}
-                              <div className="px-3.5 py-2.5 flex items-center justify-between gap-2.5">
-                                <div className="w-7 h-7 shrink-0" />
-                                <div className="min-w-0 flex-1 text-center">
-                                  <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight text-center">
+                        {/* PARADAS DE LA SALA CON LEVE SANGRÍA/MARGEN */}
+                        <div className="ml-2.5 sm:ml-4 border-l-2 border-slate-200 pl-2.5 sm:pl-3 space-y-2.5">
+                          {salaStops.map(stop => {
+                            const isExpanded = expandedStopId === stop.id;
+                            if (isExpanded) {
+                              return (
+                                <div
+                                  key={stop.id}
+                                  id={`stop-exp-${stop.id}`}
+                                  className="bg-white rounded-2xl border-2 border-[#0092e0]/40 overflow-hidden shadow-md transition-all duration-300 relative my-3"
+                                >
+                                  {/* FOTO ABIERTA */}
+                                  <div className="w-full h-36 sm:h-44 relative bg-slate-950">
+                                    <img
+                                      src={stop.image}
+                                      alt={stop.title}
+                                      onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
+                                      className="w-full h-full object-cover object-center brightness-90"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                                    <div className="absolute top-2.5 inset-x-3 flex items-center justify-between">
+                                      <span className="inline-block bg-slate-950/70 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wider">
+                                        Parada {stop.stopNumber}
+                                      </span>
+                                      <button
+                                        onClick={(e) => { e.stopPropagation(); setExpandedStopId(null); }}
+                                        className="w-7 h-7 rounded-full bg-slate-950/70 backdrop-blur-sm text-white hover:bg-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                                        title="Cerrar"
+                                      >
+                                        <X className="w-3.5 h-3.5" strokeWidth={2.75} />
+                                      </button>
+                                    </div>
+                                  </div>
+
+                                  {/* BOTÓN PLAY 50/50 ENTRE IMAGEN Y BLANCO */}
+                                  <div className="absolute top-36 sm:top-44 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        playTTS(stop.id, stop.locucion || stop.text);
+                                      }}
+                                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-white active:scale-95 transition-all cursor-pointer ${
+                                        playingStopId === stop.id && isPlaying
+                                          ? 'bg-[#D4AF37] hover:bg-[#C5A028] text-white'
+                                          : 'bg-[#0092e0] hover:bg-[#0081c7] text-white'
+                                      }`}
+                                      title={playingStopId === stop.id && isPlaying ? 'Pausar' : 'Reproducir'}
+                                    >
+                                      {playingStopId === stop.id && isPlaying ? (
+                                        <Pause className="w-6 h-6 sm:w-7 sm:h-7 fill-white" />
+                                      ) : (
+                                        <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white ml-0.5" strokeWidth={2.5} />
+                                      )}
+                                    </button>
+                                  </div>
+
+                                  {/* TEXTO COMPLETO EN FONDO BLANCO */}
+                                  <div className="p-4 pt-10 sm:pt-11 bg-white text-center flex flex-col items-center">
+                                    <span className="text-[8px] sm:text-[9px] font-sans font-black text-[#0092e0] uppercase tracking-widest leading-none mb-1">
+                                      Parada {stop.stopNumber}
+                                    </span>
+                                    <h4 className="font-sans font-bold text-sm sm:text-base text-slate-800 leading-snug tracking-tight text-center">
+                                      {stop.title}
+                                    </h4>
+                                    {stop.subtitle && (
+                                      <p className="text-[10px] sm:text-xs text-slate-500 font-sans mt-1.5 text-center px-2 leading-relaxed">
+                                        {stop.subtitle}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            }
+
+                            return (
+                              <div
+                                key={stop.id}
+                                onClick={() => {
+                                  setExpandedStopId(stop.id);
+                                  playTTS(stop.id, stop.locucion || stop.text);
+                                }}
+                                className="w-full text-left p-3 sm:p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-[#0092e0]/40 hover:shadow-sm transition-all cursor-pointer flex items-center gap-3 active:scale-[0.99]"
+                              >
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-sans font-black text-xs flex-shrink-0 bg-[#0092e0]/10 text-[#0092e0]">
+                                  {stop.stopNumber}
+                                </div>
+                                <div className="min-w-0 flex-1">
+                                  <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
                                     {stop.title}
                                   </h4>
+                                  {stop.subtitle && (
+                                    <p className="text-[9.5px] sm:text-[10.5px] text-slate-500 font-sans mt-0.5 leading-snug">
+                                      {stop.subtitle}
+                                    </p>
+                                  )}
                                 </div>
-                                <div className="w-7 h-7 rounded-full bg-[#0092e0]/10 text-[#0092e0] flex items-center justify-center shrink-0 hover:bg-[#0092e0] hover:text-white transition-colors">
-                                  <Play className="w-3 h-3 fill-current ml-0.5" strokeWidth={2.5} />
+                                <div className="w-8 h-8 rounded-full bg-slate-100 hover:bg-[#0092e0] hover:text-white text-[#0092e0] flex items-center justify-center shrink-0 transition-colors">
+                                  <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
                                 </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* BOTÓN AL FINAL DEL RECORRIDO PARA VOLVER */}
-                        <div className="pt-4 pb-8">
-                          <button
-                            onClick={handleGoInicio}
-                            className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
-                          >
-                            <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
-                            Volver al Inicio
-                          </button>
+                            );
+                          })}
                         </div>
                       </div>
                     );
-                  })()
+                  })
                 ) : (
-                  /* SI EL MUSEO TIENE MÚLTIPLES SALAS (HISTÓRICO, TRANSPORTES): MUESTRA ÍNDICE DE SALAS */
-                  <>
-                    {/* BOTÓN SUPERIOR VOLVER AL INICIO */}
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={handleGoInicio}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-sans font-bold text-[10px] uppercase tracking-wider cursor-pointer transition-colors shadow-2xs"
-                      >
-                        <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
-                        Volver al Inicio
-                      </button>
-                      <span className="text-[10px] font-sans font-bold text-slate-400 uppercase tracking-wider">
-                        {activeMuseum.salas.length} salas
-                      </span>
-                    </div>
-
-                    {/* Fila especial: Introducción al museo */}
-                    {(() => {
-                      const introStop = ALL_TOUR_STOPS.find(s => s.id === activeMuseum.introStopId);
-                      const introAbsorbidaEnSala = activeMuseum.salas.some(s => s.introStopId === activeMuseum.introStopId);
-                      if (!introStop || introAbsorbidaEnSala) return null;
-                      return (
-                        <div key={`intro-${introStop.id}`} className="rounded-2xl border border-[#0081c7] overflow-hidden shadow-sm cursor-pointer" onClick={() => setExpandedStopId(introStop.id)}>
-                          <div className="w-full h-28 sm:h-36 relative bg-slate-950">
-                            <img
-                              src={introStop.image}
-                              alt={introStop.title}
-                              onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                              className="w-full h-full object-cover object-center brightness-90"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-                            <div className="absolute inset-0 bg-[#0092e0]/30 pointer-events-none" />
-                          </div>
-                          <div className="bg-[#0092e0] px-3 py-2 flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
-                              <img src={MUSEUM_ICON_IMAGES[activeMuseum.id]} alt={introStop.title} className="w-full h-full object-contain scale-105" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-widest block leading-none mb-0.5">Comenzar acá</span>
-                              <h4 className="font-sans font-bold text-xs sm:text-sm text-white leading-snug tracking-tight">{introStop.title}</h4>
-                            </div>
-                            <div className="w-8 h-8 rounded-full bg-white text-[#0092e0] flex items-center justify-center shrink-0 shadow-sm">
-                              <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })()}
-
-                    {/* Cards de salas — NIVEL 2: foto abierta + header celeste */}
-                    {activeMuseum.salas.map(sala => {
-                      const salaStops = sala.stopIds
-                        .map(id => ALL_TOUR_STOPS.find(s => s.id === id))
-                        .filter((s): s is TourStop => !!s);
-                      const visibleCount = salaStops.length;
-                      const salaIconSrc = SALA_ICON_IMAGES[sala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
-                      const salaImg = getSalaImage(sala, activeMuseum);
-
-                      return (
-                        <div
-                          key={sala.id}
-                          className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform"
-                          onClick={() => handleSelectSala(sala.id)}
-                        >
-                          {/* FOTO ABIERTA DE LA SALA */}
-                          <div className="w-full h-28 sm:h-36 relative bg-slate-950">
-                            <img
-                              src={salaImg}
-                              alt={sala.title}
-                              onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                              className="w-full h-full object-cover object-center brightness-90"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-                          </div>
-                          {/* HEADER CELESTE DE LA SALA */}
-                          <div className="bg-[#0092e0] border-t border-[#0081c7] px-3 py-2 flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center flex-shrink-0 p-0">
-                              {salaIconSrc ? (
-                                <img src={salaIconSrc} alt={sala.title} className="w-full h-full object-contain scale-105" />
-                              ) : (
-                                <div className="text-[#0092e0]">{MUSEUM_ICONS[activeMuseum.id]}</div>
-                              )}
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">Sala</span>
-                              <h3 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">{sala.title}</h3>
-                            </div>
-                            <span className="text-[9px] font-sans font-bold text-white/80 uppercase tracking-wider shrink-0">
-                              {visibleCount} {visibleCount === 1 ? 'parada' : 'paradas'}
-                            </span>
-                            <ChevronRight className="w-4 h-4 text-white/70 shrink-0" strokeWidth={2.5} />
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    {/* BOTÓN AL FINAL DEL LISTADO DE SALAS */}
-                    <div className="pt-4 pb-8">
-                      <button
-                        onClick={handleGoInicio}
-                        className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
-                      >
-                        <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
-                        Volver al Inicio
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {/* NIVEL 3 — VISTA SALA: fotos de paradas abiertas */}
-              <AnimatePresence>
-                {activeSala && !expandedStopId && (() => {
-                  const salaIconSrc = SALA_ICON_IMAGES[activeSala.id] || MUSEUM_ICON_IMAGES[activeMuseum.id];
-                  return (
-                    <motion.div
-                      key={`sala-view-${activeSala.id}`}
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 30 }}
-                      transition={{ duration: 0.2 }}
-                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-30 bg-slate-50 flex flex-col overflow-y-auto"
-                    >
-                      {/* CABEZAL DE LA SALA CON BOTÓN DE REGRESO CLARO */}
-                      <div className="w-full bg-[#0092e0] text-white px-3 py-2.5 border-b border-[#0081c7] flex items-center gap-3 shrink-0 shadow-sm">
-                        <button
-                          onClick={handleBackToSalas}
-                          className="inline-flex items-center gap-1 py-1 px-2.5 rounded-lg bg-white/20 hover:bg-white/30 text-white font-sans font-bold text-[10px] uppercase tracking-wider shrink-0 cursor-pointer transition-colors"
-                          title="Volver a las salas"
-                        >
-                          <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.75} />
-                          Salas
-                        </button>
-                        <div className="w-8 h-8 rounded-xl overflow-hidden border-2 border-white bg-white flex items-center justify-center shrink-0 p-0">
-                          {salaIconSrc ? (
-                            <img src={salaIconSrc} alt={activeSala.title} className="w-full h-full object-contain scale-105" />
-                          ) : (
-                            <div className="text-[#0092e0]">{MUSEUM_ICONS[activeMuseum.id]}</div>
-                          )}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[7px] font-sans font-bold text-sky-100 uppercase tracking-[0.2em] block leading-none mb-0.5">Sala</span>
-                          <h2 className="font-sans font-bold text-xs sm:text-sm text-white tracking-tight leading-snug">{activeSala.title}</h2>
-                        </div>
-                      </div>
-
-                      {/* CARDS DE PARADAS — NIVEL 3: foto abierta de cada parada */}
-                      <div className="max-w-xl mx-auto w-full px-3.5 py-4 space-y-3">
-                        {activeSalaStops.map(stop => (
+                  /* LISTA DIRECTA PARA ESPACIOS SIN SALAS */
+                  <div className="space-y-2.5">
+                    {museumStops.map(stop => {
+                      const isExpanded = expandedStopId === stop.id;
+                      if (isExpanded) {
+                        return (
                           <div
                             key={stop.id}
-                            className="rounded-2xl border border-slate-200 overflow-hidden shadow-sm cursor-pointer active:scale-[0.99] transition-transform bg-white"
-                            onClick={() => setExpandedStopId(stop.id)}
+                            id={`stop-exp-${stop.id}`}
+                            className="bg-white rounded-2xl border-2 border-[#0092e0]/40 overflow-hidden shadow-md transition-all duration-300 relative my-3"
                           >
-                            {/* FOTO ABIERTA DE LA PARADA */}
-                            <div className="w-full h-28 sm:h-36 relative bg-slate-950">
+                            <div className="w-full h-36 sm:h-44 relative bg-slate-950">
                               <img
                                 src={stop.image}
                                 alt={stop.title}
                                 onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
                                 className="w-full h-full object-cover object-center brightness-90"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none" />
-                              <span className="absolute top-2 left-3 bg-slate-950/70 backdrop-blur-sm px-2 py-0.5 rounded-full text-white text-[8px] font-sans font-bold uppercase tracking-wider">
+                              <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+                              <div className="absolute top-2.5 inset-x-3 flex items-center justify-between">
+                                <span className="inline-block bg-slate-950/70 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-white text-[8px] sm:text-[9px] font-sans font-bold uppercase tracking-wider">
+                                  Parada {stop.stopNumber}
+                                </span>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setExpandedStopId(null); }}
+                                  className="w-7 h-7 rounded-full bg-slate-950/70 backdrop-blur-sm text-white hover:bg-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                                  title="Cerrar"
+                                >
+                                  <X className="w-3.5 h-3.5" strokeWidth={2.75} />
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="absolute top-36 sm:top-44 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  playTTS(stop.id, stop.locucion || stop.text);
+                                }}
+                                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-white active:scale-95 transition-all cursor-pointer ${
+                                  playingStopId === stop.id && isPlaying
+                                    ? 'bg-[#D4AF37] hover:bg-[#C5A028] text-white'
+                                    : 'bg-[#0092e0] hover:bg-[#0081c7] text-white'
+                                }`}
+                                title={playingStopId === stop.id && isPlaying ? 'Pausar' : 'Reproducir'}
+                              >
+                                {playingStopId === stop.id && isPlaying ? (
+                                  <Pause className="w-6 h-6 sm:w-7 sm:h-7 fill-white" />
+                                ) : (
+                                  <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white ml-0.5" strokeWidth={2.5} />
+                                )}
+                              </button>
+                            </div>
+
+                            <div className="p-4 pt-10 sm:pt-11 bg-white text-center flex flex-col items-center">
+                              <span className="text-[8px] sm:text-[9px] font-sans font-black text-[#0092e0] uppercase tracking-widest leading-none mb-1">
                                 Parada {stop.stopNumber}
                               </span>
-                            </div>
-                            {/* PIE DE LA PARADA CON TÍTULO CENTRADO */}
-                            <div className="px-3.5 py-2.5 flex items-center justify-between gap-2.5">
-                              <div className="w-7 h-7 shrink-0" />
-                              <div className="min-w-0 flex-1 text-center">
-                                <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight text-center">
-                                  {stop.title}
-                                </h4>
-                              </div>
-                              <div className="w-7 h-7 rounded-full bg-[#0092e0]/10 text-[#0092e0] flex items-center justify-center shrink-0 hover:bg-[#0092e0] hover:text-white transition-colors">
-                                <Play className="w-3 h-3 fill-current ml-0.5" strokeWidth={2.5} />
-                              </div>
+                              <h4 className="font-sans font-bold text-sm sm:text-base text-slate-800 leading-snug tracking-tight text-center">
+                                {stop.title}
+                              </h4>
+                              {stop.subtitle && (
+                                <p className="text-[10px] sm:text-xs text-slate-500 font-sans mt-1.5 text-center px-2 leading-relaxed">
+                                  {stop.subtitle}
+                                </p>
+                              )}
                             </div>
                           </div>
-                        ))}
+                        );
+                      }
 
-                        {/* BOTÓN AL FINAL DE LA SALA PARA VOLVER AL LISTADO DE SALAS */}
-                        <div className="pt-4 pb-8">
-                          <button
-                            onClick={handleBackToSalas}
-                            className="w-full py-3 px-6 rounded-xl bg-slate-700 hover:bg-slate-800 active:scale-95 text-white font-sans font-bold text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all flex items-center justify-center gap-2"
-                          >
-                            <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
-                            Volver a Salas de {activeMuseum.shortTitle}
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })()}
-              </AnimatePresence>
-
-              {/* FICHA INDIVIDUAL DE PARADA (VISIÓN SINGLE - sin scroll, fija entre encabezado y footer) */}
-              <AnimatePresence>
-                {expandedStopId && (() => {
-                  const selectedStop = ALL_TOUR_STOPS.find(s => s.id === expandedStopId);
-                  if (!selectedStop) return null;
-                  const isPlayingHere = playingStopId === selectedStop.id && isPlaying;
-
-                  // Orden numérico de paradas dentro del museo
-                  const curIdx = museumStops.findIndex(s => s.id === selectedStop.id);
-                  const prevStop = curIdx > 0 ? museumStops[curIdx - 1] : null;
-                  const nextStop = curIdx >= 0 && curIdx < museumStops.length - 1 ? museumStops[curIdx + 1] : null;
-
-                  return (
-                    <motion.div
-                      key={selectedStop.id}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 15 }}
-                      transition={{ duration: 0.2 }}
-                      className="fixed top-16 sm:top-22 landscape:top-14 bottom-16 landscape:bottom-10 inset-x-0 z-40 bg-slate-50 flex flex-col justify-between overflow-hidden"
-                    >
-                      {/* HERO BANNER A PANTALLA COMPLETA HASTA EL CABEZAL */}
-                      <div className="w-full relative overflow-hidden h-[45vh] sm:h-[50vh] bg-slate-950 shrink-0">
-                        <img
-                          src={selectedStop.image}
-                          alt={selectedStop.title}
-                          onError={(e) => { if (e.currentTarget.src !== placeholderImg) e.currentTarget.src = placeholderImg; }}
-                          className="w-full h-full object-cover object-center brightness-90 contrast-[1.02]"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent pointer-events-none" />
-
-                        {/* BOTÓN X FLOTANTE */}
-                        <button
-                          onClick={() => setExpandedStopId(null)}
-                          className="absolute top-2.5 right-3 z-20 w-8 h-8 rounded-full bg-black/40 text-white backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors"
-                          title="Cerrar"
+                      return (
+                        <div
+                          key={stop.id}
+                          onClick={() => {
+                            setExpandedStopId(stop.id);
+                            playTTS(stop.id, stop.locucion || stop.text);
+                          }}
+                          className="w-full text-left p-3 sm:p-3.5 rounded-2xl border border-slate-200 bg-white hover:border-[#0092e0]/40 hover:shadow-sm transition-all cursor-pointer flex items-center gap-3 active:scale-[0.99]"
                         >
-                          <X className="w-4 h-4" strokeWidth={2.75} />
-                        </button>
-
-                        {/* TEXTOS CENTRADOS SOBRE LA IMAGEN (IDEM BIENVENIDA) */}
-                        <div className="absolute inset-x-0 top-0 flex flex-col justify-start items-center text-center p-3 sm:p-5 pt-2 sm:pt-4 max-w-xl mx-auto w-full z-10">
-                          <div className="bg-white/20 backdrop-blur-md border border-white/20 px-3 py-0.5 rounded-full text-white text-[8px] sm:text-[10px] font-sans font-bold uppercase tracking-wider text-center mb-1">
-                            Parada {selectedStop.stopNumber} • {activeMuseum.shortTitle}
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center font-sans font-black text-xs flex-shrink-0 bg-[#0092e0]/10 text-[#0092e0]">
+                            {stop.stopNumber}
                           </div>
-                          <h2 className="text-white font-display font-bold text-sm sm:text-2xl tracking-tight leading-tight uppercase text-center [text-shadow:0_2px_14px_rgba(0,0,0,0.85),0_1px_4px_rgba(0,0,0,0.8)]">
-                            {selectedStop.title}
-                          </h2>
-                          {selectedStop.subtitle && (
-                            <p className="text-white text-[8.5px] sm:text-xs font-medium leading-snug font-sans text-center px-4 mt-0.5 max-w-md [text-shadow:0_1px_10px_rgba(0,0,0,0.85)]">
-                              {selectedStop.subtitle}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* FLOATING CARD CON REPRODUCTOR, BOTONES VOLVER/MAPA Y ESQUEMA DE PARADAS (CARD QUE LLEGA MÁS ABAJO) */}
-                      <div className="max-w-xl mx-auto w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] md:w-full -mt-5 sm:-mt-8 relative z-10 bg-white rounded-2xl border border-slate-100 p-2 sm:p-5 shadow-md flex flex-col pt-8 sm:pt-10 gap-2 sm:gap-3 mb-2">
-                        {/* REPRODUCTOR */}
-                        <div className="absolute top-0 inset-x-0 -translate-y-1/2 z-20 px-2 sm:px-4">
-                          <AudioPlayerControl
-                            isPlaying={isPlayingHere}
-                            onClick={() => playTTS(selectedStop.id, selectedStop.locucion || selectedStop.text)}
-                            onPrev={prevStop ? () => setExpandedStopId(prevStop.id) : () => setExpandedStopId(null)}
-                            onNext={nextStop ? () => setExpandedStopId(nextStop.id) : undefined}
-                          />
-                        </div>
-
-                        {/* BOTONES: VOLVER + MAPA (IDEM VÍA RÁPIDA / MAPA) */}
-                        <div className="grid grid-cols-2 gap-1.5 w-full px-1">
-                          <button
-                            onClick={() => setExpandedStopId(null)}
-                            className="inline-flex items-center justify-center gap-1.5 px-2 py-2 sm:py-2.5 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-bold uppercase tracking-tight text-[10px] sm:text-xs w-full"
-                            title="Volver a la sala"
-                          >
-                            <ArrowLeft className="w-4 h-4 shrink-0" strokeWidth={2.75} />
-                            Volver
-                          </button>
-                          <button
-                            onClick={handleOpenMap}
-                            className="inline-flex items-center justify-center gap-1.5 px-2 py-2 sm:py-2.5 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-bold uppercase tracking-tight text-[10px] sm:text-xs w-full"
-                            title="Ver el mapa del Complejo"
-                          >
-                            <Map className="w-4 h-4 shrink-0" strokeWidth={2.75} />
-                            Mapa
-                          </button>
-                        </div>
-
-                        {/* ESQUEMA / TIMELINE DE PARADAS ADENTRO DE LA CARD */}
-                        <div className="w-full px-1 pt-1 pb-1">
-                          <div className="relative w-full flex items-start justify-between gap-1">
-                            <div className="absolute left-[16.6%] right-[16.6%] h-0.5 bg-slate-200 top-1.5 sm:top-2 -translate-y-1/2 z-0" />
-
-                            {/* ANTERIOR / VOLVER A SALA */}
-                            <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-1 sm:px-2">
-                              <button
-                                onClick={prevStop ? () => setExpandedStopId(prevStop.id) : () => setExpandedStopId(null)}
-                                className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
-                                title={prevStop ? `Parada ${prevStop.stopNumber}: ${prevStop.title}` : 'Volver a la sala'}
-                              >
-                                <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <p className="text-[7px] sm:text-[8.5px] font-sans font-bold text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-2 text-center">
-                                  {prevStop ? `Parada ${prevStop.stopNumber} • ${prevStop.title}` : 'Volver a Sala'}
-                                </p>
-                              </button>
-                            </div>
-
-                            {/* PUNTO DEL MEDIO TITILANDO SIN ACLARACIÓN (DONDE ESTÁS PARADO) */}
-                            <div className="flex items-start justify-center z-10 w-8 sm:w-12 pt-0.5">
-                              <div className="relative flex items-center justify-center">
-                                <span className="absolute w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#0092e0]/50 animate-ping" />
-                                <div className="relative w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-[#0092e0] border-2 border-sky-200 shadow-sm" />
-                              </div>
-                            </div>
-
-                            {/* SIGUIENTE PARADA */}
-                            <div className="flex flex-col items-center text-center z-10 flex-1 min-w-0 px-1 sm:px-2">
-                              <button
-                                onClick={nextStop ? () => setExpandedStopId(nextStop.id) : () => setExpandedStopId(null)}
-                                className="group flex flex-col items-center focus:outline-none cursor-pointer w-full"
-                                title={nextStop ? `Parada ${nextStop.stopNumber}: ${nextStop.title}` : 'Volver a la sala'}
-                              >
-                                <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border-2 border-slate-300 bg-white group-hover:border-[#0092e0] group-hover:bg-[#0092e0] transition-colors flex-shrink-0" />
-                                <p className="text-[7px] sm:text-[8.5px] font-sans font-bold text-slate-500 group-hover:text-[#0092e0] transition-colors leading-tight uppercase tracking-tight mt-0.5 line-clamp-2 text-center">
-                                  {nextStop ? `Parada ${nextStop.stopNumber} • ${nextStop.title}` : 'Fin de Sala'}
-                                </p>
-                              </button>
-                            </div>
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-sans font-bold text-xs sm:text-sm text-slate-800 leading-snug tracking-tight">
+                              {stop.title}
+                            </h4>
+                            {stop.subtitle && (
+                              <p className="text-[9.5px] sm:text-[10.5px] text-slate-500 font-sans mt-0.5 leading-snug">
+                                {stop.subtitle}
+                              </p>
+                            )}
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-slate-100 hover:bg-[#0092e0] hover:text-white text-[#0092e0] flex items-center justify-center shrink-0 transition-colors">
+                            <Play className="w-3.5 h-3.5 fill-current ml-0.5" strokeWidth={2.5} />
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  );
-                })()}
-              </AnimatePresence>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* BOTONES AL FINAL DEL LISTADO: VOLVER + MAPA */}
+                <div className="pt-6 pb-8 grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleGoInicio}
+                    className="inline-flex items-center justify-center gap-1.5 px-2 py-2.5 sm:py-3 bg-[#0092e0] text-white hover:bg-[#0081c7] active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-md font-sans font-bold uppercase tracking-tight text-[10px] sm:text-xs w-full"
+                  >
+                    <ArrowLeft className="w-4 h-4 shrink-0" strokeWidth={2.75} />
+                    Volver
+                  </button>
+                  <button
+                    onClick={handleOpenMap}
+                    className="inline-flex items-center justify-center gap-1.5 px-2 py-2.5 sm:py-3 bg-white text-[#0092e0] hover:bg-sky-50 active:scale-95 rounded-xl transition-all duration-200 cursor-pointer shadow-sm border-2 border-[#0092e0]/30 font-sans font-bold uppercase tracking-tight text-[10px] sm:text-xs w-full"
+                  >
+                    <Map className="w-4 h-4 shrink-0" strokeWidth={2.75} />
+                    Mapa
+                  </button>
+                </div>
+
+              </div>
             </motion.div>
           )}
 

@@ -216,7 +216,7 @@ export const ALL_TOUR_STOPS: TourStop[] = [
     id: "bienvenida-general",
     stopNumber: 0,
     title: "Bienvenida General (Plaza Belgrano)",
-    subtitle: "Bienvenido al Complejo Museográfico Provincial Enrique Udaondo.",
+    subtitle: "Al Complejo Museográfico Provincial Enrique Udaondo.",
     text: "Bienvenidos al Complejo Museográfico Provincial Enrique Udaondo, uno de los museos más importantes y extensos de América Latina. Ubicado frente a la histórica Plaza Belgrano de Luján, este complejo reúne el Museo Colonial e Histórico, el Museo de Transportes, el Museo del Automóvil y valiosos espacios patrimoniales al aire libre. Lo invitamos a recorrer nuestras salas y descubrir los testimonios vivos que forjaron la historia y la identidad argentina.",
     locucion: "Bienvenidos al Complejo Museográfico Provincial Enrique Udaondo, uno de los museos más importantes y extensos de América Latina. Ubicado frente a la histórica Plaza Belgrano de Luján, este complejo reúne el Museo Colonial e Histórico, el Museo de Transportes, el Museo del Automóvil y valiosos espacios patrimoniales al aire libre. Lo invitamos a recorrer nuestras salas y descubrir los testimonios vivos que forjaron la historia y la identidad argentina.",
     museum: "historico",
